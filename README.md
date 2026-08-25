@@ -26,31 +26,10 @@ Access the real-time tracker directly in any desktop or mobile browser:
 - **Customizable Dashboard**: Only shows your saved/favorite stations by default, keeping the board fast and clean.
 - **One-Click Station Management**: Easily star or unstar stations to add or remove them from your saved list.
 - **Smooth Real-time Tickers**: Automatic 60-second background sync cycle with second-by-second countdown ticks.
-- **Regional Transit Guide & FAQ**: Built-in guide explaining connections, line differences, and how to travel between Lynnwood, Seattle, and Bellevue.
+- **Regional Transit Guide & FAQ**: Built-in guide explaining connections, line differences, and fares in the app.
 - **Optional `transit-tracker-api` Backend Support**: Toggleable settings input to connect to custom [transit-tracker-api](https://github.com/tjhorner/transit-tracker-api) WebSocket / REST instances.
 - **Local Storage Persistence**: Pinned stations, active lines, and user preferences are saved automatically in your browser.
 - **GitHub Pages Ready**: 100% client-side static application with relative asset bundling.
-
----
-
-## 🗺️ Transit Guide: How to Get From Lynnwood to Bellevue
-
-Currently, the **1 Line** serves Seattle / Snohomish County and the **2 Line** serves the Eastside. Sound Transit provides several convenient options to travel between Lynnwood and Bellevue:
-
-### 🟢 Option 1: Fastest & Direct (Express Bus via I-405)
-* **Route**: **Sound Transit Express Route 535** (7 days/week) or **Route 532** (weekday peak commute).
-* **Where to board**: **Lynnwood City Center Station (Bay D1)**.
-* **Arrival**: **Bellevue Transit Center / Bellevue Downtown Station**.
-* **Travel time**: **35–45 minutes** direct down I-405 (stops at Canyon Park, UW Bothell, Totem Lake).
-* **Transfer**: Direct walk across to the **2 Line Light Rail** platform for Spring District, Overlake, or Downtown Redmond.
-
-### 🟡 Option 2: 1 Line Train + Seattle Transfer (via I-90)
-* **Step 1**: Take **1 Line South** from Lynnwood City Center to **Int'l District / Chinatown Station** or **Symphony Station** (~30 min).
-* **Step 2**: Transfer to **Sound Transit Express 550** across I-90 directly into **Bellevue Downtown**.
-* **Step 3**: Connect directly to the **2 Line** at Bellevue Downtown for Spring District, Overlake, or Redmond.
-
-### 🟣 Future Connection: Direct 1 Line ⇄ 2 Line Rail Transfer
-* Once Sound Transit completes the I-90 Link extension connecting Seattle across Lake Washington to South Bellevue (Judkins Park & Mercer Island), riders will be able to transfer between **Line 1** and **Line 2** at **Chinatown-International District Station** directly on the rail network!
 
 ---
 
