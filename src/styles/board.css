@@ -136,11 +136,23 @@
   divide-x: 1px solid var(--border-subtle);
 }
 
-@media (max-width: 520px) {
+@media (max-width: 600px) {
+  .station-header {
+    padding: 0.95rem 1.15rem;
+  }
+
+  .station-name {
+    font-size: 1.05rem;
+  }
+
   .station-platforms {
     grid-template-columns: 1fr;
     divide-x: none;
     divide-y: 1px solid var(--border-subtle);
+  }
+
+  .platform-column {
+    padding: 0.95rem 1.15rem;
   }
 }
 
