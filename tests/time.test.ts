@@ -37,12 +37,12 @@ describe('Time and Countdown Utilities', () => {
     expect(onTime.text).toBe('On Time');
     expect(onTime.type).toBe('ontime');
 
-    // Realtime late (>60s)
+    // Realtime late (>=60s)
     const late = formatDelayStatus(180, true);
     expect(late.text).toBe('+3m Delay');
     expect(late.type).toBe('delayed');
 
-    // Realtime early (<-60s)
+    // Realtime early (<=-60s)
     const early = formatDelayStatus(-120, true);
     expect(early.text).toBe('2m Early');
     expect(early.type).toBe('early');

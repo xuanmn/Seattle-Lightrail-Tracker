@@ -38,14 +38,14 @@ export function formatDelayStatus(
 
   const delayMinutes = Math.round(Math.abs(delaySeconds) / 60);
 
-  if (delaySeconds > 60) {
+  if (delaySeconds >= 60) {
     return {
       text: `+${delayMinutes}m Delay`,
       type: 'delayed',
     };
   }
 
-  if (delaySeconds < -60) {
+  if (delaySeconds <= -60) {
     return {
       text: `${delayMinutes}m Early`,
       type: 'early',
