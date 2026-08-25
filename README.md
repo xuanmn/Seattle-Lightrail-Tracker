@@ -11,13 +11,6 @@ A modern, responsive, real-time departure countdown board and multi-station trac
 
 ---
 
-## 🌐 Live Website
-
-Access the real-time tracker directly in any desktop or mobile browser:  
-🔗 **[https://xuanmn.github.io/Seattle-Lightrail-Tracker/](https://xuanmn.github.io/Seattle-Lightrail-Tracker/)**
-
----
-
 ## ✨ Features
 
 - **Live Regional Data Out-of-the-Box**: Direct integration with Puget Sound OneBusAway (`api.pugetsound.onebusaway.org`) providing live arrival predictions, GPS tracking, and delay statuses without requiring a backend.
