@@ -4,7 +4,6 @@ import { formatClockTime } from '../utils/time';
 
 export interface HeaderCallbacks {
   onLineChange: (line: TransitLineId) => void;
-  onRefreshClick: () => void;
   onSettingsClick: () => void;
   onFaqClick: () => void;
 }
@@ -14,7 +13,6 @@ export class HeaderComponent {
   private line1Btn!: HTMLButtonElement;
   private line2Btn!: HTMLButtonElement;
   private clockEl!: HTMLElement;
-  private refreshBtn!: HTMLButtonElement;
   private activeLine: TransitLineId = 'line-1';
   private is24Hour: boolean = false;
   private callbacks: HeaderCallbacks;
@@ -45,14 +43,6 @@ export class HeaderComponent {
   public setTimeFormat(is24Hour: boolean) {
     this.is24Hour = is24Hour;
     this.updateClock();
-  }
-
-  public setRefreshing(isRefreshing: boolean) {
-    if (isRefreshing) {
-      this.refreshBtn.classList.add('spinning');
-    } else {
-      this.refreshBtn.classList.remove('spinning');
-    }
   }
 
   private startClock() {
@@ -121,17 +111,12 @@ export class HeaderComponent {
     faqBtn.title = 'How to travel between Lynnwood, Seattle, and Bellevue';
     faqBtn.onclick = () => this.callbacks.onFaqClick();
 
-    this.refreshBtn = createElement('button', 'icon-btn', ICONS.refresh) as HTMLButtonElement;
-    this.refreshBtn.title = 'Refresh arrivals now';
-    this.refreshBtn.onclick = () => this.callbacks.onRefreshClick();
-
     const settingsBtn = createElement('button', 'icon-btn', ICONS.settings);
     settingsBtn.title = 'Settings & Preferences';
     settingsBtn.onclick = () => this.callbacks.onSettingsClick();
 
     actions.appendChild(this.clockEl);
     actions.appendChild(faqBtn);
-    actions.appendChild(this.refreshBtn);
     actions.appendChild(settingsBtn);
 
     container.appendChild(brand);

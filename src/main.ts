@@ -78,7 +78,6 @@ class TransitTrackerApp {
     // Header
     this.header = new HeaderComponent(this.activeLine, this.settings.timeFormat24Hour, {
       onLineChange: (line) => this.switchLine(line),
-      onRefreshClick: () => this.fetchVisibleArrivals(true),
       onSettingsClick: () => this.settingsModal.open(),
       onFaqClick: () => this.faqModal.open(),
     });
@@ -287,12 +286,10 @@ class TransitTrackerApp {
   private async fetchVisibleArrivals(isManual: boolean = false) {
     if (this.isFetching) return;
     this.isFetching = true;
-    this.header.setRefreshing(true);
 
     const stations = this.getVisibleStations();
     if (stations.length === 0) {
       this.isFetching = false;
-      this.header.setRefreshing(false);
       return;
     }
 
@@ -327,7 +324,6 @@ class TransitTrackerApp {
       }
     } finally {
       this.isFetching = false;
-      this.header.setRefreshing(false);
     }
   }
 
