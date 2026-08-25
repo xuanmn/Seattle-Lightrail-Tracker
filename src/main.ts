@@ -246,7 +246,7 @@ class TransitTrackerApp {
     const btn = createElement(
       'button',
       `empty-dashboard-btn ${lineClass}`,
-      `${ICONS.plus} Add Stations to ${config.name}`
+      `${ICONS.plus} Add & Remove Stations`
     );
     btn.onclick = () => this.pickerModal.open(this.activeLine);
 

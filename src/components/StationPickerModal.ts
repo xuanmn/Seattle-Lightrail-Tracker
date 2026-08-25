@@ -117,9 +117,14 @@ export class StationPickerModal {
     // Action button
     const actionBtn = createElement(
       'button',
-      `picker-add-btn ${isPinned ? 'pinned' : ''}`,
-      isPinned ? `✓ On Dashboard` : `+ Add Station`
+      `picker-add-btn ${isPinned ? 'pinned' : ''}`
     ) as HTMLButtonElement;
+
+    if (isPinned) {
+      actionBtn.innerHTML = `<span class="btn-text-default">✓ Added</span><span class="btn-text-hover">✕ Remove</span>`;
+    } else {
+      actionBtn.textContent = '+ Add Station';
+    }
 
     const toggle = (e: Event) => {
       e.stopPropagation();
@@ -141,7 +146,7 @@ export class StationPickerModal {
 
     // Header
     const header = createElement('div', 'modal-header');
-    const title = createElement('h3', 'modal-title', 'Choose Stations for Dashboard');
+    const title = createElement('h3', 'modal-title', 'Add & Remove Stations');
     const closeBtn = createElement('button', 'icon-btn', ICONS.close);
     closeBtn.onclick = () => this.close();
     header.appendChild(title);
