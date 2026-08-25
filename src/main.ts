@@ -2,6 +2,7 @@ import './styles/theme.css';
 import './styles/layout.css';
 import './styles/board.css';
 
+import { FaqModal } from './components/FaqModal';
 import { HeaderComponent } from './components/Header';
 import { SettingsModal } from './components/SettingsModal';
 import { StationCardComponent } from './components/StationCard';
@@ -26,6 +27,7 @@ class TransitTrackerApp {
   private header!: HeaderComponent;
   private pickerModal!: StationPickerModal;
   private settingsModal!: SettingsModal;
+  private faqModal!: FaqModal;
 
   private activeLine: TransitLineId = 'line-1';
   private showOnlyPinned: boolean = true; // Default to showing only user's chosen favorite stations
@@ -61,11 +63,24 @@ class TransitTrackerApp {
   private initUI() {
     this.appEl.innerHTML = '';
 
+    // Modals
+    this.pickerModal = new StationPickerModal({
+      onTogglePin: (stationId) => this.handleTogglePin(stationId),
+      isStationPinned: (stationId) => isStationPinned(stationId),
+    });
+
+    this.settingsModal = new SettingsModal({
+      onSettingsSaved: (newSettings) => this.handleSettingsSaved(newSettings),
+    });
+
+    this.faqModal = new FaqModal();
+
     // Header
     this.header = new HeaderComponent(this.activeLine, this.settings.timeFormat24Hour, {
       onLineChange: (line) => this.switchLine(line),
       onRefreshClick: () => this.fetchVisibleArrivals(true),
       onSettingsClick: () => this.settingsModal.open(),
+      onFaqClick: () => this.faqModal.open(),
     });
     this.appEl.appendChild(this.header.getElement());
 
@@ -112,16 +127,6 @@ class TransitTrackerApp {
 
     main.appendChild(container);
     this.appEl.appendChild(main);
-
-    // Modals
-    this.pickerModal = new StationPickerModal({
-      onTogglePin: (stationId) => this.handleTogglePin(stationId),
-      isStationPinned: (stationId) => isStationPinned(stationId),
-    });
-
-    this.settingsModal = new SettingsModal({
-      onSettingsSaved: (newSettings) => this.handleSettingsSaved(newSettings),
-    });
 
     this.updateToolbarHeader();
     this.renderStationCards();

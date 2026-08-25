@@ -6,6 +6,7 @@ export interface HeaderCallbacks {
   onLineChange: (line: TransitLineId) => void;
   onRefreshClick: () => void;
   onSettingsClick: () => void;
+  onFaqClick: () => void;
 }
 
 export class HeaderComponent {
@@ -112,6 +113,14 @@ export class HeaderComponent {
     const actions = createElement('div', 'header-actions');
     this.clockEl = createElement('div', 'clock-display');
 
+    const faqBtn = createElement(
+      'button',
+      'header-text-btn',
+      `Transit Guide & FAQ`
+    );
+    faqBtn.title = 'How to travel between Lynnwood, Seattle, and Bellevue';
+    faqBtn.onclick = () => this.callbacks.onFaqClick();
+
     this.refreshBtn = createElement('button', 'icon-btn', ICONS.refresh) as HTMLButtonElement;
     this.refreshBtn.title = 'Refresh arrivals now';
     this.refreshBtn.onclick = () => this.callbacks.onRefreshClick();
@@ -121,6 +130,7 @@ export class HeaderComponent {
     settingsBtn.onclick = () => this.callbacks.onSettingsClick();
 
     actions.appendChild(this.clockEl);
+    actions.appendChild(faqBtn);
     actions.appendChild(this.refreshBtn);
     actions.appendChild(settingsBtn);
 
