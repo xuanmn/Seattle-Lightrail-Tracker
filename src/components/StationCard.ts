@@ -4,6 +4,7 @@ import { formatClockTime, formatCountdownBadge } from '../utils/time';
 
 export interface StationCardCallbacks {
   onTogglePin: (stationId: string) => void;
+  onRemove?: (stationId: string) => void;
 }
 
 export class StationCardComponent {
@@ -13,6 +14,7 @@ export class StationCardComponent {
   private is24Hour: boolean;
   private callbacks: StationCardCallbacks;
   private starBtn!: HTMLButtonElement;
+  private removeBtn!: HTMLButtonElement;
   private platform1Container!: HTMLElement;
   private platform2Container!: HTMLElement;
   private currentArrivals?: StationArrivals;
@@ -38,6 +40,7 @@ export class StationCardComponent {
     this.isPinned = pinned;
     this.starBtn.className = `star-btn ${pinned ? 'pinned' : ''}`;
     this.starBtn.innerHTML = pinned ? ICONS.starFilled : ICONS.star;
+    this.starBtn.title = pinned ? 'Favorited' : 'Add to favorites';
   }
 
   public setTimeFormat(is24Hour: boolean) {
@@ -171,13 +174,29 @@ export class StationCardComponent {
       `star-btn ${this.isPinned ? 'pinned' : ''}`,
       this.isPinned ? ICONS.starFilled : ICONS.star
     ) as HTMLButtonElement;
-    this.starBtn.title = this.isPinned ? 'Unpin station' : 'Pin to favorites';
+    this.starBtn.title = this.isPinned ? 'Remove favorite' : 'Pin to favorites';
     this.starBtn.onclick = (e) => {
       e.stopPropagation();
       this.callbacks.onTogglePin(this.station.id);
     };
 
+    this.removeBtn = createElement(
+      'button',
+      'card-remove-btn',
+      ICONS.close
+    ) as HTMLButtonElement;
+    this.removeBtn.title = 'Remove station from dashboard';
+    this.removeBtn.onclick = (e) => {
+      e.stopPropagation();
+      if (this.callbacks.onRemove) {
+        this.callbacks.onRemove(this.station.id);
+      } else {
+        this.callbacks.onTogglePin(this.station.id);
+      }
+    };
+
     actions.appendChild(this.starBtn);
+    actions.appendChild(this.removeBtn);
     header.appendChild(titleGroup);
     header.appendChild(actions);
 

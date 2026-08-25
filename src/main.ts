@@ -29,6 +29,7 @@ class TransitTrackerApp {
   private settingsModal!: SettingsModal;
 
   private activeLine: TransitLineId = 'line-1';
+  private showOnlyPinned: boolean = true; // Default to showing only user's chosen favorite stations
   private settings: AppSettings;
   private pinnedIds: string[] = [];
   private cardComponents: Map<string, StationCardComponent> = new Map();
@@ -38,6 +39,7 @@ class TransitTrackerApp {
   private lineTitleEl!: HTMLElement;
   private lineSubtitleEl!: HTMLElement;
   private staleBannerEl!: HTMLElement;
+  private viewModePillWrap!: HTMLElement;
 
   private pollIntervalTimer?: number;
   private countdownTickTimer?: number;
@@ -87,12 +89,19 @@ class TransitTrackerApp {
     heading.appendChild(this.lineSubtitleEl);
 
     const controls = createElement('div', 'toolbar-controls');
+
+    // View Mode Toggle Pills (My Stations vs All Stations)
+    this.viewModePillWrap = createElement('div', 'line-switcher');
+    this.renderViewModePills();
+
     const addStationBtn = createElement(
       'button',
       'btn-primary',
-      `${ICONS.plus} Add / Browse Stations`
+      `${ICONS.plus} Add Stations`
     );
     addStationBtn.onclick = () => this.pickerModal.open(this.activeLine);
+
+    controls.appendChild(this.viewModePillWrap);
     controls.appendChild(addStationBtn);
 
     toolbar.appendChild(heading);
@@ -127,11 +136,53 @@ class TransitTrackerApp {
     this.renderStationCards();
   }
 
+  private renderViewModePills() {
+    this.viewModePillWrap.innerHTML = '';
+
+    const myBtn = createElement(
+      'button',
+      `line-btn ${this.showOnlyPinned ? 'active' : ''}`
+    );
+    myBtn.style.padding = '0.35rem 0.85rem';
+    myBtn.style.fontSize = '0.82rem';
+    myBtn.innerHTML = `★ My Saved Stations`;
+    if (this.showOnlyPinned) {
+      myBtn.classList.add(this.activeLine === 'line-1' ? 'line-1-active' : 'line-2-active');
+    }
+    myBtn.onclick = () => {
+      this.showOnlyPinned = true;
+      this.renderViewModePills();
+      this.renderStationCards();
+      this.fetchVisibleArrivals();
+    };
+
+    const allBtn = createElement(
+      'button',
+      `line-btn ${!this.showOnlyPinned ? 'active' : ''}`
+    );
+    allBtn.style.padding = '0.35rem 0.85rem';
+    allBtn.style.fontSize = '0.82rem';
+    allBtn.innerHTML = `All Line Stations`;
+    if (!this.showOnlyPinned) {
+      allBtn.classList.add(this.activeLine === 'line-1' ? 'line-1-active' : 'line-2-active');
+    }
+    allBtn.onclick = () => {
+      this.showOnlyPinned = false;
+      this.renderViewModePills();
+      this.renderStationCards();
+      this.fetchVisibleArrivals();
+    };
+
+    this.viewModePillWrap.appendChild(myBtn);
+    this.viewModePillWrap.appendChild(allBtn);
+  }
+
   private switchLine(line: TransitLineId) {
     this.activeLine = line;
     setActiveLine(line);
     this.header.setActiveLine(line);
     this.updateToolbarHeader();
+    this.renderViewModePills();
     this.renderStationCards();
     this.fetchVisibleArrivals(true);
   }
@@ -149,10 +200,15 @@ class TransitTrackerApp {
 
   private getVisibleStations(): Station[] {
     const lineStations = getStationsByLine(this.activeLine);
+
+    if (this.showOnlyPinned) {
+      // Return only stations the user has pinned for this line
+      return lineStations.filter((s) => this.pinnedIds.includes(s.id));
+    }
+
+    // In "All Line Stations" view, show pinned first, then others
     const pinnedOnThisLine = lineStations.filter((s) => this.pinnedIds.includes(s.id));
     const unpinnedOnThisLine = lineStations.filter((s) => !this.pinnedIds.includes(s.id));
-
-    // Show pinned stations first, followed by all other stations on this line
     return [...pinnedOnThisLine, ...unpinnedOnThisLine];
   }
 
@@ -162,6 +218,11 @@ class TransitTrackerApp {
 
     const stations = this.getVisibleStations();
 
+    if (stations.length === 0) {
+      this.renderEmptyDashboard();
+      return;
+    }
+
     stations.forEach((station) => {
       const isPinned = this.pinnedIds.includes(station.id);
       const cardComp = new StationCardComponent(
@@ -170,6 +231,7 @@ class TransitTrackerApp {
         this.settings.timeFormat24Hour,
         {
           onTogglePin: (id) => this.handleTogglePin(id),
+          onRemove: (id) => this.handleRemoveStation(id),
         }
       );
 
@@ -184,14 +246,51 @@ class TransitTrackerApp {
     });
   }
 
+  private renderEmptyDashboard() {
+    const config = LINE_CONFIG[this.activeLine];
+    const emptyCard = createElement('div', 'empty-dashboard-card');
+
+    const icon = createElement('div', 'empty-dashboard-icon', ICONS.star);
+    const title = createElement(
+      'h3',
+      'empty-dashboard-title',
+      `No saved stations on ${config.name}`
+    );
+    const desc = createElement(
+      'p',
+      'empty-dashboard-desc',
+      'Choose the stations you use daily to keep your departure board fast and clean.'
+    );
+
+    const btn = createElement(
+      'button',
+      'btn-primary',
+      `${ICONS.plus} Add Stations to ${config.name}`
+    );
+    btn.onclick = () => this.pickerModal.open(this.activeLine);
+
+    emptyCard.appendChild(icon);
+    emptyCard.appendChild(title);
+    emptyCard.appendChild(desc);
+    emptyCard.appendChild(btn);
+
+    this.stationsGridEl.appendChild(emptyCard);
+  }
+
   private handleTogglePin(stationId: string) {
-    const newStatus = togglePinnedStation(stationId);
+    togglePinnedStation(stationId);
     this.pinnedIds = getPinnedStationIds();
 
-    const card = this.cardComponents.get(stationId);
-    if (card) {
-      card.setPinned(newStatus);
-    }
+    this.renderStationCards();
+    this.pickerModal.refreshPinnedState();
+    this.fetchVisibleArrivals();
+  }
+
+  private handleRemoveStation(stationId: string) {
+    togglePinnedStation(stationId);
+    this.pinnedIds = getPinnedStationIds();
+
+    this.renderStationCards();
     this.pickerModal.refreshPinnedState();
   }
 
@@ -224,6 +323,11 @@ class TransitTrackerApp {
     this.header.setRefreshing(true);
 
     const stations = this.getVisibleStations();
+    if (stations.length === 0) {
+      this.isFetching = false;
+      this.header.setRefreshing(false);
+      return;
+    }
 
     try {
       const fetchPromises = stations.map(async (station) => {

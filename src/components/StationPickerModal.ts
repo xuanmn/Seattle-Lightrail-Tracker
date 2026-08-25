@@ -13,6 +13,9 @@ export class StationPickerModal {
   private searchInput!: HTMLInputElement;
   private activeFilterLine: TransitLineId | 'all' = 'all';
   private callbacks: StationPickerCallbacks;
+  private tab1Btn!: HTMLButtonElement;
+  private tab2Btn!: HTMLButtonElement;
+  private tabAllBtn!: HTMLButtonElement;
 
   constructor(callbacks: StationPickerCallbacks) {
     this.callbacks = callbacks;
@@ -21,7 +24,7 @@ export class StationPickerModal {
   }
 
   public open(initialLine?: TransitLineId) {
-    if (initialLine) this.activeFilterLine = initialLine;
+    if (initialLine) this.setFilter(initialLine);
     this.searchInput.value = '';
     this.renderStationsList();
     this.overlay.classList.add('open');
@@ -33,6 +36,14 @@ export class StationPickerModal {
   }
 
   public refreshPinnedState() {
+    this.renderStationsList();
+  }
+
+  private setFilter(line: TransitLineId | 'all') {
+    this.activeFilterLine = line;
+    this.tabAllBtn.className = `filter-pill ${line === 'all' ? 'active' : ''}`;
+    this.tab1Btn.className = `filter-pill ${line === 'line-1' ? 'active line-1' : ''}`;
+    this.tab2Btn.className = `filter-pill ${line === 'line-2' ? 'active line-2' : ''}`;
     this.renderStationsList();
   }
 
@@ -67,9 +78,8 @@ export class StationPickerModal {
     const isLine1 = station.lines.includes('line-1');
     const isPinned = this.callbacks.isStationPinned(station.id);
 
-    const row = createElement('div', 'departure-row');
+    const row = createElement('div', 'picker-station-row');
     row.style.cursor = 'pointer';
-    row.style.padding = '0.85rem 1rem';
 
     const info = createElement('div', 'brand-section');
 
@@ -98,12 +108,12 @@ export class StationPickerModal {
     info.appendChild(linePill);
     info.appendChild(textGroup);
 
-    const starBtn = createElement(
+    // Action button
+    const actionBtn = createElement(
       'button',
-      `star-btn ${isPinned ? 'pinned' : ''}`,
-      isPinned ? ICONS.starFilled : ICONS.star
+      `picker-add-btn ${isPinned ? 'pinned' : ''}`,
+      isPinned ? `✓ On Dashboard` : `+ Add Station`
     ) as HTMLButtonElement;
-    starBtn.title = isPinned ? 'Pinned' : 'Pin station';
 
     const toggle = (e: Event) => {
       e.stopPropagation();
@@ -112,10 +122,10 @@ export class StationPickerModal {
     };
 
     row.onclick = toggle;
-    starBtn.onclick = toggle;
+    actionBtn.onclick = toggle;
 
     row.appendChild(info);
-    row.appendChild(starBtn);
+    row.appendChild(actionBtn);
     return row;
   }
 
@@ -125,7 +135,7 @@ export class StationPickerModal {
 
     // Header
     const header = createElement('div', 'modal-header');
-    const title = createElement('h3', 'modal-title', 'Add Station to Dashboard');
+    const title = createElement('h3', 'modal-title', 'Choose Stations for Dashboard');
     const closeBtn = createElement('button', 'icon-btn', ICONS.close);
     closeBtn.onclick = () => this.close();
     header.appendChild(title);
@@ -134,20 +144,36 @@ export class StationPickerModal {
     // Body
     const body = createElement('div', 'modal-body');
 
-    // Search Input
+    // Search and Filters
     const searchWrap = createElement('div', 'form-group');
     this.searchInput = createElement(
       'input',
       'form-control'
     ) as HTMLInputElement;
     this.searchInput.type = 'text';
-    this.searchInput.placeholder = 'Search stations (e.g., Capitol Hill, SeaTac, Westlake)...';
+    this.searchInput.placeholder = 'Search stations by name (e.g., Capitol Hill, SeaTac, Westlake)...';
     this.searchInput.oninput = () => this.renderStationsList();
+
+    const filtersWrap = createElement('div', 'picker-filter-pills');
+    this.tabAllBtn = createElement('button', 'filter-pill active', 'All Lines') as HTMLButtonElement;
+    this.tabAllBtn.onclick = () => this.setFilter('all');
+
+    this.tab1Btn = createElement('button', 'filter-pill line-1', '1 Line (Lynnwood ⇄ Angle Lake)') as HTMLButtonElement;
+    this.tab1Btn.onclick = () => this.setFilter('line-1');
+
+    this.tab2Btn = createElement('button', 'filter-pill line-2', '2 Line (Eastside)') as HTMLButtonElement;
+    this.tab2Btn.onclick = () => this.setFilter('line-2');
+
+    filtersWrap.appendChild(this.tabAllBtn);
+    filtersWrap.appendChild(this.tab1Btn);
+    filtersWrap.appendChild(this.tab2Btn);
+
     searchWrap.appendChild(this.searchInput);
+    searchWrap.appendChild(filtersWrap);
 
     // List
     this.listContainer = createElement('div', 'departures-list');
-    this.listContainer.style.maxHeight = '420px';
+    this.listContainer.style.maxHeight = '380px';
     this.listContainer.style.overflowY = 'auto';
 
     body.appendChild(searchWrap);
@@ -155,7 +181,7 @@ export class StationPickerModal {
 
     // Footer
     const footer = createElement('div', 'modal-footer');
-    const doneBtn = createElement('button', 'btn-primary', 'Done');
+    const doneBtn = createElement('button', 'btn-primary', 'Close');
     doneBtn.onclick = () => this.close();
     footer.appendChild(doneBtn);
 
@@ -164,7 +190,6 @@ export class StationPickerModal {
     modal.appendChild(footer);
     overlay.appendChild(modal);
 
-    // Click outside to close
     overlay.onclick = (e) => {
       if (e.target === overlay) this.close();
     };
