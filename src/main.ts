@@ -106,16 +106,7 @@ class TransitTrackerApp {
     // View Mode Toggle Pills (My Stations vs All Stations)
     this.viewModePillWrap = createElement('div', 'line-switcher');
     this.renderViewModePills();
-
-    const addStationBtn = createElement(
-      'button',
-      'btn-add-station',
-      `${ICONS.plus} Add Stations`
-    );
-    addStationBtn.onclick = () => this.pickerModal.open(this.activeLine);
-
     controls.appendChild(this.viewModePillWrap);
-    controls.appendChild(addStationBtn);
 
     toolbar.appendChild(heading);
     toolbar.appendChild(controls);
