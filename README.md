@@ -1,10 +1,20 @@
 # 🚊 Seattle Light Rail Tracker
 
-A modern, responsive, real-time departure countdown board and multi-station tracker for **Seattle's Sound Transit Link Light Rail** (1 Line & 2 Line), designed for deployment on **GitHub Pages**.
+> **Live Website:** 👉 **[https://xuanmn.github.io/Seattle-Lightrail-Tracker/](https://xuanmn.github.io/Seattle-Lightrail-Tracker/)**
 
-![Seattle Light Rail Tracker](https://img.shields.io/badge/Sound%20Transit-Link%20Light%20Rail-008542?style=for-the-badge)
-![1 Line](https://img.shields.io/badge/1%20Line-Lynnwood%20⇄%20Angle%20Lake-008542?style=for-the-badge)
-![2 Line](https://img.shields.io/badge/2%20Line-South%20Bellevue%20⇄%20Redmond-0072CE?style=for-the-badge)
+A modern, responsive, real-time departure countdown board and multi-station tracker for **Seattle's Sound Transit Link Light Rail** (1 Line & 2 Line), hosted live on **GitHub Pages**.
+
+[![Live Demo](https://img.shields.io/badge/🌐_Open_Live_Tracker-xuanmn.github.io%2FSeattle--Lightrail--Tracker-008542?style=for-the-badge&logo=googlechrome&logoColor=white)](https://xuanmn.github.io/Seattle-Lightrail-Tracker/)
+[![Sound Transit](https://img.shields.io/badge/Sound%20Transit-Link%20Light%20Rail-008542?style=for-the-badge)](https://www.soundtransit.org)
+[![1 Line](https://img.shields.io/badge/1%20Line-Lynnwood%20⇄%20Angle%20Lake-008542?style=for-the-badge)](https://xuanmn.github.io/Seattle-Lightrail-Tracker/)
+[![2 Line](https://img.shields.io/badge/2%20Line-South%20Bellevue%20⇄%20Redmond-0072CE?style=for-the-badge)](https://xuanmn.github.io/Seattle-Lightrail-Tracker/)
+
+---
+
+## 🌐 Live Website
+
+Access the real-time tracker directly in any desktop or mobile browser:  
+🔗 **[https://xuanmn.github.io/Seattle-Lightrail-Tracker/](https://xuanmn.github.io/Seattle-Lightrail-Tracker/)**
 
 ---
 
@@ -14,7 +24,7 @@ A modern, responsive, real-time departure countdown board and multi-station trac
 - **Sound Transit Line 1 & Line 2**: Pre-loaded catalog with all 23 stations on the **1 Line** (from Lynnwood City Center through Angle Lake) and all 10 stations on the **2 Line** (from South Bellevue to Downtown Redmond).
 - **Directional Departure Cards**: View Northbound/Southbound or Eastbound/Westbound platforms side-by-side with high-visibility countdown badges (`ARRIVING`, `3 MIN`, `12 MIN`).
 - **Customizable Dashboard**: Only shows your saved/favorite stations by default, keeping the board fast and clean.
-- **One-Click Station Management**: Easily add, search, or remove (✖) stations directly from the dashboard or via the Station Browser modal.
+- **One-Click Station Management**: Easily star or unstar stations to add or remove them from your saved list.
 - **Smooth Real-time Tickers**: Automatic 60-second background sync cycle with second-by-second countdown ticks.
 - **Regional Transit Guide & FAQ**: Built-in guide explaining connections, line differences, and how to travel between Lynnwood, Seattle, and Bellevue.
 - **Optional `transit-tracker-api` Backend Support**: Toggleable settings input to connect to custom [transit-tracker-api](https://github.com/tjhorner/transit-tracker-api) WebSocket / REST instances.
@@ -85,6 +95,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read

@@ -104,6 +104,15 @@ export class FaqModal {
           • <strong>Youth (18 and under):</strong> Ride <strong>100% FREE</strong> on all Sound Transit trains and buses!
         </div>
       </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Official Links & Resources</div>
+        <div class="faq-a">
+          • <a href="https://xuanmn.github.io/Seattle-Lightrail-Tracker/" target="_blank" rel="noopener noreferrer" style="color: var(--text-accent); text-decoration: underline;">Live Tracker Web App</a><br/>
+          • <a href="https://www.soundtransit.org/ride-with-us/routes-schedules" target="_blank" rel="noopener noreferrer" style="color: var(--text-accent); text-decoration: underline;">Sound Transit Official Schedules & Alerts</a><br/>
+          • <a href="https://github.com/xuanmn/Seattle-Lightrail-Tracker" target="_blank" rel="noopener noreferrer" style="color: var(--text-accent); text-decoration: underline;">GitHub Repository & Source Code</a>
+        </div>
+      </div>
     `;
 
     body.appendChild(featuredCard);
