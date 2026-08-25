@@ -52,8 +52,9 @@ export function togglePinnedStation(stationId: string): boolean {
   return !exists; // returns new pinned status
 }
 
-export function isStationPinned(stationId: string): boolean {
-  return getPinnedStationIds().includes(stationId);
+export function isStationPinned(stationId: string, cachedPinnedIds?: string[]): boolean {
+  const ids = cachedPinnedIds ?? getPinnedStationIds();
+  return ids.includes(stationId);
 }
 
 export function getActiveLine(): TransitLineId {

@@ -13,7 +13,6 @@ import {
   getActiveLine,
   getPinnedStationIds,
   getSettings,
-  isStationPinned,
   setActiveLine,
   togglePinnedStation,
 } from './services/storage';
@@ -66,7 +65,7 @@ class TransitTrackerApp {
     // Modals
     this.pickerModal = new StationPickerModal({
       onTogglePin: (stationId) => this.handleTogglePin(stationId),
-      isStationPinned: (stationId) => isStationPinned(stationId),
+      isStationPinned: (stationId) => this.pinnedIds.includes(stationId),
     });
 
     this.settingsModal = new SettingsModal({

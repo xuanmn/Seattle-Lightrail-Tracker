@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import {
   getPinnedStationIds,
   togglePinnedStation,
+  isStationPinned,
   getActiveLine,
   setActiveLine,
   getSettings,
@@ -31,6 +32,16 @@ describe('Local Storage & Settings Service', () => {
     const pinnedResult = togglePinnedStation('westlake');
     expect(pinnedResult).toBe(true);
     expect(getPinnedStationIds()).toContain('westlake');
+  });
+
+  it('checks if a station is pinned, optionally using cached array', () => {
+    expect(isStationPinned('westlake')).toBe(true);
+    expect(isStationPinned('non-existent-station')).toBe(false);
+
+    // Using provided cached array (avoids localStorage read)
+    const customList = ['station-a', 'station-b'];
+    expect(isStationPinned('station-a', customList)).toBe(true);
+    expect(isStationPinned('westlake', customList)).toBe(false);
   });
 
   it('sets and retrieves active line', () => {
