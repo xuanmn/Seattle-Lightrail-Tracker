@@ -17,6 +17,7 @@ export class HeaderComponent {
   private activeLine: TransitLineId = 'line-1';
   private is24Hour: boolean = false;
   private callbacks: HeaderCallbacks;
+  private clockInterval?: number;
 
   constructor(initialLine: TransitLineId, is24Hour: boolean, callbacks: HeaderCallbacks) {
     this.activeLine = initialLine;
@@ -51,7 +52,8 @@ export class HeaderComponent {
 
   private startClock() {
     this.updateClock();
-    setInterval(() => this.updateClock(), 1000);
+    if (this.clockInterval) clearInterval(this.clockInterval);
+    this.clockInterval = window.setInterval(() => this.updateClock(), 1000);
   }
 
   private updateClock() {

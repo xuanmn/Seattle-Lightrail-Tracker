@@ -544,6 +544,23 @@
   padding: 0.75rem 1rem;
   border-radius: 12px;
   transition: all var(--transition-fast);
+  cursor: pointer;
+}
+
+.picker-station-row .station-line-pill {
+  width: 24px;
+  height: 24px;
+  font-size: 0.8rem;
+}
+
+.picker-station-row .station-name {
+  font-size: 1rem;
+}
+
+/* Scrollable picker list */
+.modal-body .departures-list {
+  max-height: 380px;
+  overflow-y: auto;
 }
 
 .picker-station-row:hover {

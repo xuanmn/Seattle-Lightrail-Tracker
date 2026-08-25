@@ -28,6 +28,11 @@ export class StationCardComponent {
 
   private currentArrivals?: StationArrivals;
 
+  // Cached DOM references for lightweight tick updates (avoids full re-render)
+  private countdownChips: HTMLElement[] = [];
+  private countdownRows: HTMLElement[] = [];
+  private arrivalTimes: number[] = [];
+
   constructor(
     station: Station,
     isPinned: boolean,
@@ -72,6 +77,12 @@ export class StationCardComponent {
 
   public updateArrivals(data: StationArrivals) {
     this.currentArrivals = data;
+
+    // Clear tracked DOM refs before full rebuild
+    this.countdownChips = [];
+    this.countdownRows = [];
+    this.arrivalTimes = [];
+
     this.renderPlatformArrivals(
       this.platform1Container,
       data.direction1.arrivals,
@@ -86,9 +97,41 @@ export class StationCardComponent {
     );
   }
 
+  /**
+   * Lightweight tick: only updates countdown text and arriving-soon classes.
+   * No DOM destruction or creation — just textContent and className patches.
+   */
   public tickCountdowns() {
     if (!this.currentArrivals) return;
-    this.updateArrivals(this.currentArrivals);
+
+    const now = Date.now();
+
+    // Update each cached countdown chip
+    for (let i = 0; i < this.countdownChips.length; i++) {
+      const chip = this.countdownChips[i];
+      const row = this.countdownRows[i];
+      const targetTime = this.arrivalTimes[i];
+      const badge = formatCountdownBadge(targetTime, now);
+
+      chip.textContent = badge.text;
+      chip.className = `countdown-chip ${badge.isNow ? 'now' : ''}`;
+
+      if (row) {
+        row.className = `departure-row ${badge.isNow ? 'arriving-soon' : ''}`;
+      }
+    }
+
+    // Update summary badges for collapsed state
+    this.tickSummaryBadge(this.currentArrivals.direction1.arrivals, this.col1SummaryBadge);
+    this.tickSummaryBadge(this.currentArrivals.direction2.arrivals, this.col2SummaryBadge);
+  }
+
+  private tickSummaryBadge(arrivals: TransitArrival[], badge: HTMLElement) {
+    if (!arrivals || arrivals.length === 0) return;
+    const nextTime = arrivals[0].predictedDepartureTime || arrivals[0].scheduledDepartureTime;
+    const nextBadge = formatCountdownBadge(nextTime);
+    badge.textContent = nextBadge.text;
+    badge.className = `platform-summary-badge ${nextBadge.isNow ? 'now' : ''}`;
   }
 
   private toggleCollapse(colIndex: 1 | 2) {
@@ -159,6 +202,11 @@ export class StationCardComponent {
         `countdown-chip ${badge.isNow ? 'now' : ''}`,
         badge.text
       );
+
+      // Track DOM refs for lightweight tick updates
+      this.countdownChips.push(chip);
+      this.countdownRows.push(row);
+      this.arrivalTimes.push(targetTime);
 
       row.appendChild(info);
       row.appendChild(chip);

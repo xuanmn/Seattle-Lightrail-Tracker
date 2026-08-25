@@ -45,11 +45,9 @@ describe('Local Storage & Settings Service', () => {
 
     updateSettings({
       timeFormat24Hour: true,
-      customApiUrl: 'https://my-transit.fly.dev',
     });
 
     const updated = getSettings();
     expect(updated.timeFormat24Hour).toBe(true);
-    expect(updated.customApiUrl).toBe('https://my-transit.fly.dev');
   });
 });

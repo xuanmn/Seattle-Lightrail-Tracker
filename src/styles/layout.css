@@ -495,6 +495,21 @@
   line-height: 1.4;
 }
 
+.form-group-row {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.form-label-inline {
+  margin-bottom: 0;
+}
+
+.settings-checkbox {
+  width: 18px;
+  height: 18px;
+}
+
 /* FAQ Modal Custom Styles */
 .faq-featured-card {
   background: linear-gradient(135deg, rgba(0, 114, 206, 0.12) 0%, rgba(16, 24, 38, 0.9) 100%);

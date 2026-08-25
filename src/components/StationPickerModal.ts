@@ -79,7 +79,7 @@ export class StationPickerModal {
     const isPinned = this.callbacks.isStationPinned(station.id);
 
     const row = createElement('div', 'picker-station-row');
-    row.style.cursor = 'pointer';
+
 
     const info = createElement('div', 'brand-section');
 
@@ -88,13 +88,11 @@ export class StationPickerModal {
       `station-line-pill ${isLine1 ? 'line-1-circle' : 'line-2-circle'}`,
       isLine1 ? '1' : '2'
     );
-    linePill.style.width = '24px';
-    linePill.style.height = '24px';
-    linePill.style.fontSize = '0.8rem';
+
 
     const textGroup = createElement('div', 'station-name-wrap');
     const name = createElement('div', 'station-name');
-    name.style.fontSize = '1rem';
+
     name.textContent = station.name;
 
     if (station.shortName) {
@@ -173,8 +171,7 @@ export class StationPickerModal {
 
     // List
     this.listContainer = createElement('div', 'departures-list');
-    this.listContainer.style.maxHeight = '380px';
-    this.listContainer.style.overflowY = 'auto';
+
 
     body.appendChild(searchWrap);
     body.appendChild(this.listContainer);

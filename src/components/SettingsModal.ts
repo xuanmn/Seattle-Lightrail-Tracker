@@ -9,7 +9,6 @@ export interface SettingsModalCallbacks {
 export class SettingsModal {
   private overlay: HTMLElement;
   private timeFormatCheckbox!: HTMLInputElement;
-  private customApiInput!: HTMLInputElement;
   private callbacks: SettingsModalCallbacks;
 
   constructor(callbacks: SettingsModalCallbacks) {
@@ -21,7 +20,6 @@ export class SettingsModal {
   public open() {
     const current = getSettings();
     this.timeFormatCheckbox.checked = current.timeFormat24Hour;
-    this.customApiInput.value = current.customApiUrl || '';
     this.overlay.classList.add('open');
   }
 
@@ -32,7 +30,6 @@ export class SettingsModal {
   private save() {
     const updated = updateSettings({
       timeFormat24Hour: this.timeFormatCheckbox.checked,
-      customApiUrl: this.customApiInput.value.trim() || undefined,
     });
     this.callbacks.onSettingsSaved(updated);
     this.close();
@@ -65,37 +62,15 @@ export class SettingsModal {
     syncInfo.appendChild(syncText);
 
     // 24 Hour Clock
-    const timeGroup = createElement('div', 'form-group');
-    timeGroup.style.flexDirection = 'row';
-    timeGroup.style.alignItems = 'center';
-    timeGroup.style.justifyContent = 'space-between';
-    const timeLabel = createElement('label', 'form-label', 'Use 24-Hour Time Format');
-    timeLabel.style.marginBottom = '0';
-    this.timeFormatCheckbox = createElement('input') as HTMLInputElement;
+    const timeGroup = createElement('div', 'form-group form-group-row');
+    const timeLabel = createElement('label', 'form-label form-label-inline', 'Use 24-Hour Time Format');
+    this.timeFormatCheckbox = createElement('input', 'settings-checkbox') as HTMLInputElement;
     this.timeFormatCheckbox.type = 'checkbox';
-    this.timeFormatCheckbox.style.width = '18px';
-    this.timeFormatCheckbox.style.height = '18px';
     timeGroup.appendChild(timeLabel);
     timeGroup.appendChild(this.timeFormatCheckbox);
 
-    // Custom API Endpoint
-    const apiGroup = createElement('div', 'form-group');
-    const apiLabel = createElement('label', 'form-label', 'Custom Transit-Tracker-API URL (Optional)');
-    this.customApiInput = createElement('input', 'form-control') as HTMLInputElement;
-    this.customApiInput.type = 'text';
-    this.customApiInput.placeholder = 'https://my-transit-api.fly.dev';
-    const apiHelper = createElement(
-      'span',
-      'form-helper',
-      'Leave blank to use direct regional OneBusAway data.'
-    );
-    apiGroup.appendChild(apiLabel);
-    apiGroup.appendChild(this.customApiInput);
-    apiGroup.appendChild(apiHelper);
-
     body.appendChild(syncInfo);
     body.appendChild(timeGroup);
-    body.appendChild(apiGroup);
 
     // Footer
     const footer = createElement('div', 'modal-footer');
