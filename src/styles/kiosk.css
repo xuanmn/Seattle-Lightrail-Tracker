@@ -1,0 +1,228 @@
+/* ==========================================================================
+   Fullscreen Kiosk Departure Board Mode
+   ========================================================================== */
+
+.kiosk-view {
+  position: fixed;
+  inset: 0;
+  background: #05080e;
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 3rem;
+  color: #fff;
+  overflow: hidden;
+}
+
+.kiosk-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.kiosk-station-info {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.kiosk-line-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.75rem;
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+}
+
+.kiosk-line-1 {
+  background: var(--st-green);
+  box-shadow: var(--shadow-glow-green);
+}
+
+.kiosk-line-2 {
+  background: var(--st-blue);
+  box-shadow: var(--shadow-glow-blue);
+}
+
+.kiosk-station-name {
+  font-family: var(--font-display);
+  font-size: 2.75rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+}
+
+.kiosk-meta {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.kiosk-clock {
+  font-family: var(--font-mono);
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #f8fafc;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 0.5rem 1.25rem;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  letter-spacing: -0.02em;
+}
+
+.kiosk-exit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #f8fafc;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radius-md);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  transition: all var(--transition-fast);
+}
+
+.kiosk-exit-btn:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+/* Kiosk Board Columns */
+.kiosk-board-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  flex: 1;
+}
+
+.kiosk-column {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+}
+
+.kiosk-column-title {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+  border-bottom: 2px dashed rgba(255, 255, 255, 0.15);
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.kiosk-arrivals-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  flex: 1;
+}
+
+.kiosk-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 1.25rem 1.75rem;
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+
+.kiosk-row.first-arrival {
+  background: linear-gradient(135deg, rgba(0, 133, 66, 0.25) 0%, rgba(15, 23, 42, 0.6) 100%);
+  border-color: rgba(0, 133, 66, 0.5);
+  box-shadow: 0 4px 20px rgba(0, 133, 66, 0.15);
+}
+
+.kiosk-dest {
+  font-family: var(--font-display);
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.kiosk-row-meta {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.kiosk-status {
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.kiosk-badge {
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: 1.85rem;
+  letter-spacing: -0.02em;
+  padding: 0.5rem 1.25rem;
+  border-radius: var(--radius-md);
+  background: #1e293b;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  min-width: 140px;
+  text-align: center;
+}
+
+.kiosk-badge.arriving {
+  background: var(--st-green);
+  box-shadow: 0 0 20px var(--st-green-glow);
+  animation: pulse-arriving 1.5s infinite;
+}
+
+/* Kiosk Footer with Pagination indicator */
+.kiosk-footer {
+  margin-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.kiosk-dots {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.kiosk-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: all var(--transition-normal);
+}
+
+.kiosk-dot.active {
+  background: #38bdf8;
+  box-shadow: 0 0 8px #38bdf8;
+  transform: scale(1.3);
+}
