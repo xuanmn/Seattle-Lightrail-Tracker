@@ -83,14 +83,14 @@
 
 .station-name {
   font-family: var(--font-display);
-  font-size: 1.18rem;
+  font-size: 1.15rem;
   font-weight: 700;
   color: var(--text-primary);
   letter-spacing: -0.01em;
 }
 
 .station-subname {
-  font-size: 0.76rem;
+  font-size: 0.75rem;
   color: var(--text-muted);
   font-weight: 500;
 }
@@ -114,8 +114,8 @@
 
 .star-btn:hover {
   color: #facc15;
-  background: rgba(250, 204, 21, 0.1);
-  transform: scale(1.1);
+  background: rgba(250, 204, 21, 0.12);
+  transform: scale(1.12);
 }
 
 .star-btn.pinned {
@@ -123,34 +123,9 @@
 }
 
 .star-btn svg {
-  width: 18px;
-  height: 18px;
+  width: 19px;
+  height: 19px;
   fill: currentColor;
-}
-
-.card-remove-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: var(--radius-sm);
-  color: var(--text-muted);
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid var(--border-subtle);
-  transition: all var(--transition-fast);
-}
-
-.card-remove-btn:hover {
-  color: #ef4444;
-  background: rgba(239, 68, 68, 0.15);
-  border-color: rgba(239, 68, 68, 0.3);
-  transform: scale(1.05);
-}
-
-.card-remove-btn svg {
-  width: 15px;
-  height: 15px;
 }
 
 /* Card Body: Directional Platforms */
@@ -176,10 +151,6 @@
   gap: 0.75rem;
 }
 
-.platform-column:nth-child(2) {
-  background: rgba(0, 0, 0, 0.1);
-}
-
 .platform-header {
   display: flex;
   align-items: center;
@@ -190,7 +161,7 @@
 
 .platform-dest {
   font-family: var(--font-display);
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 700;
   color: var(--text-secondary);
   text-transform: uppercase;
@@ -272,7 +243,7 @@
   gap: 0.25rem;
   font-size: 0.68rem;
   font-weight: 700;
-  padding: 0.1rem 0.4rem;
+  padding: 0.15rem 0.45rem;
   border-radius: var(--radius-pill);
   text-transform: uppercase;
   letter-spacing: 0.02em;
@@ -298,15 +269,15 @@
   background: var(--status-scheduled-bg);
 }
 
-/* Big Countdown Chip */
+/* Countdown Chip */
 .countdown-chip {
   font-family: var(--font-mono);
   font-weight: 800;
-  font-size: 1.05rem;
+  font-size: 0.98rem;
   letter-spacing: -0.02em;
   padding: 0.35rem 0.65rem;
-  border-radius: var(--radius-sm);
-  background: #1e293b;
+  border-radius: 10px;
+  background: rgba(15, 23, 42, 0.9);
   color: #f8fafc;
   display: flex;
   align-items: center;
@@ -372,8 +343,8 @@
 }
 
 .empty-dashboard-icon {
-  width: 60px;
-  height: 60px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   background: rgba(56, 189, 248, 0.1);
   color: var(--text-accent);
@@ -383,19 +354,19 @@
 }
 
 .empty-dashboard-icon svg {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
 }
 
 .empty-dashboard-title {
   font-family: var(--font-display);
-  font-size: 1.35rem;
+  font-size: 1.3rem;
   font-weight: 700;
   color: var(--text-primary);
 }
 
 .empty-dashboard-desc {
-  font-size: 0.92rem;
+  font-size: 0.9rem;
   color: var(--text-secondary);
   max-width: 440px;
 }
@@ -410,7 +381,7 @@
   border: 1px solid var(--border-medium);
   color: var(--text-primary);
   font-family: var(--font-display);
-  font-size: 0.88rem;
+  font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
   transition: all var(--transition-fast);
@@ -446,7 +417,6 @@
   color: var(--st-blue-light);
 }
 
-
 /* Picker Station Row in Modal */
 .picker-station-row {
   display: flex;
@@ -455,7 +425,7 @@
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid var(--border-subtle);
   padding: 0.75rem 1rem;
-  border-radius: var(--radius-md);
+  border-radius: 12px;
   transition: all var(--transition-fast);
 }
 
@@ -468,10 +438,10 @@
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  padding: 0.45rem 0.85rem;
+  padding: 0.4rem 0.85rem;
   border-radius: var(--radius-pill);
   font-family: var(--font-display);
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 700;
   background: var(--bg-pill);
   border: 1px solid var(--border-medium);

@@ -99,9 +99,7 @@ export class SettingsModal {
 
     // Footer
     const footer = createElement('div', 'modal-footer');
-    const cancelBtn = createElement('button', 'icon-btn', 'Cancel');
-    cancelBtn.style.width = 'auto';
-    cancelBtn.style.padding = '0.5rem 1rem';
+    const cancelBtn = createElement('button', 'btn-secondary', 'Cancel');
     cancelBtn.onclick = () => this.close();
 
     const saveBtn = createElement('button', 'btn-primary', 'Save Settings');

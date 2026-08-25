@@ -127,10 +127,8 @@ class TransitTrackerApp {
 
     const myBtn = createElement(
       'button',
-      `line-btn ${this.showOnlyPinned ? 'active' : ''}`
+      `view-mode-btn ${this.showOnlyPinned ? 'active' : ''}`
     );
-    myBtn.style.padding = '0.35rem 0.85rem';
-    myBtn.style.fontSize = '0.82rem';
     myBtn.innerHTML = `★ My Saved Stations`;
     if (this.showOnlyPinned) {
       myBtn.classList.add(this.activeLine === 'line-1' ? 'line-1-active' : 'line-2-active');
@@ -144,10 +142,8 @@ class TransitTrackerApp {
 
     const allBtn = createElement(
       'button',
-      `line-btn ${!this.showOnlyPinned ? 'active' : ''}`
+      `view-mode-btn ${!this.showOnlyPinned ? 'active' : ''}`
     );
-    allBtn.style.padding = '0.35rem 0.85rem';
-    allBtn.style.fontSize = '0.82rem';
     allBtn.innerHTML = `All Line Stations`;
     if (!this.showOnlyPinned) {
       allBtn.classList.add(this.activeLine === 'line-1' ? 'line-1-active' : 'line-2-active');
