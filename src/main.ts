@@ -258,9 +258,10 @@ class TransitTrackerApp {
       'Choose the stations you use daily to keep your departure board fast and clean.'
     );
 
+    const lineClass = this.activeLine === 'line-1' ? 'line-1-btn' : 'line-2-btn';
     const btn = createElement(
       'button',
-      'btn-primary',
+      `empty-dashboard-btn ${lineClass}`,
       `${ICONS.plus} Add Stations to ${config.name}`
     );
     btn.onclick = () => this.pickerModal.open(this.activeLine);
