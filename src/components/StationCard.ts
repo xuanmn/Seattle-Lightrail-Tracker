@@ -1,6 +1,6 @@
 import { Station, StationArrivals, TransitArrival } from '../types/transit';
 import { createElement, ICONS } from '../utils/dom';
-import { formatClockTime, formatCountdownBadge } from '../utils/time';
+import { formatClockTime, formatCountdownBadge, formatSimpleDestination } from '../utils/time';
 
 export interface StationCardCallbacks {
   onTogglePin: (stationId: string) => void;
@@ -228,7 +228,8 @@ export class StationCardComponent {
     this.col1Header.title = 'Click to expand or collapse platform departures';
 
     const dest1 = createElement('div', 'platform-dest');
-    dest1.innerHTML = `${ICONS.arrowUp} <span class="dest-text">${p1?.terminalDestination || 'Terminal'}</span>`;
+    const label1 = formatSimpleDestination(p1?.terminalDestination || 'Terminal');
+    dest1.innerHTML = `${ICONS.arrowUp} <span class="dest-text">${label1}</span>`;
 
     const rightControls1 = createElement('div', 'platform-header-right');
     this.col1SummaryBadge = createElement('span', 'platform-summary-badge', 'Loading...');
@@ -251,7 +252,8 @@ export class StationCardComponent {
     this.col2Header.title = 'Click to expand or collapse platform departures';
 
     const dest2 = createElement('div', 'platform-dest');
-    dest2.innerHTML = `${ICONS.arrowDown} <span class="dest-text">${p2?.terminalDestination || 'Terminal'}</span>`;
+    const label2 = formatSimpleDestination(p2?.terminalDestination || 'Terminal');
+    dest2.innerHTML = `${ICONS.arrowDown} <span class="dest-text">${label2}</span>`;
 
     const rightControls2 = createElement('div', 'platform-header-right');
     this.col2SummaryBadge = createElement('span', 'platform-summary-badge', 'Loading...');
