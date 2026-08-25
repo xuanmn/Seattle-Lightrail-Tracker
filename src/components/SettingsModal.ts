@@ -8,7 +8,6 @@ export interface SettingsModalCallbacks {
 
 export class SettingsModal {
   private overlay: HTMLElement;
-  private refreshSelect!: HTMLSelectElement;
   private timeFormatCheckbox!: HTMLInputElement;
   private customApiInput!: HTMLInputElement;
   private callbacks: SettingsModalCallbacks;
@@ -21,7 +20,6 @@ export class SettingsModal {
 
   public open() {
     const current = getSettings();
-    this.refreshSelect.value = String(current.refreshIntervalSeconds);
     this.timeFormatCheckbox.checked = current.timeFormat24Hour;
     this.customApiInput.value = current.customApiUrl || '';
     this.overlay.classList.add('open');
@@ -33,7 +31,6 @@ export class SettingsModal {
 
   private save() {
     const updated = updateSettings({
-      refreshIntervalSeconds: Number(this.refreshSelect.value),
       timeFormat24Hour: this.timeFormatCheckbox.checked,
       customApiUrl: this.customApiInput.value.trim() || undefined,
     });
@@ -56,18 +53,16 @@ export class SettingsModal {
     // Body
     const body = createElement('div', 'modal-body');
 
-    // Refresh Interval
-    const refreshGroup = createElement('div', 'form-group');
-    const refreshLabel = createElement('label', 'form-label', 'Auto-Refresh Frequency');
-    this.refreshSelect = createElement('select', 'form-control') as HTMLSelectElement;
-    this.refreshSelect.innerHTML = `
-      <option value="15">Every 15 seconds (Fastest)</option>
-      <option value="20">Every 20 seconds (Default)</option>
-      <option value="30">Every 30 seconds</option>
-      <option value="60">Every 60 seconds</option>
-    `;
-    refreshGroup.appendChild(refreshLabel);
-    refreshGroup.appendChild(this.refreshSelect);
+    // Auto-Sync Info
+    const syncInfo = createElement('div', 'form-group');
+    const syncLabel = createElement('label', 'form-label', 'Live Data Sync');
+    const syncText = createElement(
+      'div',
+      'form-helper',
+      'Automatically synchronizes real-time arrival predictions every 60 seconds with continuous second-by-second countdown ticks.'
+    );
+    syncInfo.appendChild(syncLabel);
+    syncInfo.appendChild(syncText);
 
     // 24 Hour Clock
     const timeGroup = createElement('div', 'form-group');
@@ -79,6 +74,7 @@ export class SettingsModal {
     this.timeFormatCheckbox = createElement('input') as HTMLInputElement;
     this.timeFormatCheckbox.type = 'checkbox';
     this.timeFormatCheckbox.style.width = '18px';
+    this.timeFormatCheckbox.style.height = '18px';
     timeGroup.appendChild(timeLabel);
     timeGroup.appendChild(this.timeFormatCheckbox);
 
@@ -97,7 +93,7 @@ export class SettingsModal {
     apiGroup.appendChild(this.customApiInput);
     apiGroup.appendChild(apiHelper);
 
-    body.appendChild(refreshGroup);
+    body.appendChild(syncInfo);
     body.appendChild(timeGroup);
     body.appendChild(apiGroup);
 

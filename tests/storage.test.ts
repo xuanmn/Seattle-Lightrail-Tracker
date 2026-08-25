@@ -41,17 +41,14 @@ describe('Local Storage & Settings Service', () => {
 
   it('updates and persists settings', () => {
     const defaults = getSettings();
-    expect(defaults.refreshIntervalSeconds).toBe(20);
     expect(defaults.timeFormat24Hour).toBe(false);
 
     updateSettings({
-      refreshIntervalSeconds: 15,
       timeFormat24Hour: true,
       customApiUrl: 'https://my-transit.fly.dev',
     });
 
     const updated = getSettings();
-    expect(updated.refreshIntervalSeconds).toBe(15);
     expect(updated.timeFormat24Hour).toBe(true);
     expect(updated.customApiUrl).toBe('https://my-transit.fly.dev');
   });

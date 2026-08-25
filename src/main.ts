@@ -19,6 +19,8 @@ import {
 import { AppSettings, Station, StationArrivals, TransitLineId } from './types/transit';
 import { createElement, ICONS } from './utils/dom';
 
+const SYNC_INTERVAL_MS = 60 * 1000; // Fixed 60-second real-time sync cycle
+
 class TransitTrackerApp {
   private appEl: HTMLElement;
   private header!: HeaderComponent;
@@ -291,7 +293,6 @@ class TransitTrackerApp {
       card.setTimeFormat(newSettings.timeFormat24Hour);
     });
 
-    this.startPolling(); // Restart poll timer with new interval
     this.fetchVisibleArrivals(true);
   }
 
@@ -347,11 +348,11 @@ class TransitTrackerApp {
       clearInterval(this.pollIntervalTimer);
     }
 
-    const intervalMs = Math.max(10, this.settings.refreshIntervalSeconds) * 1000;
     this.fetchVisibleArrivals();
+    // Synchronize every 60 seconds
     this.pollIntervalTimer = window.setInterval(() => {
       this.fetchVisibleArrivals();
-    }, intervalMs);
+    }, SYNC_INTERVAL_MS);
   }
 
   private startSecondTicker() {

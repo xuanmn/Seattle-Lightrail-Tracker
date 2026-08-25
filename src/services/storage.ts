@@ -13,7 +13,6 @@ const DEFAULT_PINNED_STATIONS: string[] = [
 ];
 
 const DEFAULT_SETTINGS: AppSettings = {
-  refreshIntervalSeconds: 20,
   timeFormat24Hour: false,
   activeLine: 'line-1',
   pinnedStationIds: DEFAULT_PINNED_STATIONS,
