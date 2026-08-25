@@ -149,6 +149,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  transition: all var(--transition-normal);
 }
 
 .platform-header {
@@ -157,6 +158,19 @@
   justify-content: space-between;
   padding-bottom: 0.4rem;
   border-bottom: 1px dashed var(--border-subtle);
+  width: 100%;
+  cursor: pointer;
+  text-align: left;
+  user-select: none;
+  transition: all var(--transition-fast);
+}
+
+.platform-header:hover .platform-dest {
+  color: var(--text-primary);
+}
+
+.platform-header:hover .chevron-icon {
+  color: var(--text-primary);
 }
 
 .platform-dest {
@@ -169,6 +183,7 @@
   display: flex;
   align-items: center;
   gap: 0.35rem;
+  transition: color var(--transition-fast);
 }
 
 .platform-dest svg {
@@ -176,6 +191,65 @@
   height: 14px;
   color: var(--text-muted);
 }
+
+.platform-header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.chevron-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  color: var(--text-muted);
+  transition: transform var(--transition-normal), color var(--transition-fast);
+}
+
+.chevron-icon svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* Collapsed Platform State */
+.platform-summary-badge {
+  display: none;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.1rem 0.45rem;
+  border-radius: var(--radius-pill);
+  background: var(--bg-pill);
+  color: var(--text-accent);
+  border: 1px solid var(--border-subtle);
+  letter-spacing: -0.01em;
+}
+
+.platform-summary-badge.now {
+  background: var(--status-ontime-bg);
+  color: var(--st-green-light);
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.platform-column.collapsed {
+  gap: 0;
+  padding-bottom: 0.85rem;
+}
+
+.platform-column.collapsed .chevron-icon {
+  transform: rotate(-90deg);
+}
+
+.platform-column.collapsed .platform-summary-badge {
+  display: inline-flex;
+}
+
+.platform-column.collapsed .platform-departures {
+  display: none;
+}
+
 
 /* Departures List */
 .departures-list {
