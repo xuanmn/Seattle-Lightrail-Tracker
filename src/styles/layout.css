@@ -51,18 +51,32 @@
   justify-content: center;
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, var(--st-green) 0%, #005a2d 100%);
   border-radius: 10px;
-  box-shadow: var(--shadow-glow-green);
   color: #ffffff;
   flex-shrink: 0;
   position: relative;
   overflow: hidden;
+  transition: all var(--transition-normal);
+}
+
+.brand-logo.line-1-logo {
+  background: linear-gradient(135deg, var(--st-green) 0%, #005a2d 100%);
+  box-shadow: var(--shadow-glow-green);
+}
+
+.brand-logo.line-2-logo {
+  background: linear-gradient(135deg, var(--st-blue) 0%, #004d8c 100%);
+  box-shadow: var(--shadow-glow-blue);
 }
 
 .brand-logo svg {
   width: 22px;
   height: 22px;
+  transition: transform var(--transition-fast);
+}
+
+.brand-logo:hover svg {
+  transform: scale(1.08);
 }
 
 .brand-text {
