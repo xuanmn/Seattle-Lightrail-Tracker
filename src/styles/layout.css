@@ -544,6 +544,17 @@
   font-size: 1.15rem;
   font-weight: 700;
   color: var(--text-primary);
+  line-height: 1.5;
+}
+
+.faq-hl-line1 {
+  color: var(--st-green-light);
+  font-weight: 800;
+}
+
+.faq-hl-line2 {
+  color: var(--text-accent);
+  font-weight: 800;
 }
 
 .faq-text {
