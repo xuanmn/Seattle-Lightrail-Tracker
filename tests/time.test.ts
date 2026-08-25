@@ -4,6 +4,7 @@ import {
   formatCountdownBadge,
   formatClockTime,
   formatDelayStatus,
+  formatSimpleDestination,
 } from '../src/utils/time';
 
 describe('Time and Countdown Utilities', () => {
@@ -63,5 +64,13 @@ describe('Time and Countdown Utilities', () => {
 
     const time24 = formatClockTime(epoch, true);
     expect(time24).toBe('14:05');
+  });
+
+  it('formats simple human-friendly platform destinations', () => {
+    expect(formatSimpleDestination('Lynnwood City Center')).toBe('To Lynnwood');
+    expect(formatSimpleDestination('Angle Lake')).toBe('To Angle Lake');
+    expect(formatSimpleDestination('South Bellevue')).toBe('To South Bellevue');
+    expect(formatSimpleDestination('Downtown Redmond')).toBe('To Redmond');
+    expect(formatSimpleDestination('')).toBe('To Terminal');
   });
 });

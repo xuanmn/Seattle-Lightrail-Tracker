@@ -56,5 +56,4 @@ export interface AppSettings {
   timeFormat24Hour: boolean;
   activeLine: TransitLineId;
   pinnedStationIds: string[];
-  customApiUrl?: string; // Optional custom transit-tracker-api URL
 }

@@ -11,11 +11,11 @@ export class StationPickerModal {
   private overlay: HTMLElement;
   private listContainer!: HTMLElement;
   private searchInput!: HTMLInputElement;
-  private activeFilterLine: TransitLineId | 'all' = 'all';
+  private activeFilterLine: TransitLineId = 'line-1';
   private callbacks: StationPickerCallbacks;
   private tab1Btn!: HTMLButtonElement;
   private tab2Btn!: HTMLButtonElement;
-  private tabAllBtn!: HTMLButtonElement;
+  private progressBar!: HTMLElement;
 
   constructor(callbacks: StationPickerCallbacks) {
     this.callbacks = callbacks;
@@ -24,8 +24,15 @@ export class StationPickerModal {
   }
 
   public open(initialLine?: TransitLineId) {
-    if (initialLine) this.setFilter(initialLine);
+    if (initialLine) {
+      this.setFilter(initialLine);
+    } else {
+      this.setFilter(this.activeFilterLine);
+    }
     this.searchInput.value = '';
+    if (this.listContainer) {
+      this.listContainer.scrollTop = 0;
+    }
     this.renderStationsList();
     this.overlay.classList.add('open');
     setTimeout(() => this.searchInput.focus(), 100);
@@ -39,12 +46,30 @@ export class StationPickerModal {
     this.renderStationsList();
   }
 
-  private setFilter(line: TransitLineId | 'all') {
+  private setFilter(line: TransitLineId) {
     this.activeFilterLine = line;
-    this.tabAllBtn.className = `filter-pill ${line === 'all' ? 'active' : ''}`;
     this.tab1Btn.className = `filter-pill ${line === 'line-1' ? 'active line-1' : ''}`;
     this.tab2Btn.className = `filter-pill ${line === 'line-2' ? 'active line-2' : ''}`;
+    if (this.progressBar) {
+      this.progressBar.className = `picker-scroll-progress-bar ${line}`;
+    }
     this.renderStationsList();
+  }
+
+  private updateScrollProgress() {
+    if (!this.listContainer || !this.progressBar) return;
+    const maxScroll = this.listContainer.scrollHeight - this.listContainer.clientHeight;
+    if (maxScroll <= 0) {
+      this.progressBar.style.width = '100%';
+      this.listContainer.classList.add('at-bottom');
+    } else {
+      const pct = Math.min(100, Math.max(0, (this.listContainer.scrollTop / maxScroll) * 100));
+      this.progressBar.style.width = `${pct}%`;
+      const isAtBottom =
+        this.listContainer.scrollTop + this.listContainer.clientHeight >=
+        this.listContainer.scrollHeight - 6;
+      this.listContainer.classList.toggle('at-bottom', isAtBottom);
+    }
   }
 
   private renderStationsList() {
@@ -52,8 +77,7 @@ export class StationPickerModal {
     this.listContainer.innerHTML = '';
 
     const filtered = STATIONS.filter((station) => {
-      const matchesLine =
-        this.activeFilterLine === 'all' || station.lines.includes(this.activeFilterLine);
+      const matchesLine = station.lines.includes(this.activeFilterLine);
       const matchesSearch =
         !query ||
         station.name.toLowerCase().includes(query) ||
@@ -65,6 +89,7 @@ export class StationPickerModal {
       const empty = createElement('div', 'departures-empty');
       empty.textContent = 'No stations found matching search.';
       this.listContainer.appendChild(empty);
+      this.updateScrollProgress();
       return;
     }
 
@@ -72,6 +97,8 @@ export class StationPickerModal {
       const item = this.createStationRow(station);
       this.listContainer.appendChild(item);
     });
+
+    this.updateScrollProgress();
   }
 
   private createStationRow(station: Station): HTMLElement {
@@ -79,7 +106,7 @@ export class StationPickerModal {
     const isPinned = this.callbacks.isStationPinned(station.id);
 
     const row = createElement('div', 'picker-station-row');
-    row.style.cursor = 'pointer';
+
 
     const info = createElement('div', 'brand-section');
 
@@ -88,13 +115,11 @@ export class StationPickerModal {
       `station-line-pill ${isLine1 ? 'line-1-circle' : 'line-2-circle'}`,
       isLine1 ? '1' : '2'
     );
-    linePill.style.width = '24px';
-    linePill.style.height = '24px';
-    linePill.style.fontSize = '0.8rem';
+
 
     const textGroup = createElement('div', 'station-name-wrap');
     const name = createElement('div', 'station-name');
-    name.style.fontSize = '1rem';
+
     name.textContent = station.name;
 
     if (station.shortName) {
@@ -155,28 +180,40 @@ export class StationPickerModal {
     this.searchInput.oninput = () => this.renderStationsList();
 
     const filtersWrap = createElement('div', 'picker-filter-pills');
-    this.tabAllBtn = createElement('button', 'filter-pill active', 'All Lines') as HTMLButtonElement;
-    this.tabAllBtn.onclick = () => this.setFilter('all');
-
-    this.tab1Btn = createElement('button', 'filter-pill line-1', '1 Line (Lynnwood ⇄ Angle Lake)') as HTMLButtonElement;
+    this.tab1Btn = createElement(
+      'button',
+      'filter-pill active line-1',
+      '1 Line (Lynnwood ⇄ Angle Lake)'
+    ) as HTMLButtonElement;
     this.tab1Btn.onclick = () => this.setFilter('line-1');
 
-    this.tab2Btn = createElement('button', 'filter-pill line-2', '2 Line (Eastside)') as HTMLButtonElement;
+    this.tab2Btn = createElement(
+      'button',
+      'filter-pill',
+      '2 Line (South Bellevue ⇄ Downtown Redmond)'
+    ) as HTMLButtonElement;
     this.tab2Btn.onclick = () => this.setFilter('line-2');
 
-    filtersWrap.appendChild(this.tabAllBtn);
     filtersWrap.appendChild(this.tab1Btn);
     filtersWrap.appendChild(this.tab2Btn);
 
     searchWrap.appendChild(this.searchInput);
     searchWrap.appendChild(filtersWrap);
 
+    // Scroll progress / loading bar
+    const progressTrack = createElement('div', 'picker-scroll-progress-track');
+    this.progressBar = createElement(
+      'div',
+      `picker-scroll-progress-bar ${this.activeFilterLine}`
+    );
+    progressTrack.appendChild(this.progressBar);
+
     // List
     this.listContainer = createElement('div', 'departures-list');
-    this.listContainer.style.maxHeight = '380px';
-    this.listContainer.style.overflowY = 'auto';
+    this.listContainer.addEventListener('scroll', () => this.updateScrollProgress());
 
     body.appendChild(searchWrap);
+    body.appendChild(progressTrack);
     body.appendChild(this.listContainer);
 
     // Footer

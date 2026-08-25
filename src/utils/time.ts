@@ -81,3 +81,13 @@ export function formatRelativeTimeAgo(epochMs: number, nowMs: number = Date.now(
   const diffMin = Math.floor(diffSec / 60);
   return `${diffMin}m ago`;
 }
+
+export function formatSimpleDestination(dest: string): string {
+  if (!dest) return 'To Terminal';
+  const clean = dest.replace(/^to\s+/i, '').trim();
+  if (/lynnwood/i.test(clean)) return 'To Lynnwood';
+  if (/angle lake/i.test(clean)) return 'To Angle Lake';
+  if (/bellevue/i.test(clean)) return 'To South Bellevue';
+  if (/redmond/i.test(clean)) return 'To Redmond';
+  return `To ${clean}`;
+}

@@ -10,12 +10,14 @@ export interface HeaderCallbacks {
 
 export class HeaderComponent {
   private element: HTMLElement;
+  private logoEl!: HTMLElement;
   private line1Btn!: HTMLButtonElement;
   private line2Btn!: HTMLButtonElement;
   private clockEl!: HTMLElement;
   private activeLine: TransitLineId = 'line-1';
   private is24Hour: boolean = false;
   private callbacks: HeaderCallbacks;
+  private clockInterval?: number;
 
   constructor(initialLine: TransitLineId, is24Hour: boolean, callbacks: HeaderCallbacks) {
     this.activeLine = initialLine;
@@ -31,6 +33,9 @@ export class HeaderComponent {
 
   public setActiveLine(line: TransitLineId) {
     this.activeLine = line;
+    if (this.logoEl) {
+      this.logoEl.className = `brand-logo ${line === 'line-1' ? 'line-1-logo' : 'line-2-logo'}`;
+    }
     if (line === 'line-1') {
       this.line1Btn.className = 'line-btn active line-1-active';
       this.line2Btn.className = 'line-btn';
@@ -47,7 +52,8 @@ export class HeaderComponent {
 
   private startClock() {
     this.updateClock();
-    setInterval(() => this.updateClock(), 1000);
+    if (this.clockInterval) clearInterval(this.clockInterval);
+    this.clockInterval = window.setInterval(() => this.updateClock(), 1000);
   }
 
   private updateClock() {
@@ -62,14 +68,18 @@ export class HeaderComponent {
 
     // Brand Left
     const brand = createElement('div', 'brand-section');
-    const logo = createElement('div', 'brand-logo', ICONS.train);
+    this.logoEl = createElement(
+      'div',
+      `brand-logo ${this.activeLine === 'line-1' ? 'line-1-logo' : 'line-2-logo'}`,
+      ICONS.train
+    );
     const textGroup = createElement('div', 'brand-text');
     const title = createElement('div', 'brand-title');
     title.innerHTML = `Seattle Light Rail <span class="live-indicator"><span class="pulse-dot"></span>Live</span>`;
     const subtitle = createElement('div', 'brand-subtitle', 'Sound Transit Link Real-Time Tracker');
     textGroup.appendChild(title);
     textGroup.appendChild(subtitle);
-    brand.appendChild(logo);
+    brand.appendChild(this.logoEl);
     brand.appendChild(textGroup);
 
     // Line Switcher Center

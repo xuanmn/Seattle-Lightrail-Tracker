@@ -1,6 +1,6 @@
 import { Station, StationArrivals, TransitArrival } from '../types/transit';
 import { createElement, ICONS } from '../utils/dom';
-import { formatClockTime, formatCountdownBadge } from '../utils/time';
+import { formatClockTime, formatCountdownBadge, formatSimpleDestination } from '../utils/time';
 
 export interface StationCardCallbacks {
   onTogglePin: (stationId: string) => void;
@@ -13,9 +13,25 @@ export class StationCardComponent {
   private is24Hour: boolean;
   private callbacks: StationCardCallbacks;
   private starBtn!: HTMLButtonElement;
+
+  private col1El!: HTMLElement;
+  private col2El!: HTMLElement;
+  private col1Header!: HTMLButtonElement;
+  private col2Header!: HTMLButtonElement;
+  private col1SummaryBadge!: HTMLElement;
+  private col2SummaryBadge!: HTMLElement;
   private platform1Container!: HTMLElement;
   private platform2Container!: HTMLElement;
+
+  private isCol1Collapsed: boolean = false;
+  private isCol2Collapsed: boolean = false;
+
   private currentArrivals?: StationArrivals;
+
+  // Cached DOM references for lightweight tick updates (avoids full re-render)
+  private countdownChips: HTMLElement[] = [];
+  private countdownRows: HTMLElement[] = [];
+  private arrivalTimes: number[] = [];
 
   constructor(
     station: Station,
@@ -61,27 +77,78 @@ export class StationCardComponent {
 
   public updateArrivals(data: StationArrivals) {
     this.currentArrivals = data;
+
+    // Clear tracked DOM refs before full rebuild
+    this.countdownChips = [];
+    this.countdownRows = [];
+    this.arrivalTimes = [];
+
     this.renderPlatformArrivals(
       this.platform1Container,
       data.direction1.arrivals,
-      data.direction1.platform.terminalDestination
+      data.direction1.platform.terminalDestination,
+      this.col1SummaryBadge
     );
     this.renderPlatformArrivals(
       this.platform2Container,
       data.direction2.arrivals,
-      data.direction2.platform.terminalDestination
+      data.direction2.platform.terminalDestination,
+      this.col2SummaryBadge
     );
   }
 
+  /**
+   * Lightweight tick: only updates countdown text and arriving-soon classes.
+   * No DOM destruction or creation — just textContent and className patches.
+   */
   public tickCountdowns() {
     if (!this.currentArrivals) return;
-    this.updateArrivals(this.currentArrivals);
+
+    const now = Date.now();
+
+    // Update each cached countdown chip
+    for (let i = 0; i < this.countdownChips.length; i++) {
+      const chip = this.countdownChips[i];
+      const row = this.countdownRows[i];
+      const targetTime = this.arrivalTimes[i];
+      const badge = formatCountdownBadge(targetTime, now);
+
+      chip.textContent = badge.text;
+      chip.className = `countdown-chip ${badge.isNow ? 'now' : ''}`;
+
+      if (row) {
+        row.className = `departure-row ${badge.isNow ? 'arriving-soon' : ''}`;
+      }
+    }
+
+    // Update summary badges for collapsed state
+    this.tickSummaryBadge(this.currentArrivals.direction1.arrivals, this.col1SummaryBadge);
+    this.tickSummaryBadge(this.currentArrivals.direction2.arrivals, this.col2SummaryBadge);
+  }
+
+  private tickSummaryBadge(arrivals: TransitArrival[], badge: HTMLElement) {
+    if (!arrivals || arrivals.length === 0) return;
+    const nextTime = arrivals[0].predictedDepartureTime || arrivals[0].scheduledDepartureTime;
+    const nextBadge = formatCountdownBadge(nextTime);
+    badge.textContent = nextBadge.text;
+    badge.className = `platform-summary-badge ${nextBadge.isNow ? 'now' : ''}`;
+  }
+
+  private toggleCollapse(colIndex: 1 | 2) {
+    if (colIndex === 1) {
+      this.isCol1Collapsed = !this.isCol1Collapsed;
+      this.col1El.classList.toggle('collapsed', this.isCol1Collapsed);
+    } else {
+      this.isCol2Collapsed = !this.isCol2Collapsed;
+      this.col2El.classList.toggle('collapsed', this.isCol2Collapsed);
+    }
   }
 
   private renderPlatformArrivals(
     container: HTMLElement,
     arrivals: TransitArrival[],
-    defaultDest: string
+    defaultDest: string,
+    summaryBadge: HTMLElement
   ) {
     container.innerHTML = '';
 
@@ -89,8 +156,17 @@ export class StationCardComponent {
       const empty = createElement('div', 'departures-empty');
       empty.textContent = 'No upcoming trains';
       container.appendChild(empty);
+      summaryBadge.textContent = 'No trains';
+      summaryBadge.className = 'platform-summary-badge';
       return;
     }
+
+    // Update collapsed summary badge with next train
+    const nextTrain = arrivals[0];
+    const nextTargetTime = nextTrain.predictedDepartureTime || nextTrain.scheduledDepartureTime;
+    const nextBadge = formatCountdownBadge(nextTargetTime);
+    summaryBadge.textContent = nextBadge.text;
+    summaryBadge.className = `platform-summary-badge ${nextBadge.isNow ? 'now' : ''}`;
 
     const list = createElement('div', 'departures-list');
 
@@ -126,6 +202,11 @@ export class StationCardComponent {
         `countdown-chip ${badge.isNow ? 'now' : ''}`,
         badge.text
       );
+
+      // Track DOM refs for lightweight tick updates
+      this.countdownChips.push(chip);
+      this.countdownRows.push(row);
+      this.arrivalTimes.push(targetTime);
 
       row.appendChild(info);
       row.appendChild(chip);
@@ -188,28 +269,56 @@ export class StationCardComponent {
     const p1 = this.station.platforms.northbound || this.station.platforms.westbound;
     const p2 = this.station.platforms.southbound || this.station.platforms.eastbound;
 
-    // Platform 1
-    const col1 = createElement('div', 'platform-column');
-    const head1 = createElement('div', 'platform-header');
+    // Platform 1 Column
+    this.col1El = createElement('div', 'platform-column');
+    this.col1Header = createElement('button', 'platform-header') as HTMLButtonElement;
+    this.col1Header.type = 'button';
+    this.col1Header.title = 'Click to expand or collapse platform departures';
+
     const dest1 = createElement('div', 'platform-dest');
-    dest1.innerHTML = `${ICONS.arrowUp} to ${p1?.terminalDestination || 'Terminal'}`;
-    head1.appendChild(dest1);
+    const label1 = formatSimpleDestination(p1?.terminalDestination || 'Terminal');
+    dest1.innerHTML = `${ICONS.arrowUp} <span class="dest-text">${label1}</span>`;
+
+    const rightControls1 = createElement('div', 'platform-header-right');
+    this.col1SummaryBadge = createElement('span', 'platform-summary-badge', 'Loading...');
+    const chevron1 = createElement('span', 'chevron-icon', ICONS.chevronDown);
+    rightControls1.appendChild(this.col1SummaryBadge);
+    rightControls1.appendChild(chevron1);
+
+    this.col1Header.appendChild(dest1);
+    this.col1Header.appendChild(rightControls1);
+    this.col1Header.onclick = () => this.toggleCollapse(1);
+
     this.platform1Container = createElement('div', 'platform-departures');
-    col1.appendChild(head1);
-    col1.appendChild(this.platform1Container);
+    this.col1El.appendChild(this.col1Header);
+    this.col1El.appendChild(this.platform1Container);
 
-    // Platform 2
-    const col2 = createElement('div', 'platform-column');
-    const head2 = createElement('div', 'platform-header');
+    // Platform 2 Column
+    this.col2El = createElement('div', 'platform-column');
+    this.col2Header = createElement('button', 'platform-header') as HTMLButtonElement;
+    this.col2Header.type = 'button';
+    this.col2Header.title = 'Click to expand or collapse platform departures';
+
     const dest2 = createElement('div', 'platform-dest');
-    dest2.innerHTML = `${ICONS.arrowDown} to ${p2?.terminalDestination || 'Terminal'}`;
-    head2.appendChild(dest2);
-    this.platform2Container = createElement('div', 'platform-departures');
-    col2.appendChild(head2);
-    col2.appendChild(this.platform2Container);
+    const label2 = formatSimpleDestination(p2?.terminalDestination || 'Terminal');
+    dest2.innerHTML = `${ICONS.arrowDown} <span class="dest-text">${label2}</span>`;
 
-    platforms.appendChild(col1);
-    platforms.appendChild(col2);
+    const rightControls2 = createElement('div', 'platform-header-right');
+    this.col2SummaryBadge = createElement('span', 'platform-summary-badge', 'Loading...');
+    const chevron2 = createElement('span', 'chevron-icon', ICONS.chevronDown);
+    rightControls2.appendChild(this.col2SummaryBadge);
+    rightControls2.appendChild(chevron2);
+
+    this.col2Header.appendChild(dest2);
+    this.col2Header.appendChild(rightControls2);
+    this.col2Header.onclick = () => this.toggleCollapse(2);
+
+    this.platform2Container = createElement('div', 'platform-departures');
+    this.col2El.appendChild(this.col2Header);
+    this.col2El.appendChild(this.platform2Container);
+
+    platforms.appendChild(this.col1El);
+    platforms.appendChild(this.col2El);
 
     card.appendChild(header);
     card.appendChild(platforms);
