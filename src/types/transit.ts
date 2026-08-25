@@ -58,6 +58,4 @@ export interface AppSettings {
   activeLine: TransitLineId;
   pinnedStationIds: string[];
   customApiUrl?: string; // Optional custom transit-tracker-api URL
-  autoRotateKiosk: boolean;
-  kioskRotationSeconds: number;
 }

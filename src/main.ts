@@ -1,14 +1,12 @@
 import './styles/theme.css';
 import './styles/layout.css';
 import './styles/board.css';
-import './styles/kiosk.css';
 
 import { HeaderComponent } from './components/Header';
-import { KioskViewComponent } from './components/KioskView';
 import { SettingsModal } from './components/SettingsModal';
 import { StationCardComponent } from './components/StationCard';
 import { StationPickerModal } from './components/StationPickerModal';
-import { getStationById, getStationsByLine, LINE_CONFIG } from './data/stations';
+import { getStationsByLine, LINE_CONFIG } from './data/stations';
 import { fetchArrivalsForStation } from './services/oba-api';
 import {
   getActiveLine,
@@ -24,7 +22,6 @@ import { createElement, ICONS } from './utils/dom';
 class TransitTrackerApp {
   private appEl: HTMLElement;
   private header!: HeaderComponent;
-  private kioskView!: KioskViewComponent;
   private pickerModal!: StationPickerModal;
   private settingsModal!: SettingsModal;
 
@@ -66,7 +63,6 @@ class TransitTrackerApp {
     this.header = new HeaderComponent(this.activeLine, this.settings.timeFormat24Hour, {
       onLineChange: (line) => this.switchLine(line),
       onRefreshClick: () => this.fetchVisibleArrivals(true),
-      onKioskClick: () => this.openKiosk(),
       onSettingsClick: () => this.settingsModal.open(),
     });
     this.appEl.appendChild(this.header.getElement());
@@ -124,13 +120,6 @@ class TransitTrackerApp {
     this.settingsModal = new SettingsModal({
       onSettingsSaved: (newSettings) => this.handleSettingsSaved(newSettings),
     });
-
-    this.kioskView = new KioskViewComponent(this.settings.timeFormat24Hour, {
-      onExit: () => {
-        // Returned from kiosk
-      },
-    });
-    document.body.appendChild(this.kioskView.getElement());
 
     this.updateToolbarHeader();
     this.renderStationCards();
@@ -306,17 +295,6 @@ class TransitTrackerApp {
     this.fetchVisibleArrivals(true);
   }
 
-  private openKiosk() {
-    const pinnedStations = this.pinnedIds
-      .map((id) => getStationById(id))
-      .filter((s): s is Station => Boolean(s));
-
-    const stationsToDisplay =
-      pinnedStations.length > 0 ? pinnedStations : getStationsByLine(this.activeLine).slice(0, 4);
-
-    this.kioskView.open(stationsToDisplay, this.arrivalsData, this.settings.autoRotateKiosk);
-  }
-
   private async fetchVisibleArrivals(isManual: boolean = false) {
     if (this.isFetching) return;
     this.isFetching = true;
@@ -352,9 +330,6 @@ class TransitTrackerApp {
 
       await Promise.all(fetchPromises);
       this.staleBannerEl.style.display = 'none';
-
-      // Update Kiosk view if open
-      this.kioskView.updateArrivals(this.arrivalsData);
     } catch {
       if (isManual) {
         this.staleBannerEl.style.display = 'flex';

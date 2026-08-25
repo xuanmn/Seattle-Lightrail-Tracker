@@ -10,7 +10,6 @@ export class SettingsModal {
   private overlay: HTMLElement;
   private refreshSelect!: HTMLSelectElement;
   private timeFormatCheckbox!: HTMLInputElement;
-  private autoRotateCheckbox!: HTMLInputElement;
   private customApiInput!: HTMLInputElement;
   private callbacks: SettingsModalCallbacks;
 
@@ -24,7 +23,6 @@ export class SettingsModal {
     const current = getSettings();
     this.refreshSelect.value = String(current.refreshIntervalSeconds);
     this.timeFormatCheckbox.checked = current.timeFormat24Hour;
-    this.autoRotateCheckbox.checked = current.autoRotateKiosk;
     this.customApiInput.value = current.customApiUrl || '';
     this.overlay.classList.add('open');
   }
@@ -37,7 +35,6 @@ export class SettingsModal {
     const updated = updateSettings({
       refreshIntervalSeconds: Number(this.refreshSelect.value),
       timeFormat24Hour: this.timeFormatCheckbox.checked,
-      autoRotateKiosk: this.autoRotateCheckbox.checked,
       customApiUrl: this.customApiInput.value.trim() || undefined,
     });
     this.callbacks.onSettingsSaved(updated);
@@ -82,23 +79,8 @@ export class SettingsModal {
     this.timeFormatCheckbox = createElement('input') as HTMLInputElement;
     this.timeFormatCheckbox.type = 'checkbox';
     this.timeFormatCheckbox.style.width = '18px';
-    this.timeFormatCheckbox.style.height = '18px';
     timeGroup.appendChild(timeLabel);
     timeGroup.appendChild(this.timeFormatCheckbox);
-
-    // Kiosk Auto Rotation
-    const kioskGroup = createElement('div', 'form-group');
-    kioskGroup.style.flexDirection = 'row';
-    kioskGroup.style.alignItems = 'center';
-    kioskGroup.style.justifyContent = 'space-between';
-    const kioskLabel = createElement('label', 'form-label', 'Auto-Rotate Pinned Stations in Kiosk Mode');
-    kioskLabel.style.marginBottom = '0';
-    this.autoRotateCheckbox = createElement('input') as HTMLInputElement;
-    this.autoRotateCheckbox.type = 'checkbox';
-    this.autoRotateCheckbox.style.width = '18px';
-    this.autoRotateCheckbox.style.height = '18px';
-    kioskGroup.appendChild(kioskLabel);
-    kioskGroup.appendChild(this.autoRotateCheckbox);
 
     // Custom API Endpoint
     const apiGroup = createElement('div', 'form-group');
@@ -117,7 +99,6 @@ export class SettingsModal {
 
     body.appendChild(refreshGroup);
     body.appendChild(timeGroup);
-    body.appendChild(kioskGroup);
     body.appendChild(apiGroup);
 
     // Footer

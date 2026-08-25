@@ -5,7 +5,6 @@ import { formatClockTime } from '../utils/time';
 export interface HeaderCallbacks {
   onLineChange: (line: TransitLineId) => void;
   onRefreshClick: () => void;
-  onKioskClick: () => void;
   onSettingsClick: () => void;
 }
 
@@ -117,17 +116,12 @@ export class HeaderComponent {
     this.refreshBtn.title = 'Refresh arrivals now';
     this.refreshBtn.onclick = () => this.callbacks.onRefreshClick();
 
-    const kioskBtn = createElement('button', 'icon-btn', ICONS.fullscreen);
-    kioskBtn.title = 'Fullscreen Departure Board Mode';
-    kioskBtn.onclick = () => this.callbacks.onKioskClick();
-
     const settingsBtn = createElement('button', 'icon-btn', ICONS.settings);
     settingsBtn.title = 'Settings & Preferences';
     settingsBtn.onclick = () => this.callbacks.onSettingsClick();
 
     actions.appendChild(this.clockEl);
     actions.appendChild(this.refreshBtn);
-    actions.appendChild(kioskBtn);
     actions.appendChild(settingsBtn);
 
     container.appendChild(brand);

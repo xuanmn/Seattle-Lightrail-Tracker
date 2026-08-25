@@ -17,8 +17,6 @@ const DEFAULT_SETTINGS: AppSettings = {
   timeFormat24Hour: false,
   activeLine: 'line-1',
   pinnedStationIds: DEFAULT_PINNED_STATIONS,
-  autoRotateKiosk: true,
-  kioskRotationSeconds: 15,
 };
 
 export function getPinnedStationIds(): string[] {
