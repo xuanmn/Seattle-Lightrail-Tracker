@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { STATIONS, getStationsByLine, getStationById } from '../src/data/stations';
+import { getStationsByLine, getStationById } from '../src/data/stations';
 
 describe('Station Catalog', () => {
   it('should include all 23 Line 1 stations', () => {

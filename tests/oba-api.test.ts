@@ -70,6 +70,7 @@ describe('OneBusAway API Transformer', () => {
           arrivalsAndDepartures: [
             {
               tripId: '40_past_trip',
+              routeId: '40_100479',
               routeShortName: '1 Line',
               tripHeadsign: 'Lynnwood City Center',
               scheduledDepartureTime: now - 5 * 60 * 1000, // 5 min ago
@@ -78,6 +79,7 @@ describe('OneBusAway API Transformer', () => {
             },
             {
               tripId: '40_upcoming_trip',
+              routeId: '40_100479',
               routeShortName: '1 Line',
               tripHeadsign: 'Lynnwood City Center',
               scheduledDepartureTime: now + 4 * 60 * 1000,

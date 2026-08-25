@@ -74,7 +74,6 @@ export class StationCardComponent {
 
   public tickCountdowns() {
     if (!this.currentArrivals) return;
-    // Re-render countdown chips for precision
     this.updateArrivals(this.currentArrivals);
   }
 
@@ -94,7 +93,7 @@ export class StationCardComponent {
 
     const list = createElement('div', 'departures-list');
 
-    arrivals.forEach((arrival, idx) => {
+    arrivals.forEach((arrival) => {
       const targetTime = arrival.predictedDepartureTime || arrival.scheduledDepartureTime;
       const badge = formatCountdownBadge(targetTime);
 

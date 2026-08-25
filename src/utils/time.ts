@@ -17,14 +17,14 @@ export function formatCountdownBadge(
 
   if (diffMs <= 45 * 1000) {
     // Under 45 seconds -> ARRIVING NOW
-    return { text: 'ARRIVING', isNow: true, rawMinutes: 0 };
+    return { text: 'ARRIVING', isNow: true, rawMinutes };
   }
 
-  const minutes = Math.max(1, Math.round(diffMs / (60 * 1000)));
+  const minutes = Math.max(1, Math.round(rawMinutes));
   return {
     text: `${minutes} MIN`,
     isNow: false,
-    rawMinutes: minutes,
+    rawMinutes,
   };
 }
 
