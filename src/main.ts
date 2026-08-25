@@ -109,7 +109,7 @@ class TransitTrackerApp {
 
     const addStationBtn = createElement(
       'button',
-      'btn-primary',
+      'btn-add-station',
       `${ICONS.plus} Add Stations`
     );
     addStationBtn.onclick = () => this.pickerModal.open(this.activeLine);
