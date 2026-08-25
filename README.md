@@ -28,18 +28,19 @@ A modern, responsive, real-time departure countdown board and multi-station trac
 Currently, the **1 Line** serves Seattle / Snohomish County and the **2 Line** serves the Eastside. Sound Transit provides several convenient options to travel between Lynnwood and Bellevue:
 
 ### 🟢 Option 1: Fastest & Direct (Express Bus via I-405)
-* **Route**: **Sound Transit Express Route 535** (or Route 532 peak commuter).
-* **Where to board**: **Lynnwood City Center Station Bay 4**.
+* **Route**: **Sound Transit Express Route 535** (7 days/week) or **Route 532** (weekday peak commute).
+* **Where to board**: **Lynnwood City Center Station (Bay D1)**.
 * **Arrival**: **Bellevue Transit Center / Bellevue Downtown Station**.
-* **Travel time**: **35–45 minutes** direct via I-405 without transferring in Seattle.
+* **Travel time**: **35–45 minutes** direct down I-405 (stops at Canyon Park, UW Bothell, Totem Lake).
+* **Transfer**: Direct walk across to the **2 Line Light Rail** platform for Spring District, Overlake, or Downtown Redmond.
 
 ### 🟡 Option 2: 1 Line Train + Seattle Transfer (via I-90)
-* **Step 1**: Take **1 Line South** from Lynnwood City Center to **Int'l District / Chinatown Station** or **Westlake** (~30 min).
+* **Step 1**: Take **1 Line South** from Lynnwood City Center to **Int'l District / Chinatown Station** or **Symphony Station** (~30 min).
 * **Step 2**: Transfer to **Sound Transit Express 550** across I-90 directly into **Bellevue Downtown**.
 * **Step 3**: Connect directly to the **2 Line** at Bellevue Downtown for Spring District, Overlake, or Redmond.
 
 ### 🟣 Future Connection: Direct 1 Line ⇄ 2 Line Rail Transfer
-* Once Sound Transit completes the I-90 Link extension connecting Seattle across Lake Washington to South Bellevue, riders will be able to transfer between **Line 1** and **Line 2** at **Chinatown-International District Station** directly on the rail network!
+* Once Sound Transit completes the I-90 Link extension connecting Seattle across Lake Washington to South Bellevue (Judkins Park & Mercer Island), riders will be able to transfer between **Line 1** and **Line 2** at **Chinatown-International District Station** directly on the rail network!
 
 ---
 
