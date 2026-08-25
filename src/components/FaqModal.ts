@@ -71,8 +71,9 @@ export class FaqModal {
         <div class="faq-q">📱 How do I use and customize this departure board?</div>
         <div class="faq-a">
           • <strong>Save Favorite Stations:</strong> Click the Star icon on any card or open <strong>+ Add Station</strong> to pin your daily commute stops.<br/>
-          • <strong>Live GPS vs Scheduled:</strong> Green glowing badges indicate live satellite-tracked trains from Sound Transit; white badges indicate scheduled timetables.<br/>
-          • <strong>Auto-Sync:</strong> Arrivals refresh automatically every 60 seconds. Switch between <strong>1 Line</strong> and <strong>2 Line</strong> using the header toggle.
+          • <strong>Live GPS Badges:</strong> Green glowing badges indicate live satellite-tracked trains from Sound Transit; white badges indicate scheduled timetables.<br/>
+          • <strong>Live Data Sync:</strong> Automatically synchronizes real-time arrival predictions every 60 seconds with continuous second-by-second countdown ticks. Switch between <strong>1 Line</strong> and <strong>2 Line</strong> using the header toggle.<br/>
+          • <strong>Time Format Settings:</strong> Open the gear icon in the header to toggle between 12-hour (2:30 PM) and 24-hour (14:30) arrival times.
         </div>
       </div>
 

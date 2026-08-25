@@ -10,7 +10,6 @@ export interface StationPickerCallbacks {
 export class StationPickerModal {
   private overlay: HTMLElement;
   private listContainer!: HTMLElement;
-  private searchInput!: HTMLInputElement;
   private activeFilterLine: TransitLineId = 'line-1';
   private callbacks: StationPickerCallbacks;
   private tab1Btn!: HTMLButtonElement;
@@ -29,13 +28,11 @@ export class StationPickerModal {
     } else {
       this.setFilter(this.activeFilterLine);
     }
-    this.searchInput.value = '';
     if (this.listContainer) {
       this.listContainer.scrollTop = 0;
     }
     this.renderStationsList();
     this.overlay.classList.add('open');
-    setTimeout(() => this.searchInput.focus(), 100);
   }
 
   public close() {
@@ -73,25 +70,11 @@ export class StationPickerModal {
   }
 
   private renderStationsList() {
-    const query = this.searchInput.value.toLowerCase().trim();
     this.listContainer.innerHTML = '';
 
-    const filtered = STATIONS.filter((station) => {
-      const matchesLine = station.lines.includes(this.activeFilterLine);
-      const matchesSearch =
-        !query ||
-        station.name.toLowerCase().includes(query) ||
-        (station.shortName && station.shortName.toLowerCase().includes(query));
-      return matchesLine && matchesSearch;
-    });
-
-    if (filtered.length === 0) {
-      const empty = createElement('div', 'departures-empty');
-      empty.textContent = 'No stations found matching search.';
-      this.listContainer.appendChild(empty);
-      this.updateScrollProgress();
-      return;
-    }
+    const filtered = STATIONS.filter((station) =>
+      station.lines.includes(this.activeFilterLine)
+    );
 
     filtered.forEach((station) => {
       const item = this.createStationRow(station);
@@ -107,7 +90,6 @@ export class StationPickerModal {
 
     const row = createElement('div', 'picker-station-row');
 
-
     const info = createElement('div', 'brand-section');
 
     const linePill = createElement(
@@ -115,7 +97,6 @@ export class StationPickerModal {
       `station-line-pill ${isLine1 ? 'line-1-circle' : 'line-2-circle'}`,
       isLine1 ? '1' : '2'
     );
-
 
     const textGroup = createElement('div', 'station-name-wrap');
     const name = createElement('div', 'station-name');
@@ -169,16 +150,7 @@ export class StationPickerModal {
     // Body
     const body = createElement('div', 'modal-body');
 
-    // Search and Filters
-    const searchWrap = createElement('div', 'form-group');
-    this.searchInput = createElement(
-      'input',
-      'form-control'
-    ) as HTMLInputElement;
-    this.searchInput.type = 'text';
-    this.searchInput.placeholder = 'Search stations by name (e.g., Capitol Hill, SeaTac, Westlake)...';
-    this.searchInput.oninput = () => this.renderStationsList();
-
+    // Line Filter Pills
     const filtersWrap = createElement('div', 'picker-filter-pills');
     this.tab1Btn = createElement(
       'button',
@@ -197,9 +169,6 @@ export class StationPickerModal {
     filtersWrap.appendChild(this.tab1Btn);
     filtersWrap.appendChild(this.tab2Btn);
 
-    searchWrap.appendChild(this.searchInput);
-    searchWrap.appendChild(filtersWrap);
-
     // Scroll progress / loading bar
     const progressTrack = createElement('div', 'picker-scroll-progress-track');
     this.progressBar = createElement(
@@ -212,7 +181,7 @@ export class StationPickerModal {
     this.listContainer = createElement('div', 'departures-list');
     this.listContainer.addEventListener('scroll', () => this.updateScrollProgress());
 
-    body.appendChild(searchWrap);
+    body.appendChild(filtersWrap);
     body.appendChild(progressTrack);
     body.appendChild(this.listContainer);
 
