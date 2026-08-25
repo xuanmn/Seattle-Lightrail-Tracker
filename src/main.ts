@@ -218,7 +218,6 @@ class TransitTrackerApp {
         this.settings.timeFormat24Hour,
         {
           onTogglePin: (id) => this.handleTogglePin(id),
-          onRemove: (id) => this.handleRemoveStation(id),
         }
       );
 
@@ -272,14 +271,6 @@ class TransitTrackerApp {
     this.renderStationCards();
     this.pickerModal.refreshPinnedState();
     this.fetchVisibleArrivals();
-  }
-
-  private handleRemoveStation(stationId: string) {
-    togglePinnedStation(stationId);
-    this.pinnedIds = getPinnedStationIds();
-
-    this.renderStationCards();
-    this.pickerModal.refreshPinnedState();
   }
 
   private handleSettingsSaved(newSettings: AppSettings) {
