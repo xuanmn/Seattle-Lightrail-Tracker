@@ -50,26 +50,22 @@ export class SettingsModal {
     // Body
     const body = createElement('div', 'modal-body');
 
-    // Auto-Sync Info
-    const syncInfo = createElement('div', 'form-group');
-    const syncLabel = createElement('label', 'form-label', 'Live Data Sync');
-    const syncText = createElement(
-      'div',
-      'form-helper',
-      'Automatically synchronizes real-time arrival predictions every 60 seconds with continuous second-by-second countdown ticks.'
-    );
-    syncInfo.appendChild(syncLabel);
-    syncInfo.appendChild(syncText);
-
     // 24 Hour Clock
-    const timeGroup = createElement('div', 'form-group form-group-row');
+    const timeGroup = createElement('div', 'form-group form-group-row settings-row');
     const timeLabel = createElement('label', 'form-label form-label-inline', 'Use 24-Hour Time Format');
-    this.timeFormatCheckbox = createElement('input', 'settings-checkbox') as HTMLInputElement;
-    this.timeFormatCheckbox.type = 'checkbox';
-    timeGroup.appendChild(timeLabel);
-    timeGroup.appendChild(this.timeFormatCheckbox);
 
-    body.appendChild(syncInfo);
+    const switchLabel = createElement('label', 'toggle-switch');
+    this.timeFormatCheckbox = createElement('input') as HTMLInputElement;
+    this.timeFormatCheckbox.type = 'checkbox';
+    this.timeFormatCheckbox.id = 'toggle-24h-format';
+    this.timeFormatCheckbox.setAttribute('aria-label', 'Use 24-Hour Time Format');
+    const slider = createElement('span', 'toggle-slider');
+    switchLabel.appendChild(this.timeFormatCheckbox);
+    switchLabel.appendChild(slider);
+
+    timeGroup.appendChild(timeLabel);
+    timeGroup.appendChild(switchLabel);
+
     body.appendChild(timeGroup);
 
     // Footer

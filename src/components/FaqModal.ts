@@ -33,100 +33,49 @@ export class FaqModal {
     const body = createElement('div', 'modal-body');
     body.style.gap = '1.25rem';
 
-    // Section 1: Quick Start Guide
-    const quickStartCard = createElement('div', 'faq-section-wrap');
-    quickStartCard.innerHTML = `
-      <h4 class="faq-section-heading">📱 Quick Start: Using This Dashboard</h4>
-      <div class="faq-quickstart-grid">
-        <div class="faq-quickstart-item">
-          <div class="faq-quickstart-icon">★</div>
-          <div class="faq-quickstart-title">Customize Dashboard</div>
-          <div class="faq-quickstart-desc">Click the star on any station or open <strong>+ Add Station</strong> to pin your daily stops.</div>
-        </div>
-        <div class="faq-quickstart-item">
-          <div class="faq-quickstart-icon">🟢</div>
-          <div class="faq-quickstart-title">Live GPS Countdowns</div>
-          <div class="faq-quickstart-desc">Green badges indicate live satellite-tracked trains. White badges indicate scheduled times.</div>
-        </div>
-        <div class="faq-quickstart-item">
-          <div class="faq-quickstart-icon">🔄</div>
-          <div class="faq-quickstart-title">60-Sec Auto Sync</div>
-          <div class="faq-quickstart-desc">Arrival estimates refresh live every minute. Switch between 1 Line and 2 Line in the header.</div>
-        </div>
-      </div>
-    `;
-
-    // Section 2: Lines Overview
-    const linesCard = createElement('div', 'faq-section-wrap');
-    linesCard.innerHTML = `
-      <h4 class="faq-section-heading">🚆 Sound Transit Link Light Rail Lines</h4>
-      <div class="faq-line-comparison">
-        <div class="faq-line-card line-1-box">
-          <div class="route-badge direct" style="background: var(--st-green); color: #fff; border: none;">1 LINE (GREEN)</div>
-          <div class="route-title">Lynnwood ⇄ Angle Lake</div>
-          <div class="route-desc">
-            • <strong>23 Stations (33 Miles)</strong><br />
-            • <strong>Key Stops:</strong> Lynnwood City Center, Northgate, Univ. of Washington, Capitol Hill, Downtown Seattle (Westlake, Symphony, Pioneer Square, Chinatown-ID), Columbia City, and SeaTac Airport.
-          </div>
-        </div>
-        <div class="faq-line-card line-2-box">
-          <div class="route-badge transfer" style="background: var(--st-blue); color: #fff; border: none;">2 LINE (BLUE)</div>
-          <div class="route-title">South Bellevue ⇄ Downtown Redmond</div>
-          <div class="route-desc">
-            • <strong>10 Stations (Eastside Link)</strong><br />
-            • <strong>Key Stops:</strong> South Bellevue, East Main, Bellevue Downtown (Transit Center), Wilburton, Spring District, Bel-Red/130th, Overlake Village, Redmond Technology, and Downtown Redmond.
-          </div>
-        </div>
-      </div>
-    `;
-
-    // Section 3: Featured Guide - Lynnwood to Bellevue
-    const featuredCard = createElement('div', 'faq-featured-card');
-    featuredCard.innerHTML = `
+    // Section 1: Regional Connection & Line 1 / Line 2 Guide
+    const connectionGuideCard = createElement('div', 'faq-featured-card');
+    connectionGuideCard.innerHTML = `
       <div class="faq-featured-header">
-        <div class="faq-tag">Regional Connection Guide</div>
-        <h4 class="faq-featured-title">How do I travel between Lynnwood/Seattle and Bellevue?</h4>
+        <div class="faq-tag">Regional Transit Guide</div>
+        <h4 class="faq-featured-title">Can I ride light rail from <span class="faq-hl-line1">Lynnwood / Seattle</span> to <span class="faq-hl-line2">Bellevue / Redmond</span>?</h4>
       </div>
       <div class="faq-featured-body">
-        <p class="faq-text">
-          Currently, the <strong>1 Line</strong> operates through Seattle and the <strong>2 Line</strong> operates on the Eastside. Here are the best ways to connect between them:
-        </p>
-
         <div class="route-option-card">
-          <div class="route-badge direct">Option 1: Fastest & Direct (Express Bus via I-405)</div>
-          <div class="route-title">ST Express Route 535 (or Route 532 Peak Commuter)</div>
+          <div class="route-badge direct" style="background: var(--status-ontime-bg); color: var(--st-green-light); border: 1px solid rgba(16, 185, 129, 0.3);">Yes! Direct 2 Line Service</div>
+          <div class="route-title">Single Continuous Train — No Transfer Needed</div>
           <p class="route-desc">
-            • <strong>Board:</strong> <strong>Lynnwood City Center Station (Bay D1)</strong>.<br />
-            • <strong>Route:</strong> Direct down I-405 via Canyon Park, UW Bothell, and Totem Lake.<br />
-            • <strong>Arrive:</strong> <strong>Bellevue Transit Center / Bellevue Downtown Station</strong> (~35–45 min).<br />
-            • <strong>Transfer:</strong> Walk directly across to the <strong>2 Line Light Rail</strong> platform to reach Spring District, Overlake, or Redmond.
+            The <strong>2 Line</strong> connects <strong>Lynnwood City Center</strong> directly through Seattle (<em>Northgate, UW, Capitol Hill, Westlake, Pioneer Square, Chinatown-ID</em>), across Lake Washington via the I-90 bridge (<em>Mercer Island & Judkins Park</em>), straight to <strong>Bellevue</strong> and <strong>Downtown Redmond</strong>!
           </p>
         </div>
 
         <div class="route-option-card">
-          <div class="route-badge transfer">Option 2: 1 Line Train + Seattle Transfer (via I-90)</div>
-          <div class="route-title">1 Line ➔ Seattle ➔ ST Express 550 ➔ 2 Line</div>
+          <div class="route-badge transfer" style="background: rgba(56, 189, 248, 0.15); color: var(--text-accent); border: 1px solid rgba(56, 189, 248, 0.3);">Key Travel Times & Connections</div>
+          <div class="route-title">Fast, Traffic-Proof Commute</div>
           <p class="route-desc">
-            1. Take <strong>1 Line South</strong> from Lynnwood to <strong>Int'l District / Chinatown Station</strong> (~30 min).<br />
-            2. Transfer to <strong>ST Express 550</strong> across I-90 directly into <strong>Bellevue Downtown</strong>.<br />
-            3. Connect directly to the <strong>2 Line</strong> at Bellevue Downtown Station.
-          </p>
-        </div>
-
-        <div class="route-option-card future">
-          <div class="route-badge future">Future: 1 Line ⇄ 2 Line Direct Rail Transfer</div>
-          <div class="route-title">Full I-90 Lake Washington Light Rail Connection</div>
-          <p class="route-desc">
-            Once Sound Transit opens the cross-lake I-90 Link bridge (Judkins Park & Mercer Island), riders will be able to take the train to <strong>Chinatown-International District Station</strong> and transfer directly between 1 Line and 2 Line across the lake!
+            • <strong>Bellevue Downtown ⇄ Westlake (Seattle):</strong> ~25–28 minutes.<br/>
+            • <strong>Bellevue Downtown ⇄ Capitol Hill:</strong> ~35–40 minutes (direct, no transfer).<br/>
+            • <strong>Bellevue Downtown ⇄ UW & Northgate:</strong> Direct on the 2 Line.<br/>
+            • <strong>To SeaTac Airport:</strong> Take the 2 Line to <strong>International District / Chinatown Station</strong> and make a 1-stop platform transfer to the <strong>1 Line</strong> southbound (~55–65 min total).
           </p>
         </div>
       </div>
     `;
 
-    // Section 4: General Link FAQs
+    // Section 3: General Link FAQs
     const generalCard = createElement('div', 'faq-section-wrap');
     generalCard.innerHTML = `
       <h4 class="faq-section-heading">Frequently Asked Questions</h4>
+
+      <div class="faq-item">
+        <div class="faq-q">📱 How do I use and customize this departure board?</div>
+        <div class="faq-a">
+          • <strong>Save Favorite Stations:</strong> Click the Star icon on any card or open <strong>+ Add Station</strong> to pin your daily commute stops.<br/>
+          • <strong>Live GPS Badges:</strong> Green glowing badges indicate live satellite-tracked trains from Sound Transit; white badges indicate scheduled timetables.<br/>
+          • <strong>Live Data Sync:</strong> Automatically synchronizes real-time arrival predictions every 60 seconds with continuous second-by-second countdown ticks. Switch between <strong>1 Line</strong> and <strong>2 Line</strong> using the header toggle.<br/>
+          • <strong>Time Format Settings:</strong> Open the gear icon in the header to toggle between 12-hour (2:30 PM) and 24-hour (14:30) arrival times.
+        </div>
+      </div>
 
       <div class="faq-item">
         <div class="faq-q">💳 How much does it cost and how do I pay?</div>
@@ -158,10 +107,6 @@ export class FaqModal {
             <span>myORCA Card Management & Online Reload</span>
             <span>↗</span>
           </a>
-          <a href="https://kingcounty.gov/en/dept/metro/travel-options/bus/trip-planner" target="_blank" rel="noopener noreferrer" class="faq-link-row">
-            <span>King County Metro Regional Trip Planner</span>
-            <span>↗</span>
-          </a>
           <a href="https://github.com/xuanmn/Seattle-Lightrail-Tracker" target="_blank" rel="noopener noreferrer" class="faq-link-row">
             <span>GitHub Repository & Source Code</span>
             <span>↗</span>
@@ -170,9 +115,7 @@ export class FaqModal {
       </div>
     `;
 
-    body.appendChild(quickStartCard);
-    body.appendChild(linesCard);
-    body.appendChild(featuredCard);
+    body.appendChild(connectionGuideCard);
     body.appendChild(generalCard);
 
     // Footer

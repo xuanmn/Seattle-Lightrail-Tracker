@@ -618,8 +618,10 @@
 .picker-add-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.35rem;
-  padding: 0.4rem 0.85rem;
+  padding: 0.4rem 0.9rem;
+  min-width: 105px;
   border-radius: var(--radius-pill);
   font-family: var(--font-display);
   font-size: 0.8rem;
@@ -628,6 +630,7 @@
   border: 1px solid var(--border-medium);
   color: var(--text-primary);
   transition: all var(--transition-fast);
+  cursor: pointer;
 }
 
 .picker-add-btn:hover {
@@ -637,15 +640,37 @@
 }
 
 .picker-add-btn.pinned {
-  background: rgba(16, 185, 129, 0.15);
-  border-color: rgba(16, 185, 129, 0.4);
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.35);
   color: var(--st-green-light);
+}
+
+.picker-add-btn.pinned .btn-text-hover {
+  display: none;
+}
+
+.picker-add-btn.pinned .btn-text-default {
+  display: inline;
+}
+
+.picker-add-btn.pinned:hover {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.45);
+  color: #f87171;
+}
+
+.picker-add-btn.pinned:hover .btn-text-default {
+  display: none;
+}
+
+.picker-add-btn.pinned:hover .btn-text-hover {
+  display: inline;
 }
 
 .picker-filter-pills {
   display: flex;
   gap: 0.5rem;
-  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
   flex-wrap: wrap;
 }
 
