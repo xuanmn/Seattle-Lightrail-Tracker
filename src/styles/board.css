@@ -133,7 +133,10 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   flex: 1;
-  divide-x: 1px solid var(--border-subtle);
+}
+
+.platform-column:nth-child(2) {
+  border-left: 1px solid var(--border-subtle);
 }
 
 @media (max-width: 600px) {
@@ -147,8 +150,11 @@
 
   .station-platforms {
     grid-template-columns: 1fr;
-    divide-x: none;
-    divide-y: 1px solid var(--border-subtle);
+  }
+
+  .platform-column:nth-child(2) {
+    border-left: none;
+    border-top: 1px solid var(--border-subtle);
   }
 
   .platform-column {
