@@ -131,9 +131,9 @@ export class HeaderComponent {
     const mapBtn = createElement(
       'button',
       'header-text-btn header-map-btn',
-      `🗺️ System Map`
+      `Link Map`
     );
-    mapBtn.title = 'View Link Light Rail System Map';
+    mapBtn.title = 'View Link Light Rail Map';
     mapBtn.onclick = () => this.callbacks.onMapClick();
 
     const faqBtn = createElement(

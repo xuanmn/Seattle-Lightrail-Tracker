@@ -170,7 +170,7 @@ export class SystemMapModal {
     const titleGroup = createElement('div', 'system-map-title-group');
     const iconBadge = createElement('div', 'system-map-icon-badge', '🚊');
     const textGroup = createElement('div', 'system-map-text');
-    const title = createElement('h3', 'system-map-title', 'Sound Transit Link System Map');
+    const title = createElement('h3', 'system-map-title', 'Sound Transit Link Map');
     const subtitle = createElement(
       'div',
       'system-map-subtitle',
