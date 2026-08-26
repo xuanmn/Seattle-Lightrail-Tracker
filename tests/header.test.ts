@@ -28,4 +28,19 @@ describe('HeaderComponent', () => {
     faqBtn.click();
     expect(onFaqClick).toHaveBeenCalledTimes(1);
   });
+
+  it('provides a clickable brand logo with reload capability', () => {
+    const header = new HeaderComponent('line-1', false, {
+      onMapClick: vi.fn(),
+      onFaqClick: vi.fn(),
+      onSettingsClick: vi.fn(),
+      onLineChange: vi.fn(),
+    });
+
+    const el = header.getElement();
+    const brand = el.querySelector('.brand-section') as HTMLElement;
+    expect(brand).not.toBeNull();
+    expect(brand.getAttribute('role')).toBe('button');
+    expect(brand.getAttribute('title')).toBe('Reload live tracker');
+  });
 });

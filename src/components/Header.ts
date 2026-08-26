@@ -69,6 +69,20 @@ export class HeaderComponent {
 
     // Brand Left
     const brand = createElement('div', 'brand-section');
+    brand.setAttribute('role', 'button');
+    brand.setAttribute('tabindex', '0');
+    brand.setAttribute('title', 'Reload live tracker');
+    brand.setAttribute('aria-label', 'Reload live tracker');
+    brand.onclick = () => {
+      window.location.reload();
+    };
+    brand.onkeydown = (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        window.location.reload();
+      }
+    };
+
     this.logoEl = createElement(
       'div',
       `brand-logo ${this.activeLine === 'line-1' ? 'line-1-logo' : 'line-2-logo'}`,
