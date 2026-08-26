@@ -24,10 +24,13 @@ export class SystemMapModal {
 
   public open() {
     this.overlay.classList.add('open');
-    // Ensure viewport is measured accurately on next frame
+    // Ensure viewport is measured accurately on next frame and after transition
     requestAnimationFrame(() => {
       this.fitToScreen();
     });
+    setTimeout(() => {
+      this.fitToScreen();
+    }, 60);
   }
 
   public close() {
@@ -37,8 +40,8 @@ export class SystemMapModal {
   public fitToScreen() {
     if (!this.bodyEl) return;
     const w = this.bodyEl.clientWidth || window.innerWidth;
-    const h = this.bodyEl.clientHeight || window.innerHeight * 0.8;
-    const padding = 12;
+    const h = this.bodyEl.clientHeight || window.innerHeight * 0.75;
+    const padding = 16;
 
     const scaleX = (w - padding * 2) / 830;
     const scaleY = (h - padding * 2) / 1280;
