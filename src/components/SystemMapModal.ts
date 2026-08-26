@@ -257,7 +257,7 @@ export class SystemMapModal {
       </div>
       <div class="map-legend-item">
         <span class="map-legend-line-sample line-2"></span>
-        <span><strong>2 Line</strong> (Lynnwood / Seattle ⇄ Downtown Redmond)</span>
+        <span><strong>2 Line</strong> (South Bellevue ⇄ Downtown Redmond)</span>
       </div>
       <div class="map-legend-item">
         <span class="map-legend-transfer-sample"></span>
