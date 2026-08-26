@@ -27,10 +27,7 @@ describe('SystemMapModal Component', () => {
     expect(overlay.classList.contains('open')).toBe(false);
   });
 
-  it('contains line highlight filter controls and zoom controls', () => {
-    const filterButtons = document.querySelectorAll('.map-filter-btn');
-    expect(filterButtons.length).toBeGreaterThanOrEqual(3); // All, 1 Line, 2 Line
-
+  it('contains floating zoom controls', () => {
     const zoomBtns = document.querySelectorAll('.map-zoom-btn');
     expect(zoomBtns.length).toBeGreaterThanOrEqual(3); // Zoom in, zoom out, reset
   });
@@ -42,23 +39,5 @@ describe('SystemMapModal Component', () => {
 
     const stationNodes = svg?.querySelectorAll('.map-station-node');
     expect(stationNodes?.length).toBeGreaterThanOrEqual(20);
-  });
-
-  it('updates active line filter and dims non-selected elements', () => {
-    expect(modal.getActiveFilter()).toBe('all');
-
-    modal.setLineFilter('line-1');
-    expect(modal.getActiveFilter()).toBe('line-1');
-
-    const dimmedL2 = document.querySelectorAll('.map-elem-line-2.dimmed');
-    expect(dimmedL2.length).toBeGreaterThan(0);
-
-    modal.setLineFilter('line-2');
-    expect(modal.getActiveFilter()).toBe('line-2');
-
-    modal.setLineFilter('all');
-    expect(modal.getActiveFilter()).toBe('all');
-    const dimmedAll = document.querySelectorAll('.dimmed');
-    expect(dimmedAll.length).toBe(0);
   });
 });

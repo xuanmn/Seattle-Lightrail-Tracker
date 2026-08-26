@@ -9,7 +9,6 @@ export class SystemMapModal {
   private isDragging: boolean = false;
   private startX: number = 0;
   private startY: number = 0;
-  private activeFilter: 'all' | 'line-1' | 'line-2' = 'all';
 
   constructor() {
     this.overlay = this.render();
@@ -24,14 +23,6 @@ export class SystemMapModal {
 
   public close() {
     this.overlay.classList.remove('open');
-  }
-
-  public getActiveFilter(): 'all' | 'line-1' | 'line-2' {
-    return this.activeFilter;
-  }
-
-  public setLineFilter(filter: 'all' | 'line-1' | 'line-2') {
-    this.setFilter(filter);
   }
 
   private resetView() {
@@ -50,44 +41,6 @@ export class SystemMapModal {
   private updateTransform() {
     if (this.canvasEl) {
       this.canvasEl.style.transform = `translate(${this.panX}px, ${this.panY}px) scale(${this.currentScale})`;
-    }
-  }
-
-  private setFilter(filter: 'all' | 'line-1' | 'line-2') {
-    this.activeFilter = filter;
-
-    const allBtn = this.overlay.querySelector('#map-filter-all');
-    const l1Btn = this.overlay.querySelector('#map-filter-line1');
-    const l2Btn = this.overlay.querySelector('#map-filter-line2');
-
-    allBtn?.classList.toggle('active', filter === 'all');
-    l1Btn?.classList.toggle('active', filter === 'line-1');
-    l2Btn?.classList.toggle('active', filter === 'line-2');
-
-    const l1Elements = this.overlay.querySelectorAll('.map-elem-line-1');
-    const l2Elements = this.overlay.querySelectorAll('.map-elem-line-2');
-
-    if (filter === 'all') {
-      l1Elements.forEach((el) => el.classList.remove('dimmed'));
-      l2Elements.forEach((el) => el.classList.remove('dimmed'));
-    } else if (filter === 'line-1') {
-      l1Elements.forEach((el) => el.classList.remove('dimmed'));
-      l2Elements.forEach((el) => {
-        if (!el.classList.contains('map-elem-shared')) {
-          el.classList.add('dimmed');
-        } else {
-          el.classList.remove('dimmed');
-        }
-      });
-    } else if (filter === 'line-2') {
-      l2Elements.forEach((el) => el.classList.remove('dimmed'));
-      l1Elements.forEach((el) => {
-        if (!el.classList.contains('map-elem-shared')) {
-          el.classList.add('dimmed');
-        } else {
-          el.classList.remove('dimmed');
-        }
-      });
     }
   }
 
@@ -183,37 +136,10 @@ export class SystemMapModal {
 
     const actions = createElement('div', 'system-map-header-actions');
 
-    // Filter Group
-    const filterGroup = createElement('div', 'map-filter-group');
-    const allBtn = createElement('button', 'map-filter-btn active', 'All Lines');
-    allBtn.id = 'map-filter-all';
-    allBtn.onclick = () => this.setFilter('all');
-
-    const l1Btn = createElement(
-      'button',
-      'map-filter-btn line-1-btn',
-      `<span class="map-filter-pill-dot green"></span> 1 Line`
-    );
-    l1Btn.id = 'map-filter-line1';
-    l1Btn.onclick = () => this.setFilter('line-1');
-
-    const l2Btn = createElement(
-      'button',
-      'map-filter-btn line-2-btn',
-      `<span class="map-filter-pill-dot blue"></span> 2 Line`
-    );
-    l2Btn.id = 'map-filter-line2';
-    l2Btn.onclick = () => this.setFilter('line-2');
-
-    filterGroup.appendChild(allBtn);
-    filterGroup.appendChild(l1Btn);
-    filterGroup.appendChild(l2Btn);
-
     const closeBtn = createElement('button', 'icon-btn', ICONS.close);
-    closeBtn.title = 'Close System Map';
+    closeBtn.title = 'Close Link Map';
     closeBtn.onclick = () => this.close();
 
-    actions.appendChild(filterGroup);
     actions.appendChild(closeBtn);
 
     header.appendChild(titleGroup);
@@ -258,16 +184,6 @@ export class SystemMapModal {
       <div class="map-legend-item">
         <span class="map-legend-line-sample line-2"></span>
         <span><strong>2 Line</strong> (South Bellevue ⇄ Downtown Redmond)</span>
-      </div>
-      <div class="map-legend-item">
-        <span class="map-legend-transfer-sample"></span>
-        <span>Transfer Station</span>
-      </div>
-      <div class="map-legend-item">
-        <span>✈️ Airport</span>
-      </div>
-      <div class="map-legend-item">
-        <span>⛴️ WA State Ferries</span>
       </div>
     `;
 
