@@ -328,10 +328,10 @@ export class SystemMapModal {
 
         <!-- 2 Line Track (Blue #0072CE) - Shared in North/Tunnel + Eastside Corridor -->
         <path class="map-track-path line-2-glow map-elem-line-2 map-elem-shared"
-          d="M 294,75 L 294,620 Q 294,665 335,665 L 660,665 Q 700,665 700,625 L 700,120"
+          d="M 294,75 L 294,615 Q 294,665 340,665 L 650,665 Q 700,665 700,615 L 700,120"
           stroke="#0072CE" stroke-width="14" opacity="0.3" filter="url(#track-glow-blue)" />
         <path class="map-track-path line-2-main map-elem-line-2 map-elem-shared"
-          d="M 294,75 L 294,620 Q 294,665 335,665 L 660,665 Q 700,665 700,625 L 700,120"
+          d="M 294,75 L 294,615 Q 294,665 340,665 L 650,665 Q 700,665 700,615 L 700,120"
           stroke="#0072CE" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" fill="none" />
 
         <!-- ================= TERMINUS HEADERS & BULLETS ================= -->
@@ -389,11 +389,11 @@ export class SystemMapModal {
         ${this.renderLine1Station('angle-lake', 280, 1070, 'Angle Lake', '1 Line South Terminus', 'left', true)}
 
         <!-- ================= CONNECTING SEGMENT (I-90 CORRIDOR) ================= -->
-        ${this.renderLine2Station('judkins-park', 390, 665, 'Judkins Park', 'Rainier Ave S', 'bottom')}
-        ${this.renderLine2Station('mercer-island', 495, 665, 'Mercer Island', 'I-90 Park & Ride', 'bottom')}
-        ${this.renderLine2Station('south-bellevue', 600, 665, 'South Bellevue', 'Park & Ride / Mercer Slough', 'bottom', true)}
+        ${this.renderLine2Station('judkins-park', 410, 665, 'Judkins Park', 'Rainier Ave S', 'bottom')}
+        ${this.renderLine2Station('mercer-island', 530, 665, 'Mercer Island', 'I-90 Park & Ride', 'bottom')}
 
         <!-- ================= RIGHT SPINE: 2 LINE EASTSIDE STATIONS ================= -->
+        ${this.renderLine2Station('south-bellevue', 700, 635, 'South Bellevue', 'Park & Ride / Mercer Slough', 'right', true)}
         ${this.renderLine2Station('east-main', 700, 580, 'East Main', '', 'right')}
         ${this.renderLine2Station('bellevue-downtown', 700, 525, 'Bellevue Downtown', 'Bellevue Transit Center 🚌', 'right', true)}
         ${this.renderLine2Station('wilburton', 700, 470, 'Wilburton', 'Overlake Medical Center', 'right')}
