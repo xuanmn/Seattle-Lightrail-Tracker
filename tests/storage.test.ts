@@ -36,6 +36,14 @@ describe('Local Storage & Settings Service', () => {
     expect(getPinnedStationIds()).toContain('westlake');
   });
 
+  it('preserves an explicitly empty list of pinned stations when user unpins all stations', () => {
+    const defaultStations = getPinnedStationIds();
+    defaultStations.forEach((id) => togglePinnedStation(id));
+
+    // Should stay empty, NOT auto-populate default stations
+    expect(getPinnedStationIds()).toEqual([]);
+  });
+
   it('checks if a station is pinned, optionally using cached array', () => {
     expect(isStationPinned('westlake')).toBe(true);
     expect(isStationPinned('non-existent-station')).toBe(false);

@@ -89,8 +89,7 @@ export class HeaderComponent {
       ICONS.train
     );
     const textGroup = createElement('div', 'brand-text');
-    const title = createElement('div', 'brand-title');
-    title.innerHTML = `Seattle Light Rail <span class="live-indicator"><span class="pulse-dot"></span>Live</span>`;
+    const title = createElement('div', 'brand-title', 'Seattle Light Rail');
     const subtitle = createElement('div', 'brand-subtitle', 'Sound Transit Link Real-Time Tracker');
     textGroup.appendChild(title);
     textGroup.appendChild(subtitle);

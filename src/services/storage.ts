@@ -29,9 +29,9 @@ const DEFAULT_SETTINGS: AppSettings = {
 export function getPinnedStationIds(): string[] {
   try {
     const raw = localStorage.getItem(PINNED_STATIONS_KEY);
-    if (!raw) return [...DEFAULT_PINNED_STATIONS];
+    if (raw === null) return [...DEFAULT_PINNED_STATIONS];
     const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) && parsed.length > 0 ? parsed : [...DEFAULT_PINNED_STATIONS];
+    return Array.isArray(parsed) ? parsed : [...DEFAULT_PINNED_STATIONS];
   } catch {
     return [...DEFAULT_PINNED_STATIONS];
   }
