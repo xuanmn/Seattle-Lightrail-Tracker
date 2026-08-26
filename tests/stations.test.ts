@@ -51,8 +51,12 @@ describe('Station Catalog', () => {
 
   it('retains valid stop IDs for Puget Sound OneBusAway', () => {
     const westlake = getStationById('westlake');
-    expect(westlake?.platforms.northbound?.stopId).toBe('1_1121');
-    expect(westlake?.platforms.southbound?.stopId).toBe('1_1122');
+    expect(westlake?.platforms.northbound?.stopId).toBe('40_1121');
+    expect(westlake?.platforms.southbound?.stopId).toBe('40_1108');
+
+    const lynnwood = getStationById('lynnwood-city-center');
+    expect(lynnwood?.platforms.northbound?.stopId).toBe('40_N23-T1');
+    expect(lynnwood?.platforms.southbound?.stopId).toBe('40_N23-T2');
   });
 
   it('should find station by id', () => {

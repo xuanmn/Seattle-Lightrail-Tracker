@@ -12,16 +12,16 @@ export const STATIONS: Station[] = [
     lon: -122.2965,
     platforms: {
       northbound: {
-        stopId: '1_99001',
+        stopId: '40_N23-T1',
         directionName: 'Northbound Platform (Terminus)',
         cardinalDirection: 'Northbound',
         terminalDestination: 'Lynnwood City Center',
       },
       southbound: {
-        stopId: '1_99002',
-        directionName: 'Southbound to Angle Lake',
+        stopId: '40_N23-T2',
+        directionName: 'Southbound to Federal Way Downtown',
         cardinalDirection: 'Southbound',
-        terminalDestination: 'Angle Lake',
+        terminalDestination: 'Federal Way Downtown',
       },
     },
   },
@@ -33,16 +33,16 @@ export const STATIONS: Station[] = [
     lon: -122.3175,
     platforms: {
       northbound: {
-        stopId: '1_99003',
+        stopId: '40_N19-T1',
         directionName: 'Northbound to Lynnwood City Center',
         cardinalDirection: 'Northbound',
         terminalDestination: 'Lynnwood City Center',
       },
       southbound: {
-        stopId: '1_99004',
-        directionName: 'Southbound to Angle Lake',
+        stopId: '40_N19-T2',
+        directionName: 'Southbound to Federal Way Downtown',
         cardinalDirection: 'Southbound',
-        terminalDestination: 'Angle Lake',
+        terminalDestination: 'Federal Way Downtown',
       },
     },
   },
@@ -54,16 +54,16 @@ export const STATIONS: Station[] = [
     lon: -122.3278,
     platforms: {
       northbound: {
-        stopId: '1_99005',
+        stopId: '40_N17-T1',
         directionName: 'Northbound to Lynnwood City Center',
         cardinalDirection: 'Northbound',
         terminalDestination: 'Lynnwood City Center',
       },
       southbound: {
-        stopId: '1_99006',
-        directionName: 'Southbound to Angle Lake',
+        stopId: '40_N17-T2',
+        directionName: 'Southbound to Federal Way Downtown',
         cardinalDirection: 'Southbound',
-        terminalDestination: 'Angle Lake',
+        terminalDestination: 'Federal Way Downtown',
       },
     },
   },
@@ -75,16 +75,16 @@ export const STATIONS: Station[] = [
     lon: -122.3283,
     platforms: {
       northbound: {
-        stopId: '1_99007',
+        stopId: '40_N15-T1',
         directionName: 'Northbound to Lynnwood City Center',
         cardinalDirection: 'Northbound',
         terminalDestination: 'Lynnwood City Center',
       },
       southbound: {
-        stopId: '1_99008',
-        directionName: 'Southbound to Angle Lake',
+        stopId: '40_N15-T2',
+        directionName: 'Southbound to Federal Way Downtown',
         cardinalDirection: 'Southbound',
-        terminalDestination: 'Angle Lake',
+        terminalDestination: 'Federal Way Downtown',
       },
     },
   },
@@ -96,16 +96,16 @@ export const STATIONS: Station[] = [
     lon: -122.3289,
     platforms: {
       northbound: {
-        stopId: '1_99009',
+        stopId: '40_990006',
         directionName: 'Northbound to Lynnwood City Center',
         cardinalDirection: 'Northbound',
         terminalDestination: 'Lynnwood City Center',
       },
       southbound: {
-        stopId: '1_99010',
-        directionName: 'Southbound to Angle Lake',
+        stopId: '40_990005',
+        directionName: 'Southbound to Federal Way Downtown',
         cardinalDirection: 'Southbound',
-        terminalDestination: 'Angle Lake',
+        terminalDestination: 'Federal Way Downtown',
       },
     },
   },
@@ -117,16 +117,16 @@ export const STATIONS: Station[] = [
     lon: -122.3178,
     platforms: {
       northbound: {
-        stopId: '1_99605',
+        stopId: '40_990004',
         directionName: 'Northbound to Lynnwood City Center',
         cardinalDirection: 'Northbound',
         terminalDestination: 'Lynnwood City Center',
       },
       southbound: {
-        stopId: '1_99606',
-        directionName: 'Southbound to Angle Lake',
+        stopId: '40_990003',
+        directionName: 'Southbound to Federal Way Downtown',
         cardinalDirection: 'Southbound',
-        terminalDestination: 'Angle Lake',
+        terminalDestination: 'Federal Way Downtown',
       },
     },
   },
@@ -138,16 +138,16 @@ export const STATIONS: Station[] = [
     lon: -122.3142,
     platforms: {
       northbound: {
-        stopId: '1_99607',
+        stopId: '40_990002',
         directionName: 'Northbound to Lynnwood City Center',
         cardinalDirection: 'Northbound',
         terminalDestination: 'Lynnwood City Center',
       },
       southbound: {
-        stopId: '1_99608',
-        directionName: 'Southbound to Angle Lake',
+        stopId: '40_990001',
+        directionName: 'Southbound to Federal Way Downtown',
         cardinalDirection: 'Southbound',
-        terminalDestination: 'Angle Lake',
+        terminalDestination: 'Federal Way Downtown',
       },
     },
   },
@@ -160,16 +160,16 @@ export const STATIONS: Station[] = [
     lon: -122.3038,
     platforms: {
       northbound: {
-        stopId: '1_99609',
+        stopId: '40_99605',
         directionName: 'Northbound to Lynnwood City Center',
         cardinalDirection: 'Northbound',
         terminalDestination: 'Lynnwood City Center',
       },
       southbound: {
-        stopId: '1_99610',
-        directionName: 'Southbound to Angle Lake',
+        stopId: '40_99604',
+        directionName: 'Southbound to Federal Way Downtown',
         cardinalDirection: 'Southbound',
-        terminalDestination: 'Angle Lake',
+        terminalDestination: 'Federal Way Downtown',
       },
     },
   },
@@ -181,16 +181,16 @@ export const STATIONS: Station[] = [
     lon: -122.3204,
     platforms: {
       northbound: {
-        stopId: '1_99611',
+        stopId: '40_99603',
         directionName: 'Northbound to Lynnwood City Center',
         cardinalDirection: 'Northbound',
         terminalDestination: 'Lynnwood City Center',
       },
       southbound: {
-        stopId: '1_99612',
-        directionName: 'Southbound to Angle Lake',
+        stopId: '40_99610',
+        directionName: 'Southbound to Federal Way Downtown',
         cardinalDirection: 'Southbound',
-        terminalDestination: 'Angle Lake',
+        terminalDestination: 'Federal Way Downtown',
       },
     },
   },
@@ -203,16 +203,16 @@ export const STATIONS: Station[] = [
     lon: -122.3372,
     platforms: {
       northbound: {
-        stopId: '1_1121',
+        stopId: '40_1121',
         directionName: 'Northbound to Lynnwood City Center',
         cardinalDirection: 'Northbound',
         terminalDestination: 'Lynnwood City Center',
       },
       southbound: {
-        stopId: '1_1122',
-        directionName: 'Southbound to Angle Lake',
+        stopId: '40_1108',
+        directionName: 'Southbound to Federal Way Downtown',
         cardinalDirection: 'Southbound',
-        terminalDestination: 'Angle Lake',
+        terminalDestination: 'Federal Way Downtown',
       },
     },
   },
@@ -225,16 +225,16 @@ export const STATIONS: Station[] = [
     lon: -122.3359,
     platforms: {
       northbound: {
-        stopId: '1_1123',
+        stopId: '40_565',
         directionName: 'Northbound to Lynnwood City Center',
         cardinalDirection: 'Northbound',
         terminalDestination: 'Lynnwood City Center',
       },
       southbound: {
-        stopId: '1_1124',
-        directionName: 'Southbound to Angle Lake',
+        stopId: '40_455',
+        directionName: 'Southbound to Federal Way Downtown',
         cardinalDirection: 'Southbound',
-        terminalDestination: 'Angle Lake',
+        terminalDestination: 'Federal Way Downtown',
       },
     },
   },
@@ -246,16 +246,16 @@ export const STATIONS: Station[] = [
     lon: -122.3312,
     platforms: {
       northbound: {
-        stopId: '1_1125',
+        stopId: '40_532',
         directionName: 'Northbound to Lynnwood City Center',
         cardinalDirection: 'Northbound',
         terminalDestination: 'Lynnwood City Center',
       },
       southbound: {
-        stopId: '1_1126',
-        directionName: 'Southbound to Angle Lake',
+        stopId: '40_501',
+        directionName: 'Southbound to Federal Way Downtown',
         cardinalDirection: 'Southbound',
-        terminalDestination: 'Angle Lake',
+        terminalDestination: 'Federal Way Downtown',
       },
     },
   },
@@ -268,13 +268,13 @@ export const STATIONS: Station[] = [
     lon: -122.3283,
     platforms: {
       northbound: {
-        stopId: '1_1127',
+        stopId: '40_621',
         directionName: 'Northbound to Lynnwood City Center',
         cardinalDirection: 'Northbound',
         terminalDestination: 'Lynnwood City Center',
       },
       southbound: {
-        stopId: '1_1128',
+        stopId: '40_623',
         directionName: 'Southbound to Federal Way Downtown',
         cardinalDirection: 'Southbound',
         terminalDestination: 'Federal Way Downtown',
@@ -290,16 +290,16 @@ export const STATIONS: Station[] = [
     lon: -122.3271,
     platforms: {
       northbound: {
-        stopId: '1_99113',
+        stopId: '40_99260',
         directionName: 'Northbound to Lynnwood City Center',
         cardinalDirection: 'Northbound',
         terminalDestination: 'Lynnwood City Center',
       },
       southbound: {
-        stopId: '1_99114',
-        directionName: 'Southbound to Angle Lake',
+        stopId: '40_99101',
+        directionName: 'Southbound to Federal Way Downtown',
         cardinalDirection: 'Southbound',
-        terminalDestination: 'Angle Lake',
+        terminalDestination: 'Federal Way Downtown',
       },
     },
   },
@@ -311,16 +311,16 @@ export const STATIONS: Station[] = [
     lon: -122.3273,
     platforms: {
       northbound: {
-        stopId: '1_99115',
+        stopId: '40_99256',
         directionName: 'Northbound to Lynnwood City Center',
         cardinalDirection: 'Northbound',
         terminalDestination: 'Lynnwood City Center',
       },
       southbound: {
-        stopId: '1_99116',
-        directionName: 'Southbound to Angle Lake',
+        stopId: '40_99111',
+        directionName: 'Southbound to Federal Way Downtown',
         cardinalDirection: 'Southbound',
-        terminalDestination: 'Angle Lake',
+        terminalDestination: 'Federal Way Downtown',
       },
     },
   },
@@ -332,16 +332,16 @@ export const STATIONS: Station[] = [
     lon: -122.3117,
     platforms: {
       northbound: {
-        stopId: '1_99117',
+        stopId: '40_99240',
         directionName: 'Northbound to Lynnwood City Center',
         cardinalDirection: 'Northbound',
         terminalDestination: 'Lynnwood City Center',
       },
       southbound: {
-        stopId: '1_99118',
-        directionName: 'Southbound to Angle Lake',
+        stopId: '40_99121',
+        directionName: 'Southbound to Federal Way Downtown',
         cardinalDirection: 'Southbound',
-        terminalDestination: 'Angle Lake',
+        terminalDestination: 'Federal Way Downtown',
       },
     },
   },
@@ -353,16 +353,16 @@ export const STATIONS: Station[] = [
     lon: -122.2978,
     platforms: {
       northbound: {
-        stopId: '1_99119',
+        stopId: '40_55860',
         directionName: 'Northbound to Lynnwood City Center',
         cardinalDirection: 'Northbound',
         terminalDestination: 'Lynnwood City Center',
       },
       southbound: {
-        stopId: '1_99120',
-        directionName: 'Southbound to Angle Lake',
+        stopId: '40_55949',
+        directionName: 'Southbound to Federal Way Downtown',
         cardinalDirection: 'Southbound',
-        terminalDestination: 'Angle Lake',
+        terminalDestination: 'Federal Way Downtown',
       },
     },
   },
@@ -374,16 +374,16 @@ export const STATIONS: Station[] = [
     lon: -122.2858,
     platforms: {
       northbound: {
-        stopId: '1_99121',
+        stopId: '40_55778',
         directionName: 'Northbound to Lynnwood City Center',
         cardinalDirection: 'Northbound',
         terminalDestination: 'Lynnwood City Center',
       },
       southbound: {
-        stopId: '1_99122',
-        directionName: 'Southbound to Angle Lake',
+        stopId: '40_56039',
+        directionName: 'Southbound to Federal Way Downtown',
         cardinalDirection: 'Southbound',
-        terminalDestination: 'Angle Lake',
+        terminalDestination: 'Federal Way Downtown',
       },
     },
   },
@@ -395,16 +395,16 @@ export const STATIONS: Station[] = [
     lon: -122.2818,
     platforms: {
       northbound: {
-        stopId: '1_99123',
+        stopId: '40_55656',
         directionName: 'Northbound to Lynnwood City Center',
         cardinalDirection: 'Northbound',
         terminalDestination: 'Lynnwood City Center',
       },
       southbound: {
-        stopId: '1_99124',
-        directionName: 'Southbound to Angle Lake',
+        stopId: '40_56159',
+        directionName: 'Southbound to Federal Way Downtown',
         cardinalDirection: 'Southbound',
-        terminalDestination: 'Angle Lake',
+        terminalDestination: 'Federal Way Downtown',
       },
     },
   },
@@ -416,16 +416,16 @@ export const STATIONS: Station[] = [
     lon: -122.2798,
     platforms: {
       northbound: {
-        stopId: '1_99125',
+        stopId: '40_55578',
         directionName: 'Northbound to Lynnwood City Center',
         cardinalDirection: 'Northbound',
         terminalDestination: 'Lynnwood City Center',
       },
       southbound: {
-        stopId: '1_99126',
-        directionName: 'Southbound to Angle Lake',
+        stopId: '40_56173',
+        directionName: 'Southbound to Federal Way Downtown',
         cardinalDirection: 'Southbound',
-        terminalDestination: 'Angle Lake',
+        terminalDestination: 'Federal Way Downtown',
       },
     },
   },
@@ -437,16 +437,16 @@ export const STATIONS: Station[] = [
     lon: -122.2885,
     platforms: {
       northbound: {
-        stopId: '1_99127',
+        stopId: '40_99900',
         directionName: 'Northbound to Lynnwood City Center',
         cardinalDirection: 'Northbound',
         terminalDestination: 'Lynnwood City Center',
       },
       southbound: {
-        stopId: '1_99128',
-        directionName: 'Southbound to Angle Lake',
+        stopId: '40_99905',
+        directionName: 'Southbound to Federal Way Downtown',
         cardinalDirection: 'Southbound',
-        terminalDestination: 'Angle Lake',
+        terminalDestination: 'Federal Way Downtown',
       },
     },
   },
@@ -459,16 +459,16 @@ export const STATIONS: Station[] = [
     lon: -122.2989,
     platforms: {
       northbound: {
-        stopId: '1_99129',
+        stopId: '40_99903',
         directionName: 'Northbound to Lynnwood City Center',
         cardinalDirection: 'Northbound',
         terminalDestination: 'Lynnwood City Center',
       },
       southbound: {
-        stopId: '1_99130',
-        directionName: 'Southbound to Angle Lake',
+        stopId: '40_99904',
+        directionName: 'Southbound to Federal Way Downtown',
         cardinalDirection: 'Southbound',
-        terminalDestination: 'Angle Lake',
+        terminalDestination: 'Federal Way Downtown',
       },
     },
   },
@@ -480,13 +480,13 @@ export const STATIONS: Station[] = [
     lon: -122.2982,
     platforms: {
       northbound: {
-        stopId: '1_99131',
+        stopId: '40_99913',
         directionName: 'Northbound to Lynnwood City Center',
         cardinalDirection: 'Northbound',
         terminalDestination: 'Lynnwood City Center',
       },
       southbound: {
-        stopId: '1_99132',
+        stopId: '40_99914',
         directionName: 'Southbound to Federal Way Downtown',
         cardinalDirection: 'Southbound',
         terminalDestination: 'Federal Way Downtown',
@@ -502,13 +502,13 @@ export const STATIONS: Station[] = [
     lon: -122.2981,
     platforms: {
       northbound: {
-        stopId: '1_99133',
+        stopId: '40_S03-T1',
         directionName: 'Northbound to Lynnwood City Center',
         cardinalDirection: 'Northbound',
         terminalDestination: 'Lynnwood City Center',
       },
       southbound: {
-        stopId: '1_99134',
+        stopId: '40_S03-T2',
         directionName: 'Southbound to Federal Way Downtown',
         cardinalDirection: 'Southbound',
         terminalDestination: 'Federal Way Downtown',
@@ -524,13 +524,13 @@ export const STATIONS: Station[] = [
     lon: -122.3023,
     platforms: {
       northbound: {
-        stopId: '1_99135',
+        stopId: '40_S05-T1',
         directionName: 'Northbound to Lynnwood City Center',
         cardinalDirection: 'Northbound',
         terminalDestination: 'Lynnwood City Center',
       },
       southbound: {
-        stopId: '1_99136',
+        stopId: '40_S05-T2',
         directionName: 'Southbound to Federal Way Downtown',
         cardinalDirection: 'Southbound',
         terminalDestination: 'Federal Way Downtown',
@@ -546,13 +546,13 @@ export const STATIONS: Station[] = [
     lon: -122.3115,
     platforms: {
       northbound: {
-        stopId: '1_99137',
+        stopId: '40_S07-T1',
         directionName: 'Northbound to Lynnwood City Center',
         cardinalDirection: 'Northbound',
         terminalDestination: 'Lynnwood City Center',
       },
       southbound: {
-        stopId: '1_99138',
+        stopId: '40_S07-T2',
         directionName: 'Southbound Platform (Terminus)',
         cardinalDirection: 'Southbound',
         terminalDestination: 'Federal Way Downtown',
@@ -571,13 +571,13 @@ export const STATIONS: Station[] = [
     lon: -122.1869,
     platforms: {
       westbound: {
-        stopId: '1_99701',
+        stopId: '40_E09-T2',
         directionName: 'Westbound Platform (Terminus)',
         cardinalDirection: 'Westbound',
         terminalDestination: 'South Bellevue',
       },
       eastbound: {
-        stopId: '1_99702',
+        stopId: '40_E09-T1',
         directionName: 'Eastbound to Downtown Redmond',
         cardinalDirection: 'Eastbound',
         terminalDestination: 'Downtown Redmond',
@@ -592,13 +592,13 @@ export const STATIONS: Station[] = [
     lon: -122.1904,
     platforms: {
       westbound: {
-        stopId: '1_99703',
+        stopId: '40_E11-T2',
         directionName: 'Westbound to South Bellevue',
         cardinalDirection: 'Westbound',
         terminalDestination: 'South Bellevue',
       },
       eastbound: {
-        stopId: '1_99704',
+        stopId: '40_E11-T1',
         directionName: 'Eastbound to Downtown Redmond',
         cardinalDirection: 'Eastbound',
         terminalDestination: 'Downtown Redmond',
@@ -613,13 +613,13 @@ export const STATIONS: Station[] = [
     lon: -122.1932,
     platforms: {
       westbound: {
-        stopId: '1_99705',
+        stopId: '40_E15-T1',
         directionName: 'Westbound to South Bellevue',
         cardinalDirection: 'Westbound',
         terminalDestination: 'South Bellevue',
       },
       eastbound: {
-        stopId: '1_99706',
+        stopId: '40_E15-T2',
         directionName: 'Eastbound to Downtown Redmond',
         cardinalDirection: 'Eastbound',
         terminalDestination: 'Downtown Redmond',
@@ -634,13 +634,13 @@ export const STATIONS: Station[] = [
     lon: -122.1802,
     platforms: {
       westbound: {
-        stopId: '1_99707',
+        stopId: '40_E19-T2',
         directionName: 'Westbound to South Bellevue',
         cardinalDirection: 'Westbound',
         terminalDestination: 'South Bellevue',
       },
       eastbound: {
-        stopId: '1_99708',
+        stopId: '40_E19-T1',
         directionName: 'Eastbound to Downtown Redmond',
         cardinalDirection: 'Eastbound',
         terminalDestination: 'Downtown Redmond',
@@ -655,13 +655,13 @@ export const STATIONS: Station[] = [
     lon: -122.1648,
     platforms: {
       westbound: {
-        stopId: '1_99709',
+        stopId: '40_E21-T1',
         directionName: 'Westbound to South Bellevue',
         cardinalDirection: 'Westbound',
         terminalDestination: 'South Bellevue',
       },
       eastbound: {
-        stopId: '1_99710',
+        stopId: '40_E21-T2',
         directionName: 'Eastbound to Downtown Redmond',
         cardinalDirection: 'Eastbound',
         terminalDestination: 'Downtown Redmond',
@@ -677,13 +677,13 @@ export const STATIONS: Station[] = [
     lon: -122.1528,
     platforms: {
       westbound: {
-        stopId: '1_99711',
+        stopId: '40_E23-T1',
         directionName: 'Westbound to South Bellevue',
         cardinalDirection: 'Westbound',
         terminalDestination: 'South Bellevue',
       },
       eastbound: {
-        stopId: '1_99712',
+        stopId: '40_E23-T2',
         directionName: 'Eastbound to Downtown Redmond',
         cardinalDirection: 'Eastbound',
         terminalDestination: 'Downtown Redmond',
@@ -698,13 +698,13 @@ export const STATIONS: Station[] = [
     lon: -122.1408,
     platforms: {
       westbound: {
-        stopId: '1_99713',
+        stopId: '40_E25-T1',
         directionName: 'Westbound to South Bellevue',
         cardinalDirection: 'Westbound',
         terminalDestination: 'South Bellevue',
       },
       eastbound: {
-        stopId: '1_99714',
+        stopId: '40_E25-T2',
         directionName: 'Eastbound to Downtown Redmond',
         cardinalDirection: 'Eastbound',
         terminalDestination: 'Downtown Redmond',
@@ -720,13 +720,13 @@ export const STATIONS: Station[] = [
     lon: -122.1287,
     platforms: {
       westbound: {
-        stopId: '1_99715',
+        stopId: '40_E27-T1',
         directionName: 'Westbound to South Bellevue',
         cardinalDirection: 'Westbound',
         terminalDestination: 'South Bellevue',
       },
       eastbound: {
-        stopId: '1_99716',
+        stopId: '40_E27-T2',
         directionName: 'Eastbound to Downtown Redmond',
         cardinalDirection: 'Eastbound',
         terminalDestination: 'Downtown Redmond',
@@ -741,13 +741,13 @@ export const STATIONS: Station[] = [
     lon: -122.1158,
     platforms: {
       westbound: {
-        stopId: '1_99717',
+        stopId: '40_E29-T1',
         directionName: 'Westbound to South Bellevue',
         cardinalDirection: 'Westbound',
         terminalDestination: 'South Bellevue',
       },
       eastbound: {
-        stopId: '1_99718',
+        stopId: '40_E29-T2',
         directionName: 'Eastbound to Downtown Redmond',
         cardinalDirection: 'Eastbound',
         terminalDestination: 'Downtown Redmond',
@@ -762,13 +762,13 @@ export const STATIONS: Station[] = [
     lon: -122.1228,
     platforms: {
       westbound: {
-        stopId: '1_99719',
+        stopId: '40_E31-T1',
         directionName: 'Westbound to South Bellevue',
         cardinalDirection: 'Westbound',
         terminalDestination: 'South Bellevue',
       },
       eastbound: {
-        stopId: '1_99720',
+        stopId: '40_E31-T2',
         directionName: 'Eastbound Platform (Terminus)',
         cardinalDirection: 'Eastbound',
         terminalDestination: 'Downtown Redmond',

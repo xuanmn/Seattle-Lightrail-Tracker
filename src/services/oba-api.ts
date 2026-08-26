@@ -2,7 +2,7 @@ import { Station, StationPlatform, TransitArrival } from '../types/transit';
 import { calculateMinutesRemaining, formatDelayStatus } from '../utils/time';
 
 const DEFAULT_OBA_BASE = 'https://api.pugetsound.onebusaway.org/api/where';
-const DEFAULT_KEY = 'TEST'; // Standard public developer test key for Puget Sound
+const DEFAULT_KEY = '5654bb33-edab-4322-8688-94b9d262abe4'; // Sound Transit official public client key
 
 export interface RawObaArrival {
   tripId: string;
