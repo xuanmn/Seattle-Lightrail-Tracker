@@ -83,16 +83,16 @@ export function formatClockTime(epochMs: number, is24Hour: boolean = false): str
 
 export function formatSimpleDestination(dest: string, stationId?: string, isCol1?: boolean): string {
   if (stationId === 'lynnwood-city-center') {
-    return isCol1 ? 'To Lynnwood (Terminus)' : 'To Federal Way / Redmond';
+    return isCol1 ? 'To Lynnwood' : 'To Federal Way / Redmond';
   }
   if (stationId === 'federal-way-downtown') {
-    return isCol1 ? 'To Lynnwood' : 'To Federal Way (Terminus)';
+    return isCol1 ? 'To Lynnwood' : 'To Federal Way';
   }
   if (stationId === 'downtown-redmond') {
-    return isCol1 ? 'To Redmond (Terminus)' : 'To South Bellevue';
+    return isCol1 ? 'To Redmond' : 'To South Bellevue';
   }
   if (stationId === 'south-bellevue') {
-    return isCol1 ? 'To Redmond' : 'To Bellevue (Terminus)';
+    return isCol1 ? 'To Redmond' : 'To South Bellevue';
   }
 
   if (!dest) return 'To Terminal';
