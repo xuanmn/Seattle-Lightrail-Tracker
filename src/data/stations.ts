@@ -262,6 +262,7 @@ export const STATIONS: Station[] = [
   {
     id: 'international-district-chinatown',
     name: 'Intl. District / Chinatown',
+    shortName: '1 Line ⇄ 2 Line Transfer Hub',
     lines: ['line-1'],
     lat: 47.5979,
     lon: -122.3283,
@@ -274,9 +275,9 @@ export const STATIONS: Station[] = [
       },
       southbound: {
         stopId: '1_1128',
-        directionName: 'Southbound to Angle Lake',
+        directionName: 'Southbound to Federal Way Downtown',
         cardinalDirection: 'Southbound',
-        terminalDestination: 'Angle Lake',
+        terminalDestination: 'Federal Way Downtown',
       },
     },
   },
@@ -486,9 +487,75 @@ export const STATIONS: Station[] = [
       },
       southbound: {
         stopId: '1_99132',
+        directionName: 'Southbound to Federal Way Downtown',
+        cardinalDirection: 'Southbound',
+        terminalDestination: 'Federal Way Downtown',
+      },
+    },
+  },
+  {
+    id: 'kent-des-moines',
+    name: 'Kent Des Moines',
+    shortName: 'Highline College',
+    lines: ['line-1'],
+    lat: 47.3886,
+    lon: -122.2981,
+    platforms: {
+      northbound: {
+        stopId: '1_99133',
+        directionName: 'Northbound to Lynnwood City Center',
+        cardinalDirection: 'Northbound',
+        terminalDestination: 'Lynnwood City Center',
+      },
+      southbound: {
+        stopId: '1_99134',
+        directionName: 'Southbound to Federal Way Downtown',
+        cardinalDirection: 'Southbound',
+        terminalDestination: 'Federal Way Downtown',
+      },
+    },
+  },
+  {
+    id: 'star-lake',
+    name: 'Star Lake',
+    shortName: 'S 272nd Park & Ride',
+    lines: ['line-1'],
+    lat: 47.3575,
+    lon: -122.3023,
+    platforms: {
+      northbound: {
+        stopId: '1_99135',
+        directionName: 'Northbound to Lynnwood City Center',
+        cardinalDirection: 'Northbound',
+        terminalDestination: 'Lynnwood City Center',
+      },
+      southbound: {
+        stopId: '1_99136',
+        directionName: 'Southbound to Federal Way Downtown',
+        cardinalDirection: 'Southbound',
+        terminalDestination: 'Federal Way Downtown',
+      },
+    },
+  },
+  {
+    id: 'federal-way-downtown',
+    name: 'Federal Way Downtown',
+    shortName: 'Federal Way Transit Center',
+    lines: ['line-1'],
+    lat: 47.3175,
+    lon: -122.3115,
+    platforms: {
+      northbound: {
+        stopId: '1_99137',
+        directionName: 'Northbound to Lynnwood City Center',
+        cardinalDirection: 'Northbound',
+        terminalDestination: 'Lynnwood City Center',
+      },
+      southbound: {
+        stopId: '1_99138',
         directionName: 'Southbound Platform (Terminus)',
         cardinalDirection: 'Southbound',
-        terminalDestination: 'Angle Lake',
+        terminalDestination: 'Federal Way Downtown',
       },
     },
   },
@@ -725,7 +792,7 @@ export const LINE_CONFIG = {
     color: '#008542', // Sound Transit Emerald Green
     secondaryColor: '#006633',
     terminusNorth: 'Lynnwood City Center',
-    terminusSouth: 'Angle Lake',
+    terminusSouth: 'Federal Way Downtown',
     badgeText: '1 LINE',
   },
   'line-2': {

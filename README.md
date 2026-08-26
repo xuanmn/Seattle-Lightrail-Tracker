@@ -6,7 +6,7 @@ A modern, responsive, real-time departure countdown board and multi-station trac
 
 [![Live Demo](https://img.shields.io/badge/🌐_Open_Live_Tracker-xuanmn.github.io%2FSeattle--Lightrail--Tracker-008542?style=for-the-badge&logo=googlechrome&logoColor=white)](https://xuanmn.github.io/Seattle-Lightrail-Tracker/)
 [![Sound Transit](https://img.shields.io/badge/Sound%20Transit-Link%20Light%20Rail-008542?style=for-the-badge)](https://www.soundtransit.org)
-[![1 Line](https://img.shields.io/badge/1%20Line-Lynnwood%20⇄%20Angle%20Lake-008542?style=for-the-badge)](https://xuanmn.github.io/Seattle-Lightrail-Tracker/)
+[![1 Line](https://img.shields.io/badge/1%20Line-Lynnwood%20⇄%20Federal%20Way-008542?style=for-the-badge)](https://xuanmn.github.io/Seattle-Lightrail-Tracker/)
 [![2 Line](https://img.shields.io/badge/2%20Line-South%20Bellevue%20⇄%20Redmond-0072CE?style=for-the-badge)](https://xuanmn.github.io/Seattle-Lightrail-Tracker/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Vite](https://img.shields.io/badge/Vite-6.0-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
@@ -18,7 +18,7 @@ A modern, responsive, real-time departure countdown board and multi-station trac
 
 - **Live Regional Data Out-of-the-Box**: Direct client-side integration with Puget Sound OneBusAway (`api.pugetsound.onebusaway.org`) providing live arrival predictions, GPS vehicle tracking, and delay statuses without requiring a custom backend.
 - **Sound Transit 1 Line & 2 Line**:
-  - **1 Line** (23 Stations): Lynnwood City Center through Angle Lake (serving Northgate, UW, Capitol Hill, Downtown Seattle transit tunnel, Beacon Hill, Rainier Valley, and SeaTac Airport).
+  - **1 Line** (26 Stations): Lynnwood City Center through Federal Way Downtown (serving Northgate, UW, Downtown Seattle, SeaTac Airport, Angle Lake, Kent Des Moines, Star Lake, and Federal Way Downtown).
   - **2 Line** (10 Stations): South Bellevue through Downtown Redmond (serving East Main, Bellevue Downtown, Wilburton, Spring District, Bel-Red, Overlake Village, Redmond Technology, and Marymoor Village).
 - **Directional Departure Cards**: View Northbound/Southbound or Eastbound/Westbound platforms side-by-side with high-visibility countdown badges (`ARRIVING`, `3 MIN`, `12 MIN`) and real-time status indicators.
 - **Collapsible Platform Columns**: Expand or collapse platform departures independently. When collapsed, a live summary badge displays the next upcoming arrival.

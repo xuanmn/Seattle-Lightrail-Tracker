@@ -46,12 +46,24 @@ describe('SystemMapModal Component', () => {
     expect(officialLink?.getAttribute('href')).toContain('soundtransit.org');
   });
 
-  it('renders station nodes and line tracks within SVG', () => {
+  it('renders station nodes including new Federal Way extension stations within SVG', () => {
     const svg = document.querySelector('svg.system-map-svg');
     const tracks = svg?.querySelectorAll('.map-track-path');
     expect(tracks?.length).toBeGreaterThanOrEqual(2);
 
     const stationNodes = svg?.querySelectorAll('.map-station-node');
-    expect(stationNodes?.length).toBeGreaterThanOrEqual(20);
+    expect(stationNodes?.length).toBeGreaterThanOrEqual(23);
+
+    expect(svg?.querySelector('#map-node-kent-des-moines')).not.toBeNull();
+    expect(svg?.querySelector('#map-node-star-lake')).not.toBeNull();
+    expect(svg?.querySelector('#map-node-federal-way-downtown')).not.toBeNull();
+  });
+
+  it('renders highlighted 1 Line and 2 Line transfer hub at Chinatown station', () => {
+    const svg = document.querySelector('svg.system-map-svg');
+    const chinatownNode = svg?.querySelector('#map-node-international-district-chinatown');
+    expect(chinatownNode).not.toBeNull();
+    expect(chinatownNode?.classList.contains('map-transfer-hub-node')).toBe(true);
+    expect(chinatownNode?.textContent).toContain('TRANSFER');
   });
 });

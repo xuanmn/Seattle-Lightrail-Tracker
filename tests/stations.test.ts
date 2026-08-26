@@ -2,9 +2,9 @@ import { describe, it, expect } from 'vitest';
 import { getStationsByLine, getStationById } from '../src/data/stations';
 
 describe('Station Catalog', () => {
-  it('should include all 23 Line 1 stations', () => {
+  it('should include all 26 Line 1 stations', () => {
     const line1Stations = getStationsByLine('line-1');
-    expect(line1Stations.length).toBe(23);
+    expect(line1Stations.length).toBe(26);
 
     // Verify key terminal & extension stations
     const lynnwood = line1Stations.find(s => s.id === 'lynnwood-city-center');
@@ -16,6 +16,10 @@ describe('Station Catalog', () => {
     const angleLake = line1Stations.find(s => s.id === 'angle-lake');
     expect(angleLake).toBeDefined();
     expect(angleLake?.name).toBe('Angle Lake');
+
+    const federalWay = line1Stations.find(s => s.id === 'federal-way-downtown');
+    expect(federalWay).toBeDefined();
+    expect(federalWay?.name).toBe('Federal Way Downtown');
 
     const westlake = line1Stations.find(s => s.id === 'westlake');
     expect(westlake).toBeDefined();
@@ -40,6 +44,9 @@ describe('Station Catalog', () => {
     expect(getStationById('tukwila-intl-blvd')?.name).toBe('Tukwila Intl. Blvd.');
     expect(getStationById('bel-red')?.name).toBe('BelRed');
     expect(getStationById('symphony')?.name).toBe('Symphony');
+    expect(getStationById('kent-des-moines')?.name).toBe('Kent Des Moines');
+    expect(getStationById('star-lake')?.name).toBe('Star Lake');
+    expect(getStationById('federal-way-downtown')?.name).toBe('Federal Way Downtown');
   });
 
   it('retains valid stop IDs for Puget Sound OneBusAway', () => {

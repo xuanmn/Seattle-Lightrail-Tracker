@@ -103,7 +103,7 @@ export class HeaderComponent {
       `line-btn ${this.activeLine === 'line-1' ? 'active line-1-active' : ''}`
     ) as HTMLButtonElement;
     this.line1Btn.innerHTML = `<span class="line-badge-circle line-1-circle">1</span> 1 Line`;
-    this.line1Btn.title = 'Lynnwood City Center ⇄ Angle Lake';
+    this.line1Btn.title = 'Lynnwood City Center ⇄ Federal Way Downtown';
     this.line1Btn.onclick = () => {
       this.setActiveLine('line-1');
       this.callbacks.onLineChange('line-1');
