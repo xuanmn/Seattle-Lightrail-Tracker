@@ -6,6 +6,7 @@ export interface HeaderCallbacks {
   onLineChange: (line: TransitLineId) => void;
   onSettingsClick: () => void;
   onFaqClick: () => void;
+  onMapClick: () => void;
 }
 
 export class HeaderComponent {
@@ -113,6 +114,14 @@ export class HeaderComponent {
     const actions = createElement('div', 'header-actions');
     this.clockEl = createElement('div', 'clock-display');
 
+    const mapBtn = createElement(
+      'button',
+      'header-text-btn header-map-btn',
+      `🗺️ System Map`
+    );
+    mapBtn.title = 'View Link Light Rail System Map';
+    mapBtn.onclick = () => this.callbacks.onMapClick();
+
     const faqBtn = createElement(
       'button',
       'header-text-btn',
@@ -126,6 +135,7 @@ export class HeaderComponent {
     settingsBtn.onclick = () => this.callbacks.onSettingsClick();
 
     actions.appendChild(this.clockEl);
+    actions.appendChild(mapBtn);
     actions.appendChild(faqBtn);
     actions.appendChild(settingsBtn);
 

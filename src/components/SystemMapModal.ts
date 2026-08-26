@@ -26,6 +26,14 @@ export class SystemMapModal {
     this.overlay.classList.remove('open');
   }
 
+  public getActiveFilter(): 'all' | 'line-1' | 'line-2' {
+    return this.activeFilter;
+  }
+
+  public setLineFilter(filter: 'all' | 'line-1' | 'line-2') {
+    this.setFilter(filter);
+  }
+
   private resetView() {
     this.currentScale = 1;
     this.panX = 0;

@@ -1,12 +1,14 @@
 import './styles/theme.css';
 import './styles/layout.css';
 import './styles/board.css';
+import './styles/map.css';
 
 import { FaqModal } from './components/FaqModal';
 import { HeaderComponent } from './components/Header';
 import { SettingsModal } from './components/SettingsModal';
 import { StationCardComponent } from './components/StationCard';
 import { StationPickerModal } from './components/StationPickerModal';
+import { SystemMapModal } from './components/SystemMapModal';
 import { getStationById, getStationsByLine, LINE_CONFIG } from './data/stations';
 import { fetchArrivalsForStation } from './services/oba-api';
 import {
@@ -29,6 +31,7 @@ class TransitTrackerApp {
   private pickerModal!: StationPickerModal;
   private settingsModal!: SettingsModal;
   private faqModal!: FaqModal;
+  private mapModal!: SystemMapModal;
 
   private activeLine: TransitLineId = 'line-1';
   private showOnlyPinned: boolean = true; // Default to showing only user's chosen favorite stations
@@ -76,12 +79,14 @@ class TransitTrackerApp {
     });
 
     this.faqModal = new FaqModal();
+    this.mapModal = new SystemMapModal();
 
     // Header
     this.header = new HeaderComponent(this.activeLine, this.settings.timeFormat24Hour, {
       onLineChange: (line) => this.switchLine(line),
       onSettingsClick: () => this.settingsModal.open(),
       onFaqClick: () => this.faqModal.open(),
+      onMapClick: () => this.mapModal.open(),
     });
     this.appEl.appendChild(this.header.getElement());
 

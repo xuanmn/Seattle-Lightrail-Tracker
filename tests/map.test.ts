@@ -43,4 +43,22 @@ describe('SystemMapModal Component', () => {
     const stationNodes = svg?.querySelectorAll('.map-station-node');
     expect(stationNodes?.length).toBeGreaterThanOrEqual(20);
   });
+
+  it('updates active line filter and dims non-selected elements', () => {
+    expect(modal.getActiveFilter()).toBe('all');
+
+    modal.setLineFilter('line-1');
+    expect(modal.getActiveFilter()).toBe('line-1');
+
+    const dimmedL2 = document.querySelectorAll('.map-elem-line-2.dimmed');
+    expect(dimmedL2.length).toBeGreaterThan(0);
+
+    modal.setLineFilter('line-2');
+    expect(modal.getActiveFilter()).toBe('line-2');
+
+    modal.setLineFilter('all');
+    expect(modal.getActiveFilter()).toBe('all');
+    const dimmedAll = document.querySelectorAll('.dimmed');
+    expect(dimmedAll.length).toBe(0);
+  });
 });
