@@ -101,4 +101,3 @@ export class SettingsModal {
     return overlay;
   }
 }
-

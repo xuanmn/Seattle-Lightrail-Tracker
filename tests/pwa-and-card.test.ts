@@ -125,6 +125,11 @@ describe('PWA Manifest Configuration', () => {
     expect(manifest.display).toBe('standalone');
     expect(manifest.theme_color).toBe('#0b0f17');
     expect(manifest.background_color).toBe('#070a0f');
-    expect(manifest.icons.length).toBeGreaterThanOrEqual(2);
+    expect(manifest.icons.length).toBeGreaterThanOrEqual(3);
+
+    const hasAny = manifest.icons.some((i: { purpose?: string }) => i.purpose === 'any');
+    const hasMaskable = manifest.icons.some((i: { purpose?: string }) => i.purpose === 'maskable');
+    expect(hasAny).toBe(true);
+    expect(hasMaskable).toBe(true);
   });
 });

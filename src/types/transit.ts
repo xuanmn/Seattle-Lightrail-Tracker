@@ -57,6 +57,3 @@ export interface AppSettings {
   activeLine: TransitLineId;
   pinnedStationIds: string[];
 }
-
-
-
