@@ -131,7 +131,9 @@ export class StationPickerModal {
     // Header
     const header = createElement('div', 'modal-header');
     const title = createElement('h3', 'modal-title', 'Add & Remove Stations');
-    const closeBtn = createElement('button', 'icon-btn', ICONS.close);
+    const closeBtn = createElement('button', 'icon-btn modal-close-btn', ICONS.close);
+    closeBtn.setAttribute('aria-label', 'Close Add & Remove Stations');
+    closeBtn.title = 'Close';
     closeBtn.onclick = () => this.close();
     header.appendChild(title);
     header.appendChild(closeBtn);
@@ -164,15 +166,8 @@ export class StationPickerModal {
     body.appendChild(filtersWrap);
     body.appendChild(this.listContainer);
 
-    // Footer
-    const footer = createElement('div', 'modal-footer');
-    const doneBtn = createElement('button', 'btn-primary btn-modal-close', 'Close');
-    doneBtn.onclick = () => this.close();
-    footer.appendChild(doneBtn);
-
     modal.appendChild(header);
     modal.appendChild(body);
-    modal.appendChild(footer);
     overlay.appendChild(modal);
 
     overlay.onclick = (e) => {

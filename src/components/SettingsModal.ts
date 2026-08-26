@@ -48,7 +48,9 @@ export class SettingsModal {
     // Header
     const header = createElement('div', 'modal-header');
     const title = createElement('h3', 'modal-title', 'Tracker Settings');
-    const closeBtn = createElement('button', 'icon-btn', ICONS.close);
+    const closeBtn = createElement('button', 'icon-btn modal-close-btn', ICONS.close);
+    closeBtn.setAttribute('aria-label', 'Close Settings');
+    closeBtn.title = 'Close Settings';
     closeBtn.onclick = () => this.close();
     header.appendChild(title);
     header.appendChild(closeBtn);
@@ -76,13 +78,9 @@ export class SettingsModal {
 
     // Footer
     const footer = createElement('div', 'modal-footer');
-    const cancelBtn = createElement('button', 'btn-secondary', 'Cancel');
-    cancelBtn.onclick = () => this.close();
-
     const saveBtn = createElement('button', 'btn-primary', 'Save Settings');
     saveBtn.onclick = () => this.save();
 
-    footer.appendChild(cancelBtn);
     footer.appendChild(saveBtn);
 
     modal.appendChild(header);

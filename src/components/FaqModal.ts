@@ -30,7 +30,9 @@ export class FaqModal {
     // Header
     const header = createElement('div', 'modal-header');
     const title = createElement('h3', 'modal-title', 'Seattle Transit Guide & FAQ');
-    const closeBtn = createElement('button', 'icon-btn', ICONS.close);
+    const closeBtn = createElement('button', 'icon-btn modal-close-btn', ICONS.close);
+    closeBtn.setAttribute('aria-label', 'Close Transit Guide');
+    closeBtn.title = 'Close Transit Guide';
     closeBtn.onclick = () => this.close();
     header.appendChild(title);
     header.appendChild(closeBtn);

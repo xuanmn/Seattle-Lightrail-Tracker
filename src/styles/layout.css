@@ -284,6 +284,26 @@
   height: 17px;
 }
 
+/* Modal Close Button - Soft Red Hover Effect */
+.modal-close-btn {
+  transition: all var(--transition-fast);
+}
+
+.modal-close-btn:hover {
+  background: rgba(239, 68, 68, 0.16) !important;
+  border-color: rgba(239, 68, 68, 0.45) !important;
+  color: #f87171 !important;
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.25) !important;
+  transform: translateY(-1px) scale(1.04);
+}
+
+.modal-close-btn:active {
+  background: rgba(239, 68, 68, 0.28) !important;
+  border-color: rgba(239, 68, 68, 0.65) !important;
+  color: #ffffff !important;
+  transform: translateY(0) scale(0.94);
+}
+
 /* Unified Button Tokens */
 .btn-primary {
   display: inline-flex;

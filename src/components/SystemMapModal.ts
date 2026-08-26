@@ -2,13 +2,7 @@ import { createElement, ICONS } from '../utils/dom';
 
 export class SystemMapModal {
   private overlay: HTMLElement;
-  private canvasEl!: HTMLElement;
-  private currentScale: number = 1;
-  private panX: number = 0;
-  private panY: number = 0;
-  private isDragging: boolean = false;
-  private startX: number = 0;
-  private startY: number = 0;
+  private bodyEl!: HTMLElement;
 
   constructor() {
     this.overlay = this.render();
@@ -26,21 +20,9 @@ export class SystemMapModal {
   }
 
   private resetView() {
-    this.currentScale = 1;
-    this.panX = 0;
-    this.panY = 0;
-    this.updateTransform();
-  }
-
-  private zoom(delta: number) {
-    const newScale = Math.min(2.5, Math.max(0.6, this.currentScale + delta));
-    this.currentScale = newScale;
-    this.updateTransform();
-  }
-
-  private updateTransform() {
-    if (this.canvasEl) {
-      this.canvasEl.style.transform = `translate(${this.panX}px, ${this.panY}px) scale(${this.currentScale})`;
+    if (this.bodyEl) {
+      this.bodyEl.scrollTop = 0;
+      this.bodyEl.scrollLeft = 0;
     }
   }
 
@@ -50,68 +32,6 @@ export class SystemMapModal {
         this.close();
       }
     });
-
-    const body = this.overlay.querySelector('.system-map-body') as HTMLElement;
-    if (!body) return;
-
-    body.addEventListener('mousedown', (e) => {
-      if ((e.target as HTMLElement).closest('.map-floating-controls')) return;
-      this.isDragging = true;
-      this.startX = e.clientX - this.panX;
-      this.startY = e.clientY - this.panY;
-      body.classList.add('panning');
-    });
-
-    window.addEventListener('mousemove', (e) => {
-      if (!this.isDragging) return;
-      this.panX = e.clientX - this.startX;
-      this.panY = e.clientY - this.startY;
-      this.updateTransform();
-    });
-
-    window.addEventListener('mouseup', () => {
-      if (this.isDragging) {
-        this.isDragging = false;
-        body.classList.remove('panning');
-      }
-    });
-
-    body.addEventListener(
-      'wheel',
-      (e) => {
-        e.preventDefault();
-        const delta = e.deltaY < 0 ? 0.12 : -0.12;
-        this.zoom(delta);
-      },
-      { passive: false }
-    );
-
-    let lastTouchX = 0;
-    let lastTouchY = 0;
-
-    body.addEventListener('touchstart', (e) => {
-      if (e.touches.length === 1) {
-        lastTouchX = e.touches[0].clientX;
-        lastTouchY = e.touches[0].clientY;
-      }
-    });
-
-    body.addEventListener(
-      'touchmove',
-      (e) => {
-        if (e.touches.length === 1) {
-          e.preventDefault();
-          const touchX = e.touches[0].clientX;
-          const touchY = e.touches[0].clientY;
-          this.panX += touchX - lastTouchX;
-          this.panY += touchY - lastTouchY;
-          lastTouchX = touchX;
-          lastTouchY = touchY;
-          this.updateTransform();
-        }
-      },
-      { passive: false }
-    );
   }
 
   private render(): HTMLElement {
@@ -121,62 +41,12 @@ export class SystemMapModal {
     // Header
     const header = createElement('div', 'system-map-header');
     const titleGroup = createElement('div', 'system-map-title-group');
-    const iconBadge = createElement('div', 'system-map-icon-badge', '🚊');
+    const iconBadge = createElement('div', 'system-map-icon-badge', ICONS.train);
     const textGroup = createElement('div', 'system-map-text');
     const title = createElement('h3', 'system-map-title', 'Sound Transit Link Map');
-    const subtitle = createElement(
-      'div',
-      'system-map-subtitle',
-      'Official schematic line diagram • 1 Line (Green) & 2 Line (Blue)'
-    );
-    textGroup.appendChild(title);
-    textGroup.appendChild(subtitle);
-    titleGroup.appendChild(iconBadge);
-    titleGroup.appendChild(textGroup);
 
-    const actions = createElement('div', 'system-map-header-actions');
-
-    const closeBtn = createElement('button', 'icon-btn', ICONS.close);
-    closeBtn.title = 'Close Link Map';
-    closeBtn.onclick = () => this.close();
-
-    actions.appendChild(closeBtn);
-
-    header.appendChild(titleGroup);
-    header.appendChild(actions);
-
-    // Map Viewport Body
-    const body = createElement('div', 'system-map-body');
-
-    // Floating Zoom Controls
-    const controls = createElement('div', 'map-floating-controls');
-    const zoomInBtn = createElement('button', 'map-zoom-btn', '+');
-    zoomInBtn.title = 'Zoom In';
-    zoomInBtn.onclick = () => this.zoom(0.2);
-
-    const zoomOutBtn = createElement('button', 'map-zoom-btn', '−');
-    zoomOutBtn.title = 'Zoom Out';
-    zoomOutBtn.onclick = () => this.zoom(-0.2);
-
-    const resetBtn = createElement('button', 'map-zoom-btn', '⟲');
-    resetBtn.title = 'Reset Map View';
-    resetBtn.onclick = () => this.resetView();
-
-    controls.appendChild(zoomInBtn);
-    controls.appendChild(zoomOutBtn);
-    controls.appendChild(resetBtn);
-
-    // SVG Canvas
-    this.canvasEl = createElement('div', 'map-svg-canvas');
-    this.canvasEl.innerHTML = this.generateOfficialSchematicSvg();
-    body.appendChild(this.canvasEl);
-    body.appendChild(controls);
-
-    // Footer with Legend & Official Link
-    const footer = createElement('div', 'system-map-footer');
-    const legend = createElement('div', 'system-map-legend');
-
-    legend.innerHTML = `
+    const headerLegend = createElement('div', 'system-map-header-legend');
+    headerLegend.innerHTML = `
       <div class="map-legend-item">
         <span class="map-legend-line-sample line-1"></span>
         <span><strong>1 Line</strong> (Lynnwood ⇄ Angle Lake)</span>
@@ -195,13 +65,35 @@ export class SystemMapModal {
     officialLink.href = 'https://www.soundtransit.org/ride-with-us/stations/link-light-rail-stations';
     officialLink.target = '_blank';
     officialLink.rel = 'noopener noreferrer';
+    headerLegend.appendChild(officialLink);
 
-    footer.appendChild(legend);
-    footer.appendChild(officialLink);
+    textGroup.appendChild(title);
+    textGroup.appendChild(headerLegend);
+    titleGroup.appendChild(iconBadge);
+    titleGroup.appendChild(textGroup);
+
+    const actions = createElement('div', 'system-map-header-actions');
+
+    const closeBtn = createElement('button', 'icon-btn modal-close-btn', ICONS.close);
+    closeBtn.setAttribute('aria-label', 'Close Link Map');
+    closeBtn.title = 'Close Link Map';
+    closeBtn.onclick = () => this.close();
+
+    actions.appendChild(closeBtn);
+
+    header.appendChild(titleGroup);
+    header.appendChild(actions);
+
+    // Map Viewport Body (Naturally scrollable image-like container)
+    this.bodyEl = createElement('div', 'system-map-body');
+
+    // SVG Canvas Wrapper
+    const canvasEl = createElement('div', 'map-svg-canvas');
+    canvasEl.innerHTML = this.generateOfficialSchematicSvg();
+    this.bodyEl.appendChild(canvasEl);
 
     container.appendChild(header);
-    container.appendChild(body);
-    container.appendChild(footer);
+    container.appendChild(this.bodyEl);
     overlay.appendChild(container);
 
     overlay.onclick = (e) => {
@@ -343,7 +235,6 @@ export class SystemMapModal {
       </g>
     `;
   }
-
 
   private renderLine1Station(
     id: string,
