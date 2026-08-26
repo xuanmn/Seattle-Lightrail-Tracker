@@ -62,7 +62,12 @@ export class SettingsModal {
 
     // 24 Hour Clock
     const timeGroup = createElement('div', 'form-group form-group-row settings-row');
-    const timeLabel = createElement('label', 'form-label form-label-inline', 'Use 24-Hour Time Format');
+    const timeLabelWrap = createElement('div', 'settings-label-wrap');
+    const timeLabel = createElement('label', 'form-label form-label-inline', '24-Hour Clock Format');
+    timeLabel.setAttribute('for', 'toggle-24h-format');
+    const timeDesc = createElement('div', 'settings-desc', 'Display arrival departure times as 14:05 instead of 2:05 PM.');
+    timeLabelWrap.appendChild(timeLabel);
+    timeLabelWrap.appendChild(timeDesc);
 
     const switchLabel = createElement('label', 'toggle-switch');
     this.timeFormatCheckbox = createElement('input') as HTMLInputElement;
@@ -73,9 +78,8 @@ export class SettingsModal {
     switchLabel.appendChild(this.timeFormatCheckbox);
     switchLabel.appendChild(slider);
 
-    timeGroup.appendChild(timeLabel);
+    timeGroup.appendChild(timeLabelWrap);
     timeGroup.appendChild(switchLabel);
-
     body.appendChild(timeGroup);
 
     // Footer
@@ -97,3 +101,4 @@ export class SettingsModal {
     return overlay;
   }
 }
+

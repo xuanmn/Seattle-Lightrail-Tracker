@@ -61,6 +61,7 @@ class TransitTrackerApp {
     this.settings = getSettings();
     this.activeLine = getActiveLine();
     this.pinnedIds = getPinnedStationIds();
+    this.showOnlyPinned = true; // Always default to My Favorite Stations on startup
     document.body.dataset.activeLine = this.activeLine;
 
     this.initUI();
