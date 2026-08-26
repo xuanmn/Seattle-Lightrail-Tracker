@@ -50,6 +50,8 @@ class TransitTrackerApp {
   private countdownTickTimer?: number;
   private toastTimeout?: number;
   private isFetching: boolean = false;
+  private activeFetchId: number = 0;
+  private lastPollTime: number = Date.now();
 
   constructor() {
     const root = document.getElementById('app');
@@ -61,6 +63,7 @@ class TransitTrackerApp {
     this.pinnedIds = getPinnedStationIds();
 
     this.initUI();
+    this.setupVisibilityListener();
     this.startPolling();
     this.startSecondTicker();
   }
@@ -352,9 +355,32 @@ class TransitTrackerApp {
     this.fetchVisibleArrivals(true);
   }
 
+  private setupVisibilityListener() {
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        // Pause 1-second DOM ticks in background tabs to save battery & CPU
+        if (this.countdownTickTimer) {
+          clearInterval(this.countdownTickTimer);
+          this.countdownTickTimer = undefined;
+        }
+      } else {
+        // Resume ticker and immediately update UI
+        this.startSecondTicker();
+        this.cardComponents.forEach((card) => card.tickCountdowns());
+
+        // If it's been more than 60 seconds since last poll, fetch immediately
+        if (Date.now() - this.lastPollTime >= SYNC_INTERVAL_MS) {
+          this.fetchVisibleArrivals();
+        }
+      }
+    });
+  }
+
   private async fetchVisibleArrivals(isManual: boolean = false) {
     if (this.isFetching) return;
     this.isFetching = true;
+    this.lastPollTime = Date.now();
+    const currentFetchId = ++this.activeFetchId;
 
     const stations = this.getVisibleStations();
     if (stations.length === 0) {
@@ -366,6 +392,9 @@ class TransitTrackerApp {
       const fetchPromises = stations.map(async (station) => {
         try {
           const result = await fetchArrivalsForStation(station);
+          // If a newer fetch was initiated while this one was running, discard old response
+          if (this.activeFetchId !== currentFetchId) return;
+
           const data: StationArrivals = {
             station,
             lastUpdated: Date.now(),
@@ -384,15 +413,19 @@ class TransitTrackerApp {
       });
 
       await Promise.all(fetchPromises);
-      this.staleBannerEl.style.display = 'none';
+      if (this.activeFetchId === currentFetchId) {
+        this.staleBannerEl.style.display = 'none';
+      }
     } catch {
-      if (isManual) {
+      if (isManual && this.activeFetchId === currentFetchId) {
         this.staleBannerEl.style.display = 'flex';
         this.staleBannerEl.textContent =
           'Network connection interrupted. Showing estimated transit schedules while reconnecting...';
       }
     } finally {
-      this.isFetching = false;
+      if (this.activeFetchId === currentFetchId) {
+        this.isFetching = false;
+      }
     }
   }
 

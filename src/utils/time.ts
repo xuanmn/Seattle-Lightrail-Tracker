@@ -81,14 +81,6 @@ export function formatClockTime(epochMs: number, is24Hour: boolean = false): str
   return `${hours}:${minutes} ${ampm}`;
 }
 
-export function formatRelativeTimeAgo(epochMs: number, nowMs: number = Date.now()): string {
-  const diffSec = Math.max(0, Math.floor((nowMs - epochMs) / 1000));
-  if (diffSec < 5) return 'Just now';
-  if (diffSec < 60) return `${diffSec}s ago`;
-  const diffMin = Math.floor(diffSec / 60);
-  return `${diffMin}m ago`;
-}
-
 export function formatSimpleDestination(dest: string): string {
   if (!dest) return 'To Terminal';
   const clean = dest.replace(/^to\s+/i, '').trim();
