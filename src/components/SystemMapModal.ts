@@ -267,9 +267,6 @@ export class SystemMapModal {
         <span>✈️ Airport</span>
       </div>
       <div class="map-legend-item">
-        <span>🚆 Sounder / Amtrak</span>
-      </div>
-      <div class="map-legend-item">
         <span>⛴️ WA State Ferries</span>
       </div>
     `;
@@ -374,7 +371,7 @@ export class SystemMapModal {
         ${this.renderDualCapsuleStation('westlake', 285, 480, 'Westlake', 'Seattle Center Monorail 🚝', 'left')}
         ${this.renderDualCapsuleStation('symphony', 285, 525, 'Symphony', 'University Street / Benaroya Hall', 'left')}
         ${this.renderDualCapsuleStation('pioneer-square', 285, 570, 'Pioneer Square', 'WA State Ferries ⛴️ / Streetcar', 'left')}
-        ${this.renderDualCapsuleStation('international-district-chinatown', 285, 615, 'Intl. District / Chinatown', '1 Line ⇄ 2 Line Transfer • Sounder 🚆 • Amtrak 🚆', 'left', true)}
+        ${this.renderDualCapsuleStation('international-district-chinatown', 285, 615, 'Intl. District / Chinatown', '1 Line ⇄ 2 Line Transfer', 'left', true)}
 
         <!-- ================= LEFT SPINE: 1 LINE SOUTH STATIONS ================= -->
         ${this.renderLine1Station('stadium', 272, 665, 'Stadium', 'Lumen Field / T-Mobile Park', 'left')}
