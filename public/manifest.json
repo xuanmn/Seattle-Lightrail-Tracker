@@ -1,0 +1,26 @@
+{
+  "name": "Seattle Light Rail Tracker",
+  "short_name": "Link Tracker",
+  "description": "Live real-time Sound Transit Link Light Rail departure countdowns and station tracking for Seattle Line 1 and Line 2.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#070a0f",
+  "theme_color": "#0b0f17",
+  "categories": ["transit", "travel", "navigation", "utilities"],
+  "icons": [
+    {
+      "src": "./icons/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icons/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

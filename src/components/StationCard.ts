@@ -20,6 +20,9 @@ export class StationCardComponent {
   private platform1Container!: HTMLElement;
   private platform2Container!: HTMLElement;
 
+  private approachTrackWrap!: HTMLElement;
+  private approachBar!: HTMLElement;
+
   private directionFilter: StationDirectionFilter = 'both';
   private btnBoth!: HTMLButtonElement;
   private btnDir1!: HTMLButtonElement;
@@ -68,6 +71,7 @@ export class StationCardComponent {
   public setDirectionFilter(filter: StationDirectionFilter) {
     this.directionFilter = filter;
     this.updateDirectionFilterUI();
+    this.updateApproachTrack();
     this.callbacks.onDirectionFilterChange?.(this.station.id, filter);
   }
 
@@ -115,6 +119,8 @@ export class StationCardComponent {
       data.direction2.arrivals,
       data.direction2.platform.terminalDestination
     );
+
+    this.updateApproachTrack();
   }
 
   /**
@@ -139,6 +145,61 @@ export class StationCardComponent {
       if (row) {
         row.className = `departure-row ${badge.isNow ? 'arriving-soon' : ''}`;
       }
+    }
+
+    this.updateApproachTrack(now);
+  }
+
+  /**
+   * Updates the live approach track animation when a train is within 5 minutes.
+   */
+  private updateApproachTrack(now: number = (this.currentArrivals?.lastUpdated || Date.now())) {
+    if (!this.currentArrivals || !this.approachTrackWrap) return;
+
+    const candidateArrivals: TransitArrival[] = [];
+    if (this.directionFilter === 'both' || this.directionFilter === 'dir1') {
+      candidateArrivals.push(...(this.currentArrivals.direction1.arrivals || []));
+    }
+    if (this.directionFilter === 'both' || this.directionFilter === 'dir2') {
+      candidateArrivals.push(...(this.currentArrivals.direction2.arrivals || []));
+    }
+
+    if (candidateArrivals.length === 0) {
+      this.approachTrackWrap.classList.remove('active');
+      return;
+    }
+
+    let closestDiffMs = Infinity;
+    let closestArrival: TransitArrival | null = null;
+
+    for (const arr of candidateArrivals) {
+      const targetTime = arr.predictedDepartureTime || arr.scheduledDepartureTime;
+      const diff = targetTime - now;
+      if (diff > -25000 && diff < closestDiffMs) {
+        closestDiffMs = diff;
+        closestArrival = arr;
+      }
+    }
+
+    const APPROACH_WINDOW_MS = 5 * 60 * 1000; // 5 minutes
+
+    if (closestArrival && closestDiffMs <= APPROACH_WINDOW_MS) {
+      this.approachTrackWrap.classList.add('active');
+      const progress = Math.min(
+        100,
+        Math.max(0, ((APPROACH_WINDOW_MS - Math.max(0, closestDiffMs)) / APPROACH_WINDOW_MS) * 100)
+      );
+      this.approachBar.style.width = `${progress}%`;
+
+      const isLine2 =
+        closestArrival.routeName.includes('2') ||
+        closestArrival.destination.includes('Redmond') ||
+        closestArrival.destination.includes('Bellevue');
+
+      const isArriving = closestDiffMs <= 45000;
+      this.approachBar.className = `station-approach-bar ${isLine2 ? 'line-2-approach' : 'line-1-approach'} ${isArriving ? 'arriving-pulse' : ''}`;
+    } else {
+      this.approachTrackWrap.classList.remove('active');
     }
   }
 
@@ -345,6 +406,15 @@ export class StationCardComponent {
     this.platformsEl.appendChild(col2El);
 
     card.appendChild(header);
+
+    // Live Approach Track
+    this.approachTrackWrap = createElement('div', 'station-approach-track-wrap');
+    this.approachBar = createElement('div', 'station-approach-bar');
+    const approachTrain = createElement('div', 'station-approach-train');
+    this.approachBar.appendChild(approachTrain);
+    this.approachTrackWrap.appendChild(this.approachBar);
+    card.appendChild(this.approachTrackWrap);
+
     card.appendChild(this.platformsEl);
 
     this.setLoading();

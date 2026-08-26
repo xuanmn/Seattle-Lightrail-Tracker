@@ -62,6 +62,7 @@ class TransitTrackerApp {
     this.settings = getSettings();
     this.activeLine = getActiveLine();
     this.pinnedIds = getPinnedStationIds();
+    document.body.dataset.activeLine = this.activeLine;
 
     this.initUI();
     this.setupVisibilityListener();
@@ -176,6 +177,7 @@ class TransitTrackerApp {
 
   private switchLine(line: TransitLineId) {
     this.activeLine = line;
+    document.body.dataset.activeLine = line;
     setActiveLine(line);
     this.header.setActiveLine(line);
     this.updateToolbarHeader();
