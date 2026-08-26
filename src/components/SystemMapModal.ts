@@ -457,12 +457,12 @@ export class SystemMapModal {
         </g>
 
         <!-- ================= LEFT SPINE: SHARED 1 LINE & 2 LINE STATIONS ================= -->
-        ${this.renderDualCapsuleStation('lynnwood-city-center', 285, 75, 'Lynnwood City Center', '1 Line & 2 Line North Terminus', 'left', true)}
+        ${this.renderDualCapsuleStation('lynnwood-city-center', 285, 75, 'Lynnwood City Center', 'Park & Ride', 'left', true)}
         ${this.renderDualCapsuleStation('mountlake-terrace', 285, 120, 'Mountlake Terrace', 'Park & Ride', 'left')}
-        ${this.renderDualCapsuleStation('shoreline-north-185th', 285, 165, 'Shoreline North/185th', '', 'left')}
-        ${this.renderDualCapsuleStation('shoreline-south-148th', 285, 210, 'Shoreline South/148th', '', 'left')}
-        ${this.renderDualCapsuleStation('northgate', 285, 255, 'Northgate', 'Kraken Community Iceplex', 'left')}
-        ${this.renderDualCapsuleStation('roosevelt', 285, 300, 'Roosevelt', '', 'left')}
+        ${this.renderDualCapsuleStation('shoreline-north-185th', 285, 165, 'Shoreline North/185th', 'Park & Ride', 'left')}
+        ${this.renderDualCapsuleStation('shoreline-south-148th', 285, 210, 'Shoreline South/148th', 'Park & Ride', 'left')}
+        ${this.renderDualCapsuleStation('northgate', 285, 255, 'Northgate', 'Park & Ride', 'left')}
+        ${this.renderDualCapsuleStation('roosevelt', 285, 300, 'Roosevelt', 'Park & Ride', 'left')}
         ${this.renderDualCapsuleStation('u-district', 285, 345, 'U District', 'UW Tower / The Ave', 'left')}
         ${this.renderDualCapsuleStation('university-of-washington', 285, 390, 'University of Washington', 'Husky Stadium / UW Medical', 'left')}
         ${this.renderDualCapsuleStation('capitol-hill', 285, 435, 'Capitol Hill', 'Broadway / First Hill Streetcar', 'left')}
@@ -488,7 +488,7 @@ export class SystemMapModal {
         ${this.renderLine1Station('angle-lake', 272, 1070, 'Angle Lake', 'Park & Ride', 'left')}
         ${this.renderLine1Station('kent-des-moines', 272, 1115, 'Kent Des Moines', 'Highline College', 'left')}
         ${this.renderLine1Station('star-lake', 272, 1160, 'Star Lake', 'Park & Ride', 'left')}
-        ${this.renderLine1Station('federal-way-downtown', 272, 1205, 'Federal Way Downtown', '1 Line South Terminus', 'left', true)}
+        ${this.renderLine1Station('federal-way-downtown', 272, 1205, 'Federal Way Downtown', 'Park & Ride', 'left', true)}
 
         <!-- ================= CONNECTING SEGMENT (I-90 CORRIDOR) ================= -->
         ${this.renderLine2Station('judkins-park', 365, 665, 'Judkins Park', 'Rainier Ave S', 'bottom')}
@@ -500,7 +500,7 @@ export class SystemMapModal {
         ${this.renderLine2Station('bellevue-downtown', 540, 509, 'Bellevue Downtown', 'Bellevue Transit Center', 'right', true)}
         ${this.renderLine2Station('wilburton', 540, 447, 'Wilburton', 'Overlake Medical Center', 'right')}
         ${this.renderLine2Station('spring-district', 540, 385, 'Spring District', '120th Station', 'right')}
-        ${this.renderLine2Station('bel-red', 540, 323, 'BelRed', '130th Station', 'right')}
+        ${this.renderLine2Station('bel-red', 540, 323, 'BelRed', 'Park & Ride', 'right')}
         ${this.renderLine2Station('overlake-village', 540, 261, 'Overlake Village', '', 'right')}
         ${this.renderLine2Station('redmond-technology', 540, 199, 'Redmond Technology', 'Microsoft Campus / Transit Center', 'right', true)}
         ${this.renderLine2Station('marymoor-village', 540, 137, 'Marymoor Village', 'Park & Ride', 'right')}
