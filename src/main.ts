@@ -285,7 +285,8 @@ class TransitTrackerApp {
     const config = LINE_CONFIG[this.activeLine];
     const emptyCard = createElement('div', 'empty-dashboard-card');
 
-    const icon = createElement('div', 'empty-dashboard-icon', ICONS.star);
+    const iconClass = this.activeLine === 'line-1' ? 'line-1-icon' : 'line-2-icon';
+    const icon = createElement('div', `empty-dashboard-icon ${iconClass}`, ICONS.star);
     const title = createElement(
       'h3',
       'empty-dashboard-title',

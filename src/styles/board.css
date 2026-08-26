@@ -488,11 +488,24 @@
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: rgba(56, 189, 248, 0.1);
-  color: var(--text-accent);
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all var(--transition-fast);
+}
+
+.empty-dashboard-icon.line-1-icon {
+  background: rgba(0, 133, 66, 0.15);
+  color: var(--st-green-light);
+  box-shadow: 0 0 16px rgba(0, 133, 66, 0.25);
+  border: 1px solid rgba(0, 133, 66, 0.3);
+}
+
+.empty-dashboard-icon.line-2-icon {
+  background: rgba(0, 114, 206, 0.15);
+  color: var(--st-blue-light);
+  box-shadow: 0 0 16px rgba(0, 114, 206, 0.25);
+  border: 1px solid rgba(0, 114, 206, 0.3);
 }
 
 .empty-dashboard-icon svg {
