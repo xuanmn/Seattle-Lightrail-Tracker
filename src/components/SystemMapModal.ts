@@ -42,7 +42,7 @@ export class SystemMapModal {
   }
 
   private zoom(delta: number) {
-    const newScale = Math.min(2.5, Math.max(0.65, this.currentScale + delta));
+    const newScale = Math.min(2.5, Math.max(0.6, this.currentScale + delta));
     this.currentScale = newScale;
     this.updateTransform();
   }
@@ -92,7 +92,6 @@ export class SystemMapModal {
   }
 
   private setupEventListeners() {
-    // Keyboard Escape
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && this.overlay.classList.contains('open')) {
         this.close();
@@ -102,7 +101,6 @@ export class SystemMapModal {
     const body = this.overlay.querySelector('.system-map-body') as HTMLElement;
     if (!body) return;
 
-    // Mouse Drag
     body.addEventListener('mousedown', (e) => {
       if ((e.target as HTMLElement).closest('.map-floating-controls')) return;
       this.isDragging = true;
@@ -125,7 +123,6 @@ export class SystemMapModal {
       }
     });
 
-    // Wheel Zoom
     body.addEventListener(
       'wheel',
       (e) => {
@@ -136,7 +133,6 @@ export class SystemMapModal {
       { passive: false }
     );
 
-    // Touch Support
     let lastTouchX = 0;
     let lastTouchY = 0;
 
@@ -147,18 +143,22 @@ export class SystemMapModal {
       }
     });
 
-    body.addEventListener('touchmove', (e) => {
-      if (e.touches.length === 1) {
-        e.preventDefault();
-        const touchX = e.touches[0].clientX;
-        const touchY = e.touches[0].clientY;
-        this.panX += touchX - lastTouchX;
-        this.panY += touchY - lastTouchY;
-        lastTouchX = touchX;
-        lastTouchY = touchY;
-        this.updateTransform();
-      }
-    }, { passive: false });
+    body.addEventListener(
+      'touchmove',
+      (e) => {
+        if (e.touches.length === 1) {
+          e.preventDefault();
+          const touchX = e.touches[0].clientX;
+          const touchY = e.touches[0].clientY;
+          this.panX += touchX - lastTouchX;
+          this.panY += touchY - lastTouchY;
+          lastTouchX = touchX;
+          lastTouchY = touchY;
+          this.updateTransform();
+        }
+      },
+      { passive: false }
+    );
   }
 
   private render(): HTMLElement {
@@ -168,13 +168,13 @@ export class SystemMapModal {
     // Header
     const header = createElement('div', 'system-map-header');
     const titleGroup = createElement('div', 'system-map-title-group');
-    const iconBadge = createElement('div', 'system-map-icon-badge', '🗺️');
+    const iconBadge = createElement('div', 'system-map-icon-badge', '🚊');
     const textGroup = createElement('div', 'system-map-text');
-    const title = createElement('h3', 'system-map-title', 'Link Light Rail System Map');
+    const title = createElement('h3', 'system-map-title', 'Sound Transit Link System Map');
     const subtitle = createElement(
       'div',
       'system-map-subtitle',
-      'Sound Transit 1 Line (Lynnwood ⇄ Angle Lake) & 2 Line (Seattle ⇄ Redmond)'
+      'Official Link Light Rail schematic diagram • 1 Line (Green) & 2 Line (Blue)'
     );
     textGroup.appendChild(title);
     textGroup.appendChild(subtitle);
@@ -222,7 +222,7 @@ export class SystemMapModal {
     // Map Viewport Body
     const body = createElement('div', 'system-map-body');
 
-    // Floating Controls
+    // Floating Zoom Controls
     const controls = createElement('div', 'map-floating-controls');
     const zoomInBtn = createElement('button', 'map-zoom-btn', '+');
     zoomInBtn.title = 'Zoom In';
@@ -242,7 +242,7 @@ export class SystemMapModal {
 
     // SVG Canvas
     this.canvasEl = createElement('div', 'map-svg-canvas');
-    this.canvasEl.innerHTML = this.generateSvgMap();
+    this.canvasEl.innerHTML = this.generateOfficialSchematicSvg();
     body.appendChild(this.canvasEl);
     body.appendChild(controls);
 
@@ -253,28 +253,31 @@ export class SystemMapModal {
     legend.innerHTML = `
       <div class="map-legend-item">
         <span class="map-legend-line-sample line-1"></span>
-        <span><strong>1 Line</strong> (Green)</span>
+        <span><strong>1 Line</strong> (Lynnwood ⇄ Angle Lake)</span>
       </div>
       <div class="map-legend-item">
         <span class="map-legend-line-sample line-2"></span>
-        <span><strong>2 Line</strong> (Blue)</span>
+        <span><strong>2 Line</strong> (Lynnwood / Seattle ⇄ Downtown Redmond)</span>
       </div>
       <div class="map-legend-item">
         <span class="map-legend-transfer-sample"></span>
         <span>Transfer Station</span>
       </div>
       <div class="map-legend-item">
-        <span>✈️ SeaTac Airport</span>
+        <span>✈️ Airport Terminal</span>
       </div>
       <div class="map-legend-item">
-        <span>🚆 Amtrak / Sounder</span>
+        <span>🚆 Sounder / Amtrak</span>
+      </div>
+      <div class="map-legend-item">
+        <span>⛴️ WA State Ferries</span>
       </div>
     `;
 
     const officialLink = createElement(
       'a',
       'map-official-link',
-      `Official Sound Transit Stations ↗`
+      `Official Sound Transit Directory ↗`
     ) as HTMLAnchorElement;
     officialLink.href = 'https://www.soundtransit.org/ride-with-us/stations/link-light-rail-stations';
     officialLink.target = '_blank';
@@ -295,172 +298,255 @@ export class SystemMapModal {
     return overlay;
   }
 
-  private generateSvgMap(): string {
+  private generateOfficialSchematicSvg(): string {
     return `
-      <svg class="system-map-svg" viewBox="0 0 950 960" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+      <svg class="system-map-svg" viewBox="0 0 1080 1100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <linearGradient id="lakeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="rgba(56, 189, 248, 0.08)" />
-            <stop offset="100%" stop-color="rgba(14, 165, 233, 0.03)" />
-          </linearGradient>
-          <filter id="glow-green" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="3" result="blur" />
+          <filter id="track-glow-green" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="4" result="blur" />
             <feComposite in="SourceGraphic" in2="blur" operator="over" />
           </filter>
-          <filter id="glow-blue" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="3" result="blur" />
+          <filter id="track-glow-blue" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="4" result="blur" />
             <feComposite in="SourceGraphic" in2="blur" operator="over" />
           </filter>
         </defs>
 
-        <!-- Geographic Waterways -->
-        <!-- Puget Sound -->
-        <path class="map-water-area" d="M 0,0 L 150,0 Q 170,300 130,500 T 150,960 L 0,960 Z" />
-        <text x="35" y="470" class="map-water-label">Puget Sound</text>
+        <!-- Subtle Background Grid -->
+        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255, 255, 255, 0.02)" stroke-width="1"/>
+        </pattern>
+        <rect width="100%" height="100%" fill="url(#grid)" />
 
-        <!-- Lake Washington -->
-        <path class="map-water-area" d="M 390,180 Q 420,380 400,560 Q 380,680 430,820 L 480,820 Q 460,680 480,560 Q 520,380 470,180 Z" />
-        <text x="415" y="430" class="map-water-label" transform="rotate(75 415,430)">Lake Washington</text>
+        <!-- Water Features (Dark Slate / Navy Accents) -->
+        <!-- Puget Sound (West) -->
+        <path class="map-water-area" d="M 0,0 L 160,0 Q 180,350 140,650 Q 110,850 150,1100 L 0,1100 Z" />
+        <text x="45" y="550" class="map-water-label">Puget Sound</text>
 
-        <!-- I-90 Bridge Label -->
-        <text x="375" y="555" fill="rgba(255,255,255,0.4)" font-size="8.5" font-weight="600">I-90 Lake Washington Bridge</text>
+        <!-- Lake Washington (East of Seattle spine) -->
+        <path class="map-water-area" d="M 450,150 Q 480,380 470,590 Q 450,720 480,950 L 550,950 Q 530,720 540,590 Q 570,380 530,150 Z" />
+        <text x="495" y="460" class="map-water-label" transform="rotate(75 495,460)">Lake Washington</text>
 
-        <!-- ================= TRACKS ================= -->
+        <!-- I-90 Floating Bridge Corridor -->
+        <rect x="420" y="566" width="180" height="18" rx="4" fill="rgba(56, 189, 248, 0.08)" stroke="rgba(56, 189, 248, 0.25)" stroke-dasharray="4, 3" />
+        <text x="510" y="560" fill="rgba(148, 163, 184, 0.7)" font-size="9" font-weight="700" text-anchor="middle">I-90 Lake Washington Bridge</text>
 
-        <!-- 1 Line Glow & Main Track (Lynnwood -> Angle Lake) -->
+        <!-- ================= TRACK PATHS ================= -->
+
+        <!-- 1 Line Glow (Emerald Green) -->
         <path class="map-track-path line-1-glow map-elem-line-1"
-          d="M 290,60 L 290,220 Q 290,260 260,300 L 230,360 Q 210,410 210,460 L 210,570 Q 210,610 230,640 L 270,700 L 270,810 Q 270,850 240,875 L 240,920" />
-        <path class="map-track-path line-1-main map-elem-line-1"
-          d="M 290,60 L 290,220 Q 290,260 260,300 L 230,360 Q 210,410 210,460 L 210,570 Q 210,610 230,640 L 270,700 L 270,810 Q 270,850 240,875 L 240,920" />
+          d="M 315,80 L 315,1005" />
 
-        <!-- 2 Line Glow & Main Track (Lynnwood -> Seattle Tunnel -> Cross Lake -> Redmond) -->
-        <!-- Shared tunnel overlay segment -->
+        <!-- 2 Line Glow (Cobalt Blue) -->
         <path class="map-track-path line-2-glow map-elem-line-2 map-elem-shared"
-          d="M 290,60 L 290,220 Q 290,260 260,300 L 230,360 Q 210,410 210,460 L 210,570" />
-        
-        <!-- 2 Line Eastside Branch -->
+          d="M 325,80 L 325,575" />
         <path class="map-track-path line-2-glow map-elem-line-2"
-          d="M 210,570 L 320,570 L 430,570 L 530,570 Q 560,570 580,540 L 610,490 Q 630,450 660,420 L 730,340 Q 760,300 780,260 L 820,200" />
+          d="M 325,575 L 610,575 L 980,205" />
+
+        <!-- 1 Line Solid Track -->
+        <path class="map-track-path line-1-main map-elem-line-1"
+          d="M 315,80 L 315,1005" />
+
+        <!-- 2 Line Solid Track -->
+        <path class="map-track-path line-2-main map-elem-line-2 map-elem-shared"
+          d="M 325,80 L 325,575" />
         <path class="map-track-path line-2-main map-elem-line-2"
-          d="M 210,570 L 320,570 L 430,570 L 530,570 Q 560,570 580,540 L 610,490 Q 630,450 660,420 L 730,340 Q 760,300 780,260 L 820,200" />
+          d="M 325,575 L 610,575 L 980,205" />
 
-        <!-- ================= STATIONS ================= -->
+        <!-- ================= TERMINUS CAPS & LINE BULLETS ================= -->
 
-        <!-- Shared Line 1 & Line 2 North Stations -->
-        ${this.renderStation('lynnwood-city-center', 290, 60, 'Lynnwood City Center', '1 Line & 2 Line Terminus', 'right', true, 'both')}
-        ${this.renderStation('mountlake-terrace', 290, 100, 'Mountlake Terrace', '', 'right', false, 'both')}
-        ${this.renderStation('shoreline-north-185th', 290, 140, 'Shoreline North/185th', '', 'right', false, 'both')}
-        ${this.renderStation('shoreline-south-148th', 290, 180, 'Shoreline South/148th', '', 'right', false, 'both')}
-        ${this.renderStation('northgate', 290, 220, 'Northgate', '', 'right', false, 'both')}
-        ${this.renderStation('roosevelt', 270, 280, 'Roosevelt', '', 'left', false, 'both')}
-        ${this.renderStation('u-district', 245, 330, 'U District', '', 'left', false, 'both')}
-        ${this.renderStation('university-of-washington', 225, 380, 'University of Washington', 'Husky Stadium', 'left', false, 'both')}
-        ${this.renderStation('capitol-hill', 210, 425, 'Capitol Hill', '', 'left', false, 'both')}
+        <!-- North Terminus (Lynnwood City Center) -->
+        <g class="map-terminus-badge map-elem-line-1 map-elem-line-2" transform="translate(320, 50)">
+          <rect x="-42" y="-18" width="84" height="26" rx="13" fill="#0f172a" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" />
+          <circle cx="-16" cy="-5" r="9" fill="#008542" />
+          <text x="-16" y="-1.5" fill="#ffffff" font-size="11" font-weight="800" text-anchor="middle">1</text>
+          <circle cx="16" cy="-5" r="9" fill="#0072CE" />
+          <text x="16" y="-1.5" fill="#ffffff" font-size="11" font-weight="800" text-anchor="middle">2</text>
+        </g>
+
+        <!-- 1 Line South Terminus (Angle Lake) -->
+        <g class="map-terminus-badge map-elem-line-1" transform="translate(315, 1035)">
+          <rect x="-24" y="-14" width="48" height="24" rx="12" fill="#0f172a" stroke="rgba(0,133,66,0.5)" stroke-width="1.5" />
+          <circle cx="0" cy="-2" r="9" fill="#008542" />
+          <text x="0" y="1.5" fill="#ffffff" font-size="11" font-weight="800" text-anchor="middle">1</text>
+        </g>
+
+        <!-- 2 Line East Terminus (Downtown Redmond) -->
+        <g class="map-terminus-badge map-elem-line-2" transform="translate(980, 180)">
+          <rect x="-24" y="-14" width="48" height="24" rx="12" fill="#0f172a" stroke="rgba(0,114,206,0.5)" stroke-width="1.5" />
+          <circle cx="0" cy="-2" r="9" fill="#0072CE" />
+          <text x="0" y="1.5" fill="#ffffff" font-size="11" font-weight="800" text-anchor="middle">2</text>
+        </g>
+
+        <!-- ================= SHARED 1 LINE & 2 LINE STATIONS ================= -->
+        ${this.renderDualPlatformStation('lynnwood-city-center', 320, 80, 'Lynnwood City Center', '1 Line & 2 Line North Terminus', 'right', true)}
+        ${this.renderDualPlatformStation('mountlake-terrace', 320, 120, 'Mountlake Terrace', 'Park & Ride', 'right')}
+        ${this.renderDualPlatformStation('shoreline-north-185th', 320, 160, 'Shoreline North/185th', '', 'right')}
+        ${this.renderDualPlatformStation('shoreline-south-148th', 320, 200, 'Shoreline South/148th', '', 'right')}
+        ${this.renderDualPlatformStation('northgate', 320, 240, 'Northgate', 'Kraken Community Iceplex', 'right')}
+        ${this.renderDualPlatformStation('roosevelt', 320, 280, 'Roosevelt', '', 'right')}
+        ${this.renderDualPlatformStation('u-district', 320, 320, 'U District', 'UW Tower / The Ave', 'right')}
+        ${this.renderDualPlatformStation('university-of-washington', 320, 360, 'University of Washington', 'Husky Stadium / UW Medical', 'right')}
+        ${this.renderDualPlatformStation('capitol-hill', 320, 405, 'Capitol Hill', 'Broadway / First Hill Streetcar', 'right')}
 
         <!-- Downtown Seattle Shared Tunnel Interchanges -->
-        ${this.renderTransferStation('westlake', 210, 465, 'Westlake', 'Downtown Seattle / Monorail', 'left')}
-        ${this.renderTransferStation('symphony', 210, 500, 'Symphony', 'University Street', 'left')}
-        ${this.renderTransferStation('pioneer-square', 210, 535, 'Pioneer Square', 'Ferries / Colman Dock', 'left')}
-        ${this.renderTransferStation('international-district-chinatown', 210, 570, 'Intl. District / Chinatown', '1 Line ⇄ 2 Line Transfer • Sounder 🚆', 'left', true)}
+        ${this.renderTransferCapsule('westlake', 320, 450, 'Westlake', 'Seattle Center Monorail / South Lake Union Streetcar', 'left')}
+        ${this.renderTransferCapsule('symphony', 320, 490, 'Symphony', 'University Street / Benaroya Hall', 'left')}
+        ${this.renderTransferCapsule('pioneer-square', 320, 530, 'Pioneer Square', 'WA State Ferries ⛴️ / First Hill Streetcar', 'left')}
+        ${this.renderTransferCapsule('international-district-chinatown', 320, 575, 'Intl. District / Chinatown', '1 Line ⇄ 2 Line Transfer • Sounder 🚆 • Amtrak 🚆', 'left', true)}
 
-        <!-- 2 Line Eastside Stations -->
-        ${this.renderStation('judkins-park', 320, 570, 'Judkins Park', '', 'top', false, 'line-2')}
-        ${this.renderStation('mercer-island', 430, 570, 'Mercer Island', '', 'top', false, 'line-2')}
-        ${this.renderStation('south-bellevue', 530, 570, 'South Bellevue', 'Park & Ride', 'bottom', true, 'line-2')}
-        ${this.renderStation('east-main', 580, 540, 'East Main', '', 'right', false, 'line-2')}
-        ${this.renderStation('bellevue-downtown', 610, 490, 'Bellevue Downtown', 'Transit Center', 'right', true, 'line-2')}
-        ${this.renderStation('wilburton', 635, 455, 'Wilburton', '', 'right', false, 'line-2')}
-        ${this.renderStation('spring-district', 660, 420, 'Spring District', '', 'right', false, 'line-2')}
-        ${this.renderStation('bel-red', 695, 380, 'BelRed', '130th Station', 'right', false, 'line-2')}
-        ${this.renderStation('overlake-village', 730, 340, 'Overlake Village', '', 'right', false, 'line-2')}
-        ${this.renderStation('redmond-technology', 760, 300, 'Redmond Technology', 'Microsoft Campus', 'right', false, 'line-2')}
-        ${this.renderStation('marymoor-village', 790, 250, 'Marymoor Village', '', 'right', false, 'line-2')}
-        ${this.renderStation('downtown-redmond', 820, 200, 'Downtown Redmond', '2 Line East Terminus', 'right', true, 'line-2')}
+        <!-- ================= 2 LINE EASTSIDE STATIONS ================= -->
+        ${this.renderLine2Station('judkins-park', 415, 575, 'Judkins Park', 'I-90 & Rainier Ave', 'bottom')}
+        ${this.renderLine2Station('mercer-island', 510, 575, 'Mercer Island', 'I-90 Park & Ride', 'bottom')}
+        ${this.renderLine2Station('south-bellevue', 605, 575, 'South Bellevue', 'Park & Ride / Mercer Slough', 'bottom', true)}
+        ${this.renderLine2Station('east-main', 655, 530, 'East Main', '', 'right')}
+        ${this.renderLine2Station('bellevue-downtown', 700, 485, 'Bellevue Downtown', 'Bellevue Transit Center 🚌', 'right', true)}
+        ${this.renderLine2Station('wilburton', 740, 445, 'Wilburton', 'Overlake Medical Center', 'right')}
+        ${this.renderLine2Station('spring-district', 780, 405, 'Spring District', '120th Station', 'right')}
+        ${this.renderLine2Station('bel-red', 820, 365, 'BelRed', '130th Station', 'right')}
+        ${this.renderLine2Station('overlake-village', 860, 325, 'Overlake Village', '', 'right')}
+        ${this.renderLine2Station('redmond-technology', 900, 285, 'Redmond Technology', 'Microsoft Campus / Transit Center 🚌', 'right', true)}
+        ${this.renderLine2Station('marymoor-village', 940, 245, 'Marymoor Village', 'Park & Ride', 'right')}
+        ${this.renderLine2Station('downtown-redmond', 980, 205, 'Downtown Redmond', '2 Line East Terminus', 'right', true)}
 
-        <!-- 1 Line South Stations -->
-        ${this.renderStation('stadium', 210, 610, 'Stadium', 'Lumen Field / T-Mobile Park', 'left', false, 'line-1')}
-        ${this.renderStation('sodo', 225, 640, 'SODO', '', 'left', false, 'line-1')}
-        ${this.renderStation('beacon-hill', 250, 675, 'Beacon Hill', 'Tunnel Station', 'right', false, 'line-1')}
-        ${this.renderStation('mount-baker', 270, 710, 'Mount Baker', 'Transit Center', 'right', false, 'line-1')}
-        ${this.renderStation('columbia-city', 270, 745, 'Columbia City', '', 'right', false, 'line-1')}
-        ${this.renderStation('othello', 270, 780, 'Othello', '', 'right', false, 'line-1')}
-        ${this.renderStation('rainier-beach', 270, 815, 'Rainier Beach', '', 'right', false, 'line-1')}
-        ${this.renderStation('tukwila-intl-blvd', 250, 855, 'Tukwila Intl. Blvd.', 'Park & Ride', 'right', false, 'line-1')}
-        ${this.renderStation('seatac-airport', 240, 890, 'SeaTac / Airport', '✈️ Main Terminal Link', 'right', true, 'line-1')}
-        ${this.renderStation('angle-lake', 240, 925, 'Angle Lake', '1 Line South Terminus', 'right', true, 'line-1')}
+        <!-- ================= 1 LINE SOUTH STATIONS ================= -->
+        ${this.renderLine1Station('stadium', 315, 620, 'Stadium', 'Lumen Field / T-Mobile Park', 'right')}
+        ${this.renderLine1Station('sodo', 315, 660, 'SODO', 'Busway', 'right')}
+        ${this.renderLine1Station('beacon-hill', 315, 700, 'Beacon Hill', 'Deep Tunnel Station', 'right')}
+        ${this.renderLine1Station('mount-baker', 315, 740, 'Mount Baker', 'Transit Center 🚌', 'right')}
+        ${this.renderLine1Station('columbia-city', 315, 780, 'Columbia City', 'Historic District', 'right')}
+        ${this.renderLine1Station('othello', 315, 820, 'Othello', '', 'right')}
+        ${this.renderLine1Station('rainier-beach', 315, 860, 'Rainier Beach', '', 'right')}
+        ${this.renderLine1Station('tukwila-intl-blvd', 315, 905, 'Tukwila Intl. Blvd.', 'Airport Park & Ride', 'right')}
+        ${this.renderAirportStation('seatac-airport', 315, 955, 'SeaTac / Airport', "Seattle-Tacoma Int'l Airport ✈️", 'right')}
+        ${this.renderLine1Station('angle-lake', 315, 1005, 'Angle Lake', '1 Line South Terminus', 'right', true)}
       </svg>
     `;
   }
 
-  private renderStation(
+  private renderDualPlatformStation(
     id: string,
     x: number,
     y: number,
     name: string,
     sub: string,
-    labelPos: 'left' | 'right' | 'top' | 'bottom',
-    isTerminus: boolean = false,
-    line: 'line-1' | 'line-2' | 'both' = 'both'
+    labelPos: 'left' | 'right' = 'right',
+    isTerminus: boolean = false
   ): string {
-    const lineClass =
-      line === 'both'
-        ? 'map-elem-line-1 map-elem-line-2 map-elem-shared'
-        : line === 'line-1'
-        ? 'map-elem-line-1'
-        : 'map-elem-line-2';
-
-    const strokeColor = line === 'line-2' ? '#0072CE' : '#008542';
-    const r = isTerminus ? 6 : 4.5;
-
-    let textX = x;
-    let textY = y;
-    let textAnchor = 'start';
-
-    if (labelPos === 'right') {
-      textX = x + 12;
-      textY = y + 4;
-      textAnchor = 'start';
-    } else if (labelPos === 'left') {
-      textX = x - 12;
-      textY = y + 4;
-      textAnchor = 'end';
-    } else if (labelPos === 'top') {
-      textX = x;
-      textY = y - 10;
-      textAnchor = 'middle';
-    } else if (labelPos === 'bottom') {
-      textX = x;
-      textY = y + 16;
-      textAnchor = 'middle';
-    }
+    const textX = labelPos === 'right' ? x + 24 : x - 24;
+    const textAnchor = labelPos === 'right' ? 'start' : 'end';
+    const strokeWidth = isTerminus ? '2.5' : '2';
 
     return `
-      <g class="map-station-node ${lineClass}" id="map-node-${id}">
-        <circle class="map-station-circle" cx="${x}" cy="${y}" r="${r}" fill="#ffffff" stroke="${strokeColor}" />
-        <text class="map-station-label" x="${textX}" y="${textY}" text-anchor="${textAnchor}">${name}</text>
-        ${sub ? `<text class="map-station-sublabel" x="${textX}" y="${textY + 11}" text-anchor="${textAnchor}">${sub}</text>` : ''}
+      <g class="map-station-node map-elem-line-1 map-elem-line-2 map-elem-shared" id="map-node-${id}">
+        <!-- Dual capsule tick -->
+        <rect x="${x - 14}" y="${y - 6}" width="28" height="12" rx="6" fill="#0f172a" stroke="#ffffff" stroke-width="${strokeWidth}" />
+        <circle cx="${x - 5}" cy="${y}" r="3.5" fill="#008542" />
+        <circle cx="${x + 5}" cy="${y}" r="3.5" fill="#0072CE" />
+        <text class="map-station-label" x="${textX}" y="${y + 4.5}" text-anchor="${textAnchor}">${name}</text>
+        ${sub ? `<text class="map-station-sublabel" x="${textX}" y="${y + 15}" text-anchor="${textAnchor}">${sub}</text>` : ''}
       </g>
     `;
   }
 
-  private renderTransferStation(
+  private renderTransferCapsule(
     id: string,
     x: number,
     y: number,
     name: string,
     sub: string,
     labelPos: 'left' | 'right' = 'left',
-    isHub: boolean = false
+    isMajorHub: boolean = false
   ): string {
-    const textX = labelPos === 'left' ? x - 15 : x + 15;
+    const textX = labelPos === 'left' ? x - 26 : x + 26;
     const textAnchor = labelPos === 'left' ? 'end' : 'start';
 
     return `
       <g class="map-station-node map-elem-line-1 map-elem-line-2 map-elem-shared" id="map-node-${id}">
-        <rect class="map-transfer-pill" x="${x - 7}" y="${y - 5}" width="14" height="10" rx="5" />
-        ${isHub ? `<circle cx="${x}" cy="${y}" r="2" fill="#008542" />` : ''}
-        <text class="map-station-label" x="${textX}" y="${y + 4}" text-anchor="${textAnchor}">${name}</text>
-        ${sub ? `<text class="map-station-sublabel" x="${textX}" y="${y + 13}" text-anchor="${textAnchor}">${sub}</text>` : ''}
+        <rect class="map-transfer-pill" x="${x - 18}" y="${y - 8}" width="36" height="16" rx="8" fill="#0f172a" stroke="#ffffff" stroke-width="2.5" />
+        <circle cx="${x - 7}" cy="${y}" r="4" fill="#008542" />
+        <circle cx="${x + 7}" cy="${y}" r="4" fill="#0072CE" />
+        ${isMajorHub ? `<circle cx="${x}" cy="${y}" r="2" fill="#ffffff" />` : ''}
+        <text class="map-station-label transfer-label" x="${textX}" y="${y + 4.5}" text-anchor="${textAnchor}">${name}</text>
+        ${sub ? `<text class="map-station-sublabel" x="${textX}" y="${y + 15}" text-anchor="${textAnchor}">${sub}</text>` : ''}
+      </g>
+    `;
+  }
+
+  private renderLine1Station(
+    id: string,
+    x: number,
+    y: number,
+    name: string,
+    sub: string,
+    labelPos: 'left' | 'right' = 'right',
+    isTerminus: boolean = false
+  ): string {
+    const textX = labelPos === 'right' ? x + 18 : x - 18;
+    const textAnchor = labelPos === 'right' ? 'start' : 'end';
+    const r = isTerminus ? 7 : 5.5;
+
+    return `
+      <g class="map-station-node map-elem-line-1" id="map-node-${id}">
+        <circle class="map-station-circle" cx="${x}" cy="${y}" r="${r}" fill="#ffffff" stroke="#008542" stroke-width="3" />
+        <text class="map-station-label" x="${textX}" y="${y + 4.5}" text-anchor="${textAnchor}">${name}</text>
+        ${sub ? `<text class="map-station-sublabel" x="${textX}" y="${y + 15}" text-anchor="${textAnchor}">${sub}</text>` : ''}
+      </g>
+    `;
+  }
+
+  private renderLine2Station(
+    id: string,
+    x: number,
+    y: number,
+    name: string,
+    sub: string,
+    labelPos: 'left' | 'right' | 'bottom' = 'right',
+    isMajor: boolean = false
+  ): string {
+    let textX = x + 18;
+    let textY = y + 4.5;
+    let textAnchor = 'start';
+
+    if (labelPos === 'bottom') {
+      textX = x;
+      textY = y + 20;
+      textAnchor = 'middle';
+    } else if (labelPos === 'left') {
+      textX = x - 18;
+      textY = y + 4.5;
+      textAnchor = 'end';
+    }
+
+    const r = isMajor ? 7 : 5.5;
+
+    return `
+      <g class="map-station-node map-elem-line-2" id="map-node-${id}">
+        <circle class="map-station-circle" cx="${x}" cy="${y}" r="${r}" fill="#ffffff" stroke="#0072CE" stroke-width="3" />
+        <text class="map-station-label" x="${textX}" y="${textY}" text-anchor="${textAnchor}">${name}</text>
+        ${sub ? `<text class="map-station-sublabel" x="${textX}" y="${textY + 11}" text-anchor="${textAnchor}">${sub}</text>` : ''}
+      </g>
+    `;
+  }
+
+  private renderAirportStation(
+    id: string,
+    x: number,
+    y: number,
+    name: string,
+    sub: string,
+    labelPos: 'left' | 'right' = 'right'
+  ): string {
+    const textX = labelPos === 'right' ? x + 24 : x - 24;
+    const textAnchor = labelPos === 'right' ? 'start' : 'end';
+
+    return `
+      <g class="map-station-node map-elem-line-1" id="map-node-${id}">
+        <!-- Special Airport Node with airplane glyph -->
+        <rect x="${x - 14}" y="${y - 12}" width="28" height="24" rx="6" fill="#f59e0b" stroke="#ffffff" stroke-width="2" />
+        <text x="${x}" y="${y + 4}" fill="#0f172a" font-size="13" font-weight="900" text-anchor="middle">✈</text>
+        <text class="map-station-label" x="${textX}" y="${y + 4.5}" text-anchor="${textAnchor}">${name}</text>
+        ${sub ? `<text class="map-station-sublabel" x="${textX}" y="${y + 15}" text-anchor="${textAnchor}">${sub}</text>` : ''}
       </g>
     `;
   }
