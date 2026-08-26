@@ -468,7 +468,11 @@ class TransitTrackerApp {
   }
 }
 
-// Bootstrap application on DOM ready
-document.addEventListener('DOMContentLoaded', () => {
+// Bootstrap application immediately when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    new TransitTrackerApp();
+  });
+} else {
   new TransitTrackerApp();
-});
+}
