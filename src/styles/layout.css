@@ -171,28 +171,35 @@
    ========================================================================== */
 
 .line-switcher {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   background: var(--bg-pill);
   padding: 3px;
   border-radius: var(--radius-pill);
   border: 1px solid var(--border-subtle);
+  gap: 2px;
+  position: relative;
 }
 
 .line-btn, .view-mode-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.45rem;
-  padding: 0.4rem 0.95rem;
+  padding: 0.35rem 0.9rem;
+  height: 32px;
   border-radius: var(--radius-pill);
   font-family: var(--font-display);
-  font-size: 0.85rem;
+  font-size: 0.84rem;
   font-weight: 600;
   color: var(--text-secondary);
-  transition: all var(--transition-fast);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
-.line-btn:hover, .view-mode-btn:hover {
+.line-btn:hover:not(.active), .view-mode-btn:hover:not(.active) {
   color: var(--text-primary);
   background: var(--bg-pill-hover);
 }
@@ -200,25 +207,26 @@
 .line-btn.active.line-1-active, .view-mode-btn.active.line-1-active {
   background: var(--st-green);
   color: #ffffff;
-  box-shadow: 0 2px 10px var(--st-green-glow);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
 }
 
 .line-btn.active.line-2-active, .view-mode-btn.active.line-2-active {
   background: var(--st-blue);
   color: #ffffff;
-  box-shadow: 0 2px 10px var(--st-blue-glow);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
 }
 
 .line-badge-circle {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
   font-weight: 800;
-  font-size: 0.75rem;
-  color: #fff;
+  font-size: 0.72rem;
+  color: #ffffff;
+  transition: all var(--transition-fast);
 }
 
 .line-1-circle {
@@ -227,6 +235,16 @@
 
 .line-2-circle {
   background: var(--st-blue);
+}
+
+.line-btn.active.line-1-active .line-1-circle {
+  background: #ffffff;
+  color: var(--st-green);
+}
+
+.line-btn.active.line-2-active .line-2-circle {
+  background: #ffffff;
+  color: var(--st-blue);
 }
 
 /* Header Action Controls */
