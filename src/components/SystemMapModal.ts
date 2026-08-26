@@ -318,19 +318,6 @@ export class SystemMapModal {
         </pattern>
         <rect width="100%" height="100%" fill="url(#grid)" />
 
-        <!-- Water Features (Dark Slate / Navy Accents) -->
-        <!-- Puget Sound (West) -->
-        <path class="map-water-area" d="M 0,0 L 160,0 Q 180,350 140,650 Q 110,850 150,1100 L 0,1100 Z" />
-        <text x="45" y="550" class="map-water-label">Puget Sound</text>
-
-        <!-- Lake Washington (East of Seattle spine) -->
-        <path class="map-water-area" d="M 450,150 Q 480,380 470,590 Q 450,720 480,950 L 550,950 Q 530,720 540,590 Q 570,380 530,150 Z" />
-        <text x="495" y="460" class="map-water-label" transform="rotate(75 495,460)">Lake Washington</text>
-
-        <!-- I-90 Floating Bridge Corridor -->
-        <rect x="420" y="566" width="180" height="18" rx="4" fill="rgba(56, 189, 248, 0.08)" stroke="rgba(56, 189, 248, 0.25)" stroke-dasharray="4, 3" />
-        <text x="510" y="560" fill="rgba(148, 163, 184, 0.7)" font-size="9" font-weight="700" text-anchor="middle">I-90 Lake Washington Bridge</text>
-
         <!-- ================= TRACK PATHS ================= -->
 
         <!-- 1 Line Glow (Emerald Green) -->
