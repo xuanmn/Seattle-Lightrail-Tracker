@@ -169,7 +169,6 @@ export async function fetchArrivalsForStop(
 
   try {
     const response = await fetch(url, { signal: controller.signal });
-    clearTimeout(timer);
 
     if (!response.ok) {
       throw new Error(`API returned HTTP ${response.status}`);
@@ -185,9 +184,10 @@ export async function fetchArrivalsForStop(
 
     return arrivals;
   } catch {
-    clearTimeout(timer);
     // Graceful fallback to realistic schedule so dashboard stays alive even during network blips
     return generateFallbackArrivals(platform);
+  } finally {
+    clearTimeout(timer);
   }
 }
 

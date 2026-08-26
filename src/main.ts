@@ -52,7 +52,6 @@ class TransitTrackerApp {
   private toastTimeout?: number;
   private isFetching: boolean = false;
   private activeFetchId: number = 0;
-  private lastPollTime: number = Date.now();
 
   constructor() {
     const root = document.getElementById('app');
@@ -358,20 +357,20 @@ class TransitTrackerApp {
   private setupVisibilityListener() {
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
-        // Pause 1-second DOM ticks in background tabs to save battery & CPU
+        // Pause 1-second DOM ticks and background network polling to save battery, CPU, and heap
         if (this.countdownTickTimer) {
           clearInterval(this.countdownTickTimer);
           this.countdownTickTimer = undefined;
         }
-      } else {
-        // Resume ticker and immediately update UI
-        this.startSecondTicker();
-        this.cardComponents.forEach((card) => card.tickCountdowns());
-
-        // If it's been more than 60 seconds since last poll, fetch immediately
-        if (Date.now() - this.lastPollTime >= SYNC_INTERVAL_MS) {
-          this.fetchVisibleArrivals();
+        if (this.pollIntervalTimer) {
+          clearInterval(this.pollIntervalTimer);
+          this.pollIntervalTimer = undefined;
         }
+      } else {
+        // Resume ticker and polling when user refocuses tab
+        this.startSecondTicker();
+        this.startPolling();
+        this.cardComponents.forEach((card) => card.tickCountdowns());
       }
     });
   }
@@ -379,7 +378,6 @@ class TransitTrackerApp {
   private async fetchVisibleArrivals(isManual: boolean = false) {
     if (this.isFetching) return;
     this.isFetching = true;
-    this.lastPollTime = Date.now();
     const currentFetchId = ++this.activeFetchId;
 
     const stations = this.getVisibleStations();
