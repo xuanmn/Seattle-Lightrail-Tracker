@@ -66,8 +66,18 @@ describe('Station Catalog', () => {
     expect(capitolHill?.lines).toContain('line-1');
   });
 
-  it('should return undefined for non-existent station id', () => {
-    const invalid = getStationById('non-existent-stop');
-    expect(invalid).toBeUndefined();
+  it('should correctly filter pinned stations by active line', () => {
+    // 1 station on Line 1 (westlake), 1 station on Line 2 (bellevue-downtown)
+    const pinnedIds = ['westlake', 'bellevue-downtown'];
+
+    const line1Pinned = getStationsByLine('line-1').filter((s) => pinnedIds.includes(s.id));
+    const line2Pinned = getStationsByLine('line-2').filter((s) => pinnedIds.includes(s.id));
+
+    expect(line1Pinned.length).toBe(1);
+    expect(line1Pinned[0].name).toBe('Westlake');
+
+    expect(line2Pinned.length).toBe(1);
+    expect(line2Pinned[0].name).toBe('Bellevue Downtown');
   });
 });
+

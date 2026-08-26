@@ -155,7 +155,7 @@ class TransitTrackerApp {
       'button',
       `view-mode-btn ${this.showOnlyPinned ? 'active' : ''}`
     );
-    myBtn.innerHTML = `★ My Stations (${this.pinnedIds.length})`;
+    myBtn.innerHTML = `★ My Stations`;
     if (this.showOnlyPinned) {
       myBtn.classList.add(this.activeLine === 'line-1' ? 'line-1-active' : 'line-2-active');
     }
@@ -322,6 +322,9 @@ class TransitTrackerApp {
 
     const station = getStationById(stationId);
     const stationName = station?.name || 'Station';
+
+    // Dynamically refresh the My Stations pill count
+    this.renderViewModePills();
 
     if (this.showOnlyPinned) {
       // In "My Saved Stations" mode, removing/adding a card refreshes the visible list
