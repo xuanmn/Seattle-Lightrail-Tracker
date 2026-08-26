@@ -416,14 +416,15 @@ export class SystemMapModal {
     labelPos: 'left' | 'right' = 'left',
     isTerminus: boolean = false
   ): string {
-    const textX = labelPos === 'left' ? x - 18 : x + 18;
+    const textX = labelPos === 'left' ? x - 22 : x + 22;
     const textAnchor = labelPos === 'left' ? 'end' : 'start';
-    const r = isTerminus ? 7 : 5.5;
+    const r = isTerminus ? 6 : 5;
 
     return `
       <g class="map-station-node map-elem-line-1 map-elem-line-2 map-elem-shared" id="map-node-${id}">
-        <!-- Single circular node matching eastside -->
-        <circle class="map-station-circle" cx="${x}" cy="${y}" r="${r}" fill="#ffffff" stroke="#0f172a" stroke-width="2.5" />
+        <!-- Two circles centered on each parallel line -->
+        <circle class="map-station-circle" cx="${x - 7}" cy="${y}" r="${r}" fill="#ffffff" stroke="#008542" stroke-width="2.5" />
+        <circle class="map-station-circle" cx="${x + 7}" cy="${y}" r="${r}" fill="#ffffff" stroke="#0072CE" stroke-width="2.5" />
         <text class="map-station-label" x="${textX}" y="${y + 4.5}" text-anchor="${textAnchor}">${name}</text>
         ${sub ? `<text class="map-station-sublabel" x="${textX}" y="${y + 15}" text-anchor="${textAnchor}">${sub}</text>` : ''}
       </g>
@@ -439,15 +440,16 @@ export class SystemMapModal {
     labelPos: 'left' | 'right' = 'left',
     isMajorHub: boolean = false
   ): string {
-    const textX = labelPos === 'left' ? x - 20 : x + 20;
+    const textX = labelPos === 'left' ? x - 24 : x + 24;
     const textAnchor = labelPos === 'left' ? 'end' : 'start';
-    const r = isMajorHub ? 8 : 6.5;
+    const r = isMajorHub ? 6.5 : 5.5;
 
     return `
       <g class="map-station-node map-elem-line-1 map-elem-line-2 map-elem-shared" id="map-node-${id}">
-        <!-- Single transfer circular node -->
-        <circle class="map-station-circle" cx="${x}" cy="${y}" r="${r}" fill="#ffffff" stroke="#0f172a" stroke-width="2.5" />
-        ${isMajorHub ? `<circle cx="${x}" cy="${y}" r="2.8" fill="#008542" />` : ''}
+        <!-- Two circles centered on each line with connector link -->
+        <rect x="${x - 7}" y="${y - 3}" width="14" height="6" fill="#ffffff" />
+        <circle class="map-station-circle" cx="${x - 7}" cy="${y}" r="${r}" fill="#ffffff" stroke="#008542" stroke-width="2.5" />
+        <circle class="map-station-circle" cx="${x + 7}" cy="${y}" r="${r}" fill="#ffffff" stroke="#0072CE" stroke-width="2.5" />
         <text class="map-station-label transfer-label" x="${textX}" y="${y + 4.5}" text-anchor="${textAnchor}">${name}</text>
         ${sub ? `<text class="map-station-sublabel" x="${textX}" y="${y + 15}" text-anchor="${textAnchor}">${sub}</text>` : ''}
       </g>
