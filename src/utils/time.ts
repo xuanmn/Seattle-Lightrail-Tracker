@@ -40,14 +40,14 @@ export function formatDelayStatus(
 
   if (delaySeconds >= 600) {
     return {
-      text: `+${delayMinutes}m Delay`,
+      text: `${delayMinutes}m Delay`,
       type: 'delayed-severe',
     };
   }
 
   if (delaySeconds >= 60) {
     return {
-      text: `+${delayMinutes}m Delay`,
+      text: `${delayMinutes}m Delay`,
       type: 'delayed',
     };
   }
