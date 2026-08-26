@@ -328,10 +328,10 @@ export class SystemMapModal {
 
         <!-- 2 Line Track (Blue #0072CE) - Shared in North/Tunnel + Eastside Corridor -->
         <path class="map-track-path line-2-glow map-elem-line-2 map-elem-shared"
-          d="M 294,75 L 294,615 Q 294,665 324,665 L 450,665 Q 480,665 480,635 L 480,120"
+          d="M 294,75 L 294,615 Q 294,665 324,665 L 450,665 Q 480,665 480,635 L 480,75"
           stroke="#0072CE" stroke-width="14" opacity="0.3" filter="url(#track-glow-blue)" />
         <path class="map-track-path line-2-main map-elem-line-2 map-elem-shared"
-          d="M 294,75 L 294,615 Q 294,665 324,665 L 450,665 Q 480,665 480,635 L 480,120"
+          d="M 294,75 L 294,615 Q 294,665 324,665 L 450,665 Q 480,665 480,635 L 480,75"
           stroke="#0072CE" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" fill="none" />
 
         <!-- ================= TERMINUS HEADERS & BULLETS ================= -->
@@ -345,18 +345,18 @@ export class SystemMapModal {
           <text x="16" y="0.5" fill="#ffffff" font-size="11" font-weight="800" text-anchor="middle">2</text>
         </g>
 
+        <!-- 2 Line East Terminus (Downtown Redmond) -->
+        <g class="map-terminus-badge map-elem-line-2" transform="translate(480, 42)">
+          <rect x="-24" y="-16" width="48" height="26" rx="13" fill="#0f172a" stroke="rgba(0,114,206,0.6)" stroke-width="1.5" />
+          <circle cx="0" cy="-3" r="9" fill="#0072CE" />
+          <text x="0" y="0.5" fill="#ffffff" font-size="11" font-weight="800" text-anchor="middle">2</text>
+        </g>
+
         <!-- 1 Line South Terminus (Angle Lake) -->
         <g class="map-terminus-badge map-elem-line-1" transform="translate(280, 1105)">
           <rect x="-24" y="-13" width="48" height="24" rx="12" fill="#0f172a" stroke="rgba(0,133,66,0.6)" stroke-width="1.5" />
           <circle cx="0" cy="-1" r="9" fill="#008542" />
           <text x="0" y="2.5" fill="#ffffff" font-size="11" font-weight="800" text-anchor="middle">1</text>
-        </g>
-
-        <!-- 2 Line East Terminus (Downtown Redmond) -->
-        <g class="map-terminus-badge map-elem-line-2" transform="translate(480, 90)">
-          <rect x="-24" y="-13" width="48" height="24" rx="12" fill="#0f172a" stroke="rgba(0,114,206,0.6)" stroke-width="1.5" />
-          <circle cx="0" cy="-1" r="9" fill="#0072CE" />
-          <text x="0" y="2.5" fill="#ffffff" font-size="11" font-weight="800" text-anchor="middle">2</text>
         </g>
 
         <!-- ================= LEFT SPINE: SHARED 1 LINE & 2 LINE STATIONS ================= -->
@@ -394,15 +394,15 @@ export class SystemMapModal {
 
         <!-- ================= RIGHT SPINE: 2 LINE EASTSIDE STATIONS ================= -->
         ${this.renderLine2Station('south-bellevue', 480, 635, 'South Bellevue', 'Park & Ride / Mercer Slough', 'right', true)}
-        ${this.renderLine2Station('east-main', 480, 580, 'East Main', '', 'right')}
-        ${this.renderLine2Station('bellevue-downtown', 480, 525, 'Bellevue Downtown', 'Bellevue Transit Center 🚌', 'right', true)}
-        ${this.renderLine2Station('wilburton', 480, 470, 'Wilburton', 'Overlake Medical Center', 'right')}
-        ${this.renderLine2Station('spring-district', 480, 415, 'Spring District', '120th Station', 'right')}
-        ${this.renderLine2Station('bel-red', 480, 360, 'BelRed', '130th Station', 'right')}
-        ${this.renderLine2Station('overlake-village', 480, 305, 'Overlake Village', '', 'right')}
-        ${this.renderLine2Station('redmond-technology', 480, 250, 'Redmond Technology', 'Microsoft Campus / Transit Center 🚌', 'right', true)}
-        ${this.renderLine2Station('marymoor-village', 480, 195, 'Marymoor Village', 'Park & Ride', 'right')}
-        ${this.renderLine2Station('downtown-redmond', 480, 140, 'Downtown Redmond', '2 Line East Terminus', 'right', true)}
+        ${this.renderLine2Station('east-main', 480, 571, 'East Main', '', 'right')}
+        ${this.renderLine2Station('bellevue-downtown', 480, 509, 'Bellevue Downtown', 'Bellevue Transit Center 🚌', 'right', true)}
+        ${this.renderLine2Station('wilburton', 480, 447, 'Wilburton', 'Overlake Medical Center', 'right')}
+        ${this.renderLine2Station('spring-district', 480, 385, 'Spring District', '120th Station', 'right')}
+        ${this.renderLine2Station('bel-red', 480, 323, 'BelRed', '130th Station', 'right')}
+        ${this.renderLine2Station('overlake-village', 480, 261, 'Overlake Village', '', 'right')}
+        ${this.renderLine2Station('redmond-technology', 480, 199, 'Redmond Technology', 'Microsoft Campus / Transit Center 🚌', 'right', true)}
+        ${this.renderLine2Station('marymoor-village', 480, 137, 'Marymoor Village', 'Park & Ride', 'right')}
+        ${this.renderLine2Station('downtown-redmond', 480, 75, 'Downtown Redmond', '2 Line East Terminus', 'right', true)}
       </svg>
     `;
   }
