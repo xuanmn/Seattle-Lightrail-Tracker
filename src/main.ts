@@ -7,13 +7,15 @@ import { HeaderComponent } from './components/Header';
 import { SettingsModal } from './components/SettingsModal';
 import { StationCardComponent } from './components/StationCard';
 import { StationPickerModal } from './components/StationPickerModal';
-import { getStationsByLine, LINE_CONFIG } from './data/stations';
+import { getStationById, getStationsByLine, LINE_CONFIG } from './data/stations';
 import { fetchArrivalsForStation } from './services/oba-api';
 import {
   getActiveLine,
+  getCollapsedPlatforms,
   getPinnedStationIds,
   getSettings,
   setActiveLine,
+  setPlatformCollapsed,
   togglePinnedStation,
 } from './services/storage';
 import { AppSettings, Station, StationArrivals, TransitLineId } from './types/transit';
@@ -43,6 +45,7 @@ class TransitTrackerApp {
 
   private pollIntervalTimer?: number;
   private countdownTickTimer?: number;
+  private toastTimeout?: number;
   private isFetching: boolean = false;
 
   constructor() {
@@ -179,6 +182,30 @@ class TransitTrackerApp {
     this.lineSubtitleEl.textContent = `${config.terminusSouth} ⇄ ${config.terminusNorth}`;
   }
 
+  private showToast(message: string, isAdded: boolean) {
+    let toast = document.getElementById('app-toast');
+    if (!toast) {
+      toast = createElement('div', 'app-toast');
+      toast.id = 'app-toast';
+      document.body.appendChild(toast);
+    }
+
+    if (this.toastTimeout) {
+      clearTimeout(this.toastTimeout);
+    }
+
+    const iconHtml = isAdded
+      ? `<span class="toast-star filled">${ICONS.starFilled}</span>`
+      : `<span class="toast-star">${ICONS.star}</span>`;
+
+    toast.innerHTML = `${iconHtml}<span>${message}</span>`;
+    toast.className = 'app-toast visible';
+
+    this.toastTimeout = window.setTimeout(() => {
+      toast?.classList.remove('visible');
+    }, 2400);
+  }
+
   private getVisibleStations(): Station[] {
     const lineStations = getStationsByLine(this.activeLine);
 
@@ -187,10 +214,8 @@ class TransitTrackerApp {
       return lineStations.filter((s) => this.pinnedIds.includes(s.id));
     }
 
-    // In "All Line Stations" view, show pinned first, then others
-    const pinnedOnThisLine = lineStations.filter((s) => this.pinnedIds.includes(s.id));
-    const unpinnedOnThisLine = lineStations.filter((s) => !this.pinnedIds.includes(s.id));
-    return [...pinnedOnThisLine, ...unpinnedOnThisLine];
+    // In "All Line Stations" view, maintain the natural geographic route order (North -> South)
+    return lineStations;
   }
 
   private renderStationCards() {
@@ -204,15 +229,40 @@ class TransitTrackerApp {
       return;
     }
 
+    const savedCollapsedMap = getCollapsedPlatforms();
+
     stations.forEach((station) => {
       const isPinned = this.pinnedIds.includes(station.id);
+      let initialCol1 = false;
+      let initialCol2 = false;
+
+      if (!this.showOnlyPinned) {
+        // In "All Line Stations", default both directions to collapsed
+        initialCol1 = true;
+        initialCol2 = true;
+      } else {
+        // In "My Saved Stations", restore the user's saved collapsed state for this station
+        const pref = savedCollapsedMap[station.id];
+        if (pref) {
+          initialCol1 = Boolean(pref.col1);
+          initialCol2 = Boolean(pref.col2);
+        }
+      }
+
       const cardComp = new StationCardComponent(
         station,
         isPinned,
         this.settings.timeFormat24Hour,
         {
           onTogglePin: (id) => this.handleTogglePin(id),
-        }
+          onToggleCollapse: (id, colIndex, isCollapsed) => {
+            if (this.showOnlyPinned) {
+              setPlatformCollapsed(id, colIndex, isCollapsed);
+            }
+          },
+        },
+        initialCol1,
+        initialCol2
       );
 
       this.cardComponents.set(station.id, cardComp);
@@ -244,7 +294,7 @@ class TransitTrackerApp {
 
     const lineClass = this.activeLine === 'line-1' ? 'line-1-btn' : 'line-2-btn';
     const btn = createElement(
-      'button',
+        'button',
       `empty-dashboard-btn ${lineClass}`,
       `${ICONS.plus} Add & Remove Stations`
     );
@@ -259,12 +309,30 @@ class TransitTrackerApp {
   }
 
   private handleTogglePin(stationId: string) {
-    togglePinnedStation(stationId);
+    const isNowPinned = togglePinnedStation(stationId);
     this.pinnedIds = getPinnedStationIds();
 
-    this.renderStationCards();
+    const station = getStationById(stationId);
+    const stationName = station?.name || 'Station';
+
+    if (this.showOnlyPinned) {
+      // In "My Saved Stations" mode, removing/adding a card refreshes the visible list
+      this.renderStationCards();
+      this.fetchVisibleArrivals();
+    } else {
+      // In "All Line Stations" mode, update ONLY the card's star button in-place without jarring jumps or closing accordion!
+      const card = this.cardComponents.get(stationId);
+      if (card) {
+        card.setPinned(isNowPinned);
+      }
+    }
+
+    this.showToast(
+      isNowPinned ? `Saved "${stationName}" to Favorites` : `Removed "${stationName}" from Favorites`,
+      isNowPinned
+    );
+
     this.pickerModal.refreshPinnedState();
-    this.fetchVisibleArrivals();
   }
 
   private handleSettingsSaved(newSettings: AppSettings) {

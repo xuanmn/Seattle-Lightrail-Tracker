@@ -958,3 +958,53 @@
   }
 }
 
+/* Floating Micro-Toast Notification */
+.app-toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(24px) scale(0.96);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 10000;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--radius-pill);
+  background: rgba(15, 23, 42, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55), 0 0 20px rgba(56, 189, 248, 0.18);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: var(--text-primary);
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.app-toast.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.app-toast .toast-star {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+}
+
+.app-toast .toast-star.filled {
+  color: #facc15;
+  filter: drop-shadow(0 0 6px rgba(250, 204, 21, 0.5));
+}
+
+.app-toast .toast-star svg {
+  width: 17px;
+  height: 17px;
+}
+
+

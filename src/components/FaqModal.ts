@@ -118,15 +118,8 @@ export class FaqModal {
     body.appendChild(connectionGuideCard);
     body.appendChild(generalCard);
 
-    // Footer
-    const footer = createElement('div', 'modal-footer');
-    const doneBtn = createElement('button', 'btn-primary', 'Got It');
-    doneBtn.onclick = () => this.close();
-    footer.appendChild(doneBtn);
-
     modal.appendChild(header);
     modal.appendChild(body);
-    modal.appendChild(footer);
     overlay.appendChild(modal);
 
     overlay.onclick = (e) => {

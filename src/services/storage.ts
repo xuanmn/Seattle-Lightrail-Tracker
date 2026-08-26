@@ -3,6 +3,14 @@ import { AppSettings, TransitLineId } from '../types/transit';
 const PINNED_STATIONS_KEY = 'seattle_transit_pinned_stations';
 const ACTIVE_LINE_KEY = 'seattle_transit_active_line';
 const SETTINGS_KEY = 'seattle_transit_settings';
+const COLLAPSED_PLATFORMS_KEY = 'seattle_transit_collapsed_platforms';
+
+export interface CollapsedPlatformsState {
+  [stationId: string]: {
+    col1?: boolean;
+    col2?: boolean;
+  };
+}
 
 const DEFAULT_PINNED_STATIONS: string[] = [
   'westlake',
@@ -104,5 +112,37 @@ export function updateSettings(partial: Partial<AppSettings>): AppSettings {
     return merged;
   } catch {
     return getSettings();
+  }
+}
+
+export function getCollapsedPlatforms(): CollapsedPlatformsState {
+  try {
+    const raw = localStorage.getItem(COLLAPSED_PLATFORMS_KEY);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    return typeof parsed === 'object' && parsed !== null ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+export function setPlatformCollapsed(
+  stationId: string,
+  colIndex: 1 | 2,
+  isCollapsed: boolean
+): void {
+  try {
+    const current = getCollapsedPlatforms();
+    if (!current[stationId]) {
+      current[stationId] = {};
+    }
+    if (colIndex === 1) {
+      current[stationId].col1 = isCollapsed;
+    } else {
+      current[stationId].col2 = isCollapsed;
+    }
+    localStorage.setItem(COLLAPSED_PLATFORMS_KEY, JSON.stringify(current));
+  } catch {
+    // ignore storage quota errors
   }
 }

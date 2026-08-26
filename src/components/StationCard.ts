@@ -4,6 +4,7 @@ import { formatClockTime, formatCountdownBadge, formatSimpleDestination } from '
 
 export interface StationCardCallbacks {
   onTogglePin: (stationId: string) => void;
+  onToggleCollapse?: (stationId: string, colIndex: 1 | 2, isCollapsed: boolean) => void;
 }
 
 export class StationCardComponent {
@@ -37,12 +38,16 @@ export class StationCardComponent {
     station: Station,
     isPinned: boolean,
     is24Hour: boolean,
-    callbacks: StationCardCallbacks
+    callbacks: StationCardCallbacks,
+    initialCol1Collapsed: boolean = false,
+    initialCol2Collapsed: boolean = false
   ) {
     this.station = station;
     this.isPinned = isPinned;
     this.is24Hour = is24Hour;
     this.callbacks = callbacks;
+    this.isCol1Collapsed = initialCol1Collapsed;
+    this.isCol2Collapsed = initialCol2Collapsed;
     this.element = this.render();
   }
 
@@ -62,6 +67,13 @@ export class StationCardComponent {
     if (this.currentArrivals) {
       this.updateArrivals(this.currentArrivals);
     }
+  }
+
+  public setCollapsed(collapsed: boolean) {
+    this.isCol1Collapsed = collapsed;
+    this.isCol2Collapsed = collapsed;
+    if (this.col1El) this.col1El.classList.toggle('collapsed', collapsed);
+    if (this.col2El) this.col2El.classList.toggle('collapsed', collapsed);
   }
 
   public setLoading() {
@@ -138,9 +150,11 @@ export class StationCardComponent {
     if (colIndex === 1) {
       this.isCol1Collapsed = !this.isCol1Collapsed;
       this.col1El.classList.toggle('collapsed', this.isCol1Collapsed);
+      this.callbacks.onToggleCollapse?.(this.station.id, 1, this.isCol1Collapsed);
     } else {
       this.isCol2Collapsed = !this.isCol2Collapsed;
       this.col2El.classList.toggle('collapsed', this.isCol2Collapsed);
+      this.callbacks.onToggleCollapse?.(this.station.id, 2, this.isCol2Collapsed);
     }
   }
 
@@ -270,7 +284,10 @@ export class StationCardComponent {
     const p2 = this.station.platforms.southbound || this.station.platforms.eastbound;
 
     // Platform 1 Column
-    this.col1El = createElement('div', 'platform-column');
+    this.col1El = createElement(
+      'div',
+      `platform-column ${this.isCol1Collapsed ? 'collapsed' : ''}`
+    );
     this.col1Header = createElement('button', 'platform-header') as HTMLButtonElement;
     this.col1Header.type = 'button';
     this.col1Header.title = 'Click to expand or collapse platform departures';
@@ -294,7 +311,10 @@ export class StationCardComponent {
     this.col1El.appendChild(this.platform1Container);
 
     // Platform 2 Column
-    this.col2El = createElement('div', 'platform-column');
+    this.col2El = createElement(
+      'div',
+      `platform-column ${this.isCol2Collapsed ? 'collapsed' : ''}`
+    );
     this.col2Header = createElement('button', 'platform-header') as HTMLButtonElement;
     this.col2Header.type = 'button';
     this.col2Header.title = 'Click to expand or collapse platform departures';

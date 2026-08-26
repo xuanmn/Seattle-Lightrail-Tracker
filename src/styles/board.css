@@ -101,6 +101,21 @@
   gap: 0.35rem;
 }
 
+@keyframes starPop {
+  0% {
+    transform: scale(0.8);
+  }
+  45% {
+    transform: scale(1.35) rotate(10deg);
+  }
+  75% {
+    transform: scale(0.95) rotate(-3deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
 .star-btn {
   display: inline-flex;
   align-items: center;
@@ -110,16 +125,19 @@
   border-radius: 50%;
   color: var(--text-muted);
   transition: all var(--transition-fast);
+  cursor: pointer;
 }
 
 .star-btn:hover {
   color: #facc15;
   background: rgba(250, 204, 21, 0.12);
-  transform: scale(1.12);
+  transform: scale(1.15);
 }
 
 .star-btn.pinned {
   color: #facc15;
+  filter: drop-shadow(0 0 5px rgba(250, 204, 21, 0.35));
+  animation: starPop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .star-btn svg {

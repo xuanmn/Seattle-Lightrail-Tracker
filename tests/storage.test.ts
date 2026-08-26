@@ -7,6 +7,8 @@ import {
   setActiveLine,
   getSettings,
   updateSettings,
+  getCollapsedPlatforms,
+  setPlatformCollapsed,
 } from '../src/services/storage';
 
 describe('Local Storage & Settings Service', () => {
@@ -60,5 +62,26 @@ describe('Local Storage & Settings Service', () => {
 
     const updated = getSettings();
     expect(updated.timeFormat24Hour).toBe(true);
+  });
+
+  it('persists platform collapse states individually per station', () => {
+    expect(getCollapsedPlatforms()).toEqual({});
+
+    // Collapse Northbound (col 1) on Capitol Hill
+    setPlatformCollapsed('capitol-hill', 1, true);
+    let state = getCollapsedPlatforms();
+    expect(state['capitol-hill']?.col1).toBe(true);
+    expect(state['capitol-hill']?.col2).toBeUndefined();
+
+    // Collapse Southbound (col 2) on Westlake
+    setPlatformCollapsed('westlake', 2, true);
+    state = getCollapsedPlatforms();
+    expect(state['capitol-hill']?.col1).toBe(true);
+    expect(state['westlake']?.col2).toBe(true);
+
+    // Uncollapse Northbound on Capitol Hill
+    setPlatformCollapsed('capitol-hill', 1, false);
+    state = getCollapsedPlatforms();
+    expect(state['capitol-hill']?.col1).toBe(false);
   });
 });
