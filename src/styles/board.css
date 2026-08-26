@@ -335,29 +335,6 @@
   flex-shrink: 0;
 }
 
-.platform-header-right {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  flex-shrink: 0;
-}
-
-.chevron-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 16px;
-  height: 16px;
-  color: var(--text-muted);
-  transition: transform var(--transition-normal), color var(--transition-fast);
-  flex-shrink: 0;
-}
-
-.chevron-icon svg {
-  width: 14px;
-  height: 14px;
-}
-
 /* Departures List */
 .departures-list {
   display: flex;
@@ -399,6 +376,40 @@
   overflow: hidden;
   text-overflow: ellipsis;
   line-height: 1.25;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.dep-line-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.66rem;
+  color: #ffffff;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.dep-line-tag.line-1-tag {
+  background: var(--st-green);
+  box-shadow: 0 1px 3px rgba(0, 133, 66, 0.4);
+}
+
+.dep-line-tag.line-2-tag {
+  background: var(--st-blue);
+  box-shadow: 0 1px 3px rgba(0, 114, 206, 0.4);
+}
+
+.dep-dest-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .dep-meta {

@@ -45,6 +45,7 @@ class TransitTrackerApp {
   private lineSubtitleEl!: HTMLElement;
   private staleBannerEl!: HTMLElement;
   private viewModePillWrap!: HTMLElement;
+  private toastEl!: HTMLElement;
 
   private pollIntervalTimer?: number;
   private countdownTickTimer?: number;
@@ -84,8 +85,13 @@ class TransitTrackerApp {
     this.faqModal = new FaqModal();
     this.mapModal = new SystemMapModal();
 
+    // Toast Container
+    this.toastEl = createElement('div', 'app-toast');
+    this.toastEl.id = 'app-toast';
+    document.body.appendChild(this.toastEl);
+
     // Header
-    this.header = new HeaderComponent(this.activeLine, this.settings.timeFormat24Hour, {
+    this.header = new HeaderComponent(this.activeLine, {
       onLineChange: (line) => this.switchLine(line),
       onSettingsClick: () => this.settingsModal.open(),
       onFaqClick: () => this.faqModal.open(),
@@ -98,8 +104,7 @@ class TransitTrackerApp {
     const container = createElement('div', 'app-container');
 
     // Status / Stale Banner (hidden by default)
-    this.staleBannerEl = createElement('div', 'status-banner');
-    this.staleBannerEl.style.display = 'none';
+    this.staleBannerEl = createElement('div', 'status-banner hidden');
     container.appendChild(this.staleBannerEl);
 
     // Dashboard Toolbar
@@ -191,13 +196,6 @@ class TransitTrackerApp {
   }
 
   private showToast(message: string, isAdded: boolean) {
-    let toast = document.getElementById('app-toast');
-    if (!toast) {
-      toast = createElement('div', 'app-toast');
-      toast.id = 'app-toast';
-      document.body.appendChild(toast);
-    }
-
     if (this.toastTimeout) {
       clearTimeout(this.toastTimeout);
     }
@@ -206,11 +204,11 @@ class TransitTrackerApp {
       ? `<span class="toast-star filled">${ICONS.starFilled}</span>`
       : `<span class="toast-star">${ICONS.star}</span>`;
 
-    toast.innerHTML = `${iconHtml}<span>${message}</span>`;
-    toast.className = 'app-toast visible';
+    this.toastEl.innerHTML = `${iconHtml}<span>${message}</span>`;
+    this.toastEl.className = 'app-toast visible';
 
     this.toastTimeout = window.setTimeout(() => {
-      toast?.classList.remove('visible');
+      this.toastEl.classList.remove('visible');
     }, 2400);
   }
 
@@ -371,37 +369,52 @@ class TransitTrackerApp {
       return;
     }
 
+    const CHUNK_SIZE = 6;
+    let failedFetches = 0;
+
     try {
-      const fetchPromises = stations.map(async (station) => {
-        try {
-          const result = await fetchArrivalsForStation(station);
-          // If a newer fetch was initiated while this one was running, discard old response
-          if (this.activeFetchId !== currentFetchId) return;
+      for (let i = 0; i < stations.length; i += CHUNK_SIZE) {
+        if (this.activeFetchId !== currentFetchId) break;
+        const chunk = stations.slice(i, i + CHUNK_SIZE);
+        await Promise.all(
+          chunk.map(async (station) => {
+            try {
+              const result = await fetchArrivalsForStation(station);
+              // If a newer fetch was initiated while this one was running, discard old response
+              if (this.activeFetchId !== currentFetchId) return;
 
-          const data: StationArrivals = {
-            station,
-            lastUpdated: Date.now(),
-            direction1: result.direction1,
-            direction2: result.direction2,
-          };
-          this.arrivalsData.set(station.id, data);
+              const data: StationArrivals = {
+                station,
+                lastUpdated: Date.now(),
+                direction1: result.direction1,
+                direction2: result.direction2,
+              };
+              this.arrivalsData.set(station.id, data);
 
-          const card = this.cardComponents.get(station.id);
-          if (card) {
-            card.updateArrivals(data);
-          }
-        } catch (err) {
-          console.warn(`Failed fetching arrivals for ${station.name}:`, err);
-        }
-      });
+              const card = this.cardComponents.get(station.id);
+              if (card) {
+                card.updateArrivals(data);
+              }
+            } catch (err) {
+              failedFetches++;
+              console.warn(`Failed fetching arrivals for ${station.name}:`, err);
+            }
+          })
+        );
+      }
 
-      await Promise.all(fetchPromises);
       if (this.activeFetchId === currentFetchId) {
-        this.staleBannerEl.style.display = 'none';
+        if (failedFetches === stations.length && stations.length > 0) {
+          this.staleBannerEl.classList.remove('hidden');
+          this.staleBannerEl.textContent =
+            'Network connection interrupted. Showing estimated transit schedules while reconnecting...';
+        } else {
+          this.staleBannerEl.classList.add('hidden');
+        }
       }
     } catch {
       if (isManual && this.activeFetchId === currentFetchId) {
-        this.staleBannerEl.style.display = 'flex';
+        this.staleBannerEl.classList.remove('hidden');
         this.staleBannerEl.textContent =
           'Network connection interrupted. Showing estimated transit schedules while reconnecting...';
       }

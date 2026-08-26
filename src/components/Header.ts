@@ -1,6 +1,5 @@
 import { TransitLineId } from '../types/transit';
 import { createElement, ICONS } from '../utils/dom';
-import { formatClockTime } from '../utils/time';
 
 export interface HeaderCallbacks {
   onLineChange: (line: TransitLineId) => void;
@@ -14,18 +13,13 @@ export class HeaderComponent {
   private logoEl!: HTMLElement;
   private line1Btn!: HTMLButtonElement;
   private line2Btn!: HTMLButtonElement;
-  private clockEl!: HTMLElement;
   private activeLine: TransitLineId = 'line-1';
-  private is24Hour: boolean = false;
   private callbacks: HeaderCallbacks;
-  private clockInterval?: number;
 
-  constructor(initialLine: TransitLineId, is24Hour: boolean, callbacks: HeaderCallbacks) {
+  constructor(initialLine: TransitLineId, callbacks: HeaderCallbacks) {
     this.activeLine = initialLine;
-    this.is24Hour = is24Hour;
     this.callbacks = callbacks;
     this.element = this.render();
-    this.startClock();
   }
 
   public getElement(): HTMLElement {
@@ -46,21 +40,8 @@ export class HeaderComponent {
     }
   }
 
-  public setTimeFormat(is24Hour: boolean) {
-    this.is24Hour = is24Hour;
-    this.updateClock();
-  }
-
-  private startClock() {
-    this.updateClock();
-    if (this.clockInterval) clearInterval(this.clockInterval);
-    this.clockInterval = window.setInterval(() => this.updateClock(), 1000);
-  }
-
-  private updateClock() {
-    if (this.clockEl) {
-      this.clockEl.textContent = formatClockTime(Date.now(), this.is24Hour);
-    }
+  public setTimeFormat(_is24Hour: boolean) {
+    // Retained for interface compatibility with settings changes
   }
 
   private render(): HTMLElement {
@@ -114,7 +95,7 @@ export class HeaderComponent {
       `line-btn ${this.activeLine === 'line-2' ? 'active line-2-active' : ''}`
     ) as HTMLButtonElement;
     this.line2Btn.innerHTML = `<span class="line-badge-circle line-2-circle">2</span> 2 Line`;
-    this.line2Btn.title = 'Downtown Redmond ⇄ South Bellevue';
+    this.line2Btn.title = 'Lynnwood City Center ⇄ Downtown Redmond';
     this.line2Btn.onclick = () => {
       this.setActiveLine('line-2');
       this.callbacks.onLineChange('line-2');
@@ -125,7 +106,6 @@ export class HeaderComponent {
 
     // Right Controls
     const actions = createElement('div', 'header-actions');
-    this.clockEl = createElement('div', 'clock-display');
 
     const mapBtn = createElement(
       'button',
@@ -147,7 +127,6 @@ export class HeaderComponent {
     settingsBtn.title = 'Settings & Preferences';
     settingsBtn.onclick = () => this.callbacks.onSettingsClick();
 
-    actions.appendChild(this.clockEl);
     actions.appendChild(mapBtn);
     actions.appendChild(faqBtn);
     actions.appendChild(settingsBtn);

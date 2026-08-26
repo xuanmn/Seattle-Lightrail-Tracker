@@ -15,16 +15,16 @@ export class StationPickerModal {
   private tab1Btn!: HTMLButtonElement;
   private tab2Btn!: HTMLButtonElement;
 
+  private handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === 'Escape' && this.overlay.classList.contains('open')) {
+      this.close();
+    }
+  };
+
   constructor(callbacks: StationPickerCallbacks) {
     this.callbacks = callbacks;
     this.overlay = this.render();
     document.body.appendChild(this.overlay);
-
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && this.overlay.classList.contains('open')) {
-        this.close();
-      }
-    });
   }
 
   public open(initialLine?: TransitLineId) {
@@ -38,10 +38,12 @@ export class StationPickerModal {
     }
     this.renderStationsList();
     this.overlay.classList.add('open');
+    window.addEventListener('keydown', this.handleKeyDown);
   }
 
   public close() {
     this.overlay.classList.remove('open');
+    window.removeEventListener('keydown', this.handleKeyDown);
   }
 
   public refreshPinnedState() {
@@ -153,7 +155,7 @@ export class StationPickerModal {
     this.tab2Btn = createElement(
       'button',
       'filter-pill',
-      '2 Line (Downtown Redmond ⇄ South Bellevue)'
+      '2 Line (Lynnwood ⇄ Downtown Redmond)'
     ) as HTMLButtonElement;
     this.tab2Btn.onclick = () => this.setFilter('line-2');
 

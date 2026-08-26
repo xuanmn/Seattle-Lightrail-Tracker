@@ -89,10 +89,10 @@ export function formatSimpleDestination(dest: string, stationId?: string, isCol1
     return isCol1 ? 'To Lynnwood' : 'To Federal Way';
   }
   if (stationId === 'downtown-redmond') {
-    return isCol1 ? 'To Redmond' : 'To South Bellevue';
+    return isCol1 ? 'To Redmond' : 'To Lynnwood';
   }
   if (stationId === 'south-bellevue') {
-    return isCol1 ? 'To Redmond' : 'To South Bellevue';
+    return isCol1 ? 'To Redmond' : 'To Lynnwood';
   }
 
   if (!dest) return 'To Terminal';

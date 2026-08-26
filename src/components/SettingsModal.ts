@@ -11,26 +11,28 @@ export class SettingsModal {
   private timeFormatCheckbox!: HTMLInputElement;
   private callbacks: SettingsModalCallbacks;
 
+  private handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === 'Escape' && this.overlay.classList.contains('open')) {
+      this.close();
+    }
+  };
+
   constructor(callbacks: SettingsModalCallbacks) {
     this.callbacks = callbacks;
     this.overlay = this.render();
     document.body.appendChild(this.overlay);
-
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && this.overlay.classList.contains('open')) {
-        this.close();
-      }
-    });
   }
 
   public open() {
     const current = getSettings();
     this.timeFormatCheckbox.checked = current.timeFormat24Hour;
     this.overlay.classList.add('open');
+    window.addEventListener('keydown', this.handleKeyDown);
   }
 
   public close() {
     this.overlay.classList.remove('open');
+    window.removeEventListener('keydown', this.handleKeyDown);
   }
 
   private save() {

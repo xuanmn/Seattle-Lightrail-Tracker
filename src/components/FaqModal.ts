@@ -2,30 +2,30 @@ import { createElement, ICONS } from '../utils/dom';
 
 export class FaqModal {
   private overlay: HTMLElement;
+  private handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === 'Escape' && this.overlay.classList.contains('open')) {
+      this.close();
+    }
+  };
 
   constructor() {
     this.overlay = this.render();
     document.body.appendChild(this.overlay);
-
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && this.overlay.classList.contains('open')) {
-        this.close();
-      }
-    });
   }
 
   public open() {
     this.overlay.classList.add('open');
+    window.addEventListener('keydown', this.handleKeyDown);
   }
 
   public close() {
     this.overlay.classList.remove('open');
+    window.removeEventListener('keydown', this.handleKeyDown);
   }
 
   private render(): HTMLElement {
     const overlay = createElement('div', 'modal-overlay');
-    const modal = createElement('div', 'modal-container');
-    modal.style.maxWidth = '700px';
+    const modal = createElement('div', 'modal-container modal-container-wide');
 
     // Header
     const header = createElement('div', 'modal-header');
@@ -39,7 +39,6 @@ export class FaqModal {
 
     // Body
     const body = createElement('div', 'modal-body');
-    body.style.gap = '1.25rem';
 
     // Section 1: Regional Connection & Line 1 / Line 2 Guide
     const connectionGuideCard = createElement('div', 'faq-featured-card');
@@ -50,7 +49,7 @@ export class FaqModal {
       </div>
       <div class="faq-featured-body">
         <div class="route-option-card">
-          <div class="route-badge direct" style="background: var(--status-ontime-bg); color: var(--st-green-light); border: 1px solid rgba(16, 185, 129, 0.3);">Yes! Direct 2 Line Service</div>
+          <div class="route-badge direct">Yes! Direct 2 Line Service</div>
           <div class="route-title">Single Continuous Train — No Transfer Needed</div>
           <p class="route-desc">
             The <strong>2 Line</strong> connects <strong>Lynnwood City Center</strong> directly through Seattle (<em>Northgate, UW, Capitol Hill, Westlake, Pioneer Square, Chinatown-ID</em>), across Lake Washington via the I-90 bridge (<em>Mercer Island & Judkins Park</em>), straight to <strong>Bellevue</strong> and <strong>Downtown Redmond</strong>!
@@ -58,9 +57,10 @@ export class FaqModal {
         </div>
 
         <div class="route-option-card">
-          <div class="route-badge transfer" style="background: rgba(56, 189, 248, 0.15); color: var(--text-accent); border: 1px solid rgba(56, 189, 248, 0.3);">Key Travel Times & Connections</div>
+          <div class="route-badge transfer">Key Travel Times & Connections</div>
           <div class="route-title">Fast, Traffic-Proof Commute</div>
           <p class="route-desc">
+            • <strong>Downtown Redmond ⇄ Lynnwood City Center:</strong> ~55–60 minutes (direct, no transfer in either direction).<br/>
             • <strong>Bellevue Downtown ⇄ Westlake (Seattle):</strong> ~25–28 minutes.<br/>
             • <strong>Bellevue Downtown ⇄ Capitol Hill:</strong> ~35–40 minutes (direct, no transfer).<br/>
             • <strong>Bellevue Downtown ⇄ UW & Northgate:</strong> Direct on the 2 Line.<br/>
@@ -79,6 +79,7 @@ export class FaqModal {
         <div class="faq-q">📱 How do I use and customize this departure board?</div>
         <div class="faq-a">
           • <strong>Save Favorite Stations:</strong> Click the Star icon on any card or open <strong>+ Add Station</strong> to pin your daily commute stops.<br/>
+          • <strong>Colored Line Badges:</strong> On shared stations, upcoming departures display colored pills for <strong>(1) 1 Line</strong> (to Federal Way) and <strong>(2) 2 Line</strong> (to Downtown Redmond).<br/>
           • <strong>Live GPS Badges:</strong> Green glowing badges indicate live satellite-tracked trains from Sound Transit; white badges indicate scheduled timetables.<br/>
           • <strong>Live Data Sync:</strong> Automatically synchronizes real-time arrival predictions every 60 seconds with continuous second-by-second countdown ticks. Switch between <strong>1 Line</strong> and <strong>2 Line</strong> using the header toggle.<br/>
           • <strong>Time Format Settings:</strong> Open the gear icon in the header to toggle between 12-hour (2:30 PM) and 24-hour (14:30) arrival times.

@@ -243,21 +243,7 @@
   transform: translateY(-1px);
 }
 
-.clock-display {
-  font-family: var(--font-mono);
-  font-size: 0.88rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  padding: 0.35rem 0.85rem;
-  height: 36px;
-  border-radius: var(--radius-pill);
-  letter-spacing: -0.01em;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
+
 
 .icon-btn {
   display: inline-flex;
@@ -330,41 +316,11 @@
   box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
 }
 
-.btn-secondary {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  background: var(--bg-pill);
-  border: 1px solid var(--border-subtle);
-  color: var(--text-secondary);
-  padding: 0.45rem 1.15rem;
-  border-radius: var(--radius-pill);
-  font-family: var(--font-display);
-  font-size: 0.85rem;
-  font-weight: 600;
-  transition: all var(--transition-fast);
-  cursor: pointer;
+/* Utility Classes */
+.hidden {
+  display: none !important;
 }
 
-.btn-secondary:hover {
-  background: var(--bg-pill-hover);
-  border-color: var(--border-medium);
-  color: var(--text-primary);
-  transform: translateY(-1px);
-}
-
-.btn-modal-close {
-  border-color: rgba(239, 68, 68, 0.4);
-  color: #fca5a5;
-}
-
-.btn-modal-close:hover {
-  background: rgba(239, 68, 68, 0.15);
-  border-color: #ef4444;
-  color: #ffffff;
-  transform: translateY(-1px);
-  box-shadow: 0 0 14px rgba(239, 68, 68, 0.4);
-}
 
 /* ==========================================================================
    Main Content Layout & Section Banners
@@ -465,6 +421,10 @@
   transition: transform var(--transition-bounce);
 }
 
+.modal-container-wide {
+  max-width: 700px;
+}
+
 .modal-overlay.open .modal-container {
   transform: scale(1) translateY(0);
 }
@@ -515,26 +475,6 @@
   color: var(--text-secondary);
 }
 
-.form-control {
-  background: rgba(0, 0, 0, 0.25);
-  border: 1px solid var(--border-subtle);
-  border-radius: 10px;
-  padding: 0.65rem 0.85rem;
-  color: var(--text-primary);
-  font-size: 0.9rem;
-  transition: border-color var(--transition-fast);
-}
-
-.form-control:focus {
-  border-color: var(--border-focus);
-}
-
-.form-helper {
-  font-size: 0.78rem;
-  color: var(--text-muted);
-  line-height: 1.4;
-}
-
 .form-group-row {
   flex-direction: row;
   align-items: center;
@@ -556,12 +496,6 @@
 .settings-row:hover {
   background: rgba(255, 255, 255, 0.05);
   border-color: var(--border-strong);
-}
-
-.settings-label-wrap {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
 }
 
 /* Toggle Switch Component */
@@ -684,12 +618,6 @@
   font-weight: 800;
 }
 
-.faq-text {
-  font-size: 0.88rem;
-  color: var(--text-secondary);
-  line-height: 1.5;
-  margin-bottom: 0.75rem;
-}
 
 .route-option-card {
   background: rgba(0, 0, 0, 0.3);
@@ -728,11 +656,6 @@
   border: 1px solid rgba(56, 189, 248, 0.3);
 }
 
-.route-badge.future {
-  background: rgba(139, 92, 246, 0.15);
-  color: #c084fc;
-  border: 1px solid rgba(139, 92, 246, 0.3);
-}
 
 .route-title {
   font-family: var(--font-display);
@@ -781,70 +704,6 @@
   line-height: 1.45;
 }
 
-.faq-quickstart-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 0.75rem;
-  margin-top: 0.5rem;
-}
-
-.faq-quickstart-item {
-  background: rgba(0, 0, 0, 0.25);
-  border: 1px solid var(--border-subtle);
-  border-radius: 8px;
-  padding: 0.75rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-}
-
-.faq-quickstart-icon {
-  font-size: 1.25rem;
-}
-
-.faq-quickstart-title {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 0.85rem;
-  color: var(--text-primary);
-}
-
-.faq-quickstart-desc {
-  font-size: 0.78rem;
-  color: var(--text-secondary);
-  line-height: 1.4;
-}
-
-.faq-line-comparison {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.75rem;
-  margin-top: 0.5rem;
-}
-
-@media (max-width: 540px) {
-  .faq-line-comparison {
-    grid-template-columns: 1fr;
-  }
-}
-
-.faq-line-card {
-  padding: 0.85rem;
-  border-radius: 10px;
-  background: rgba(0, 0, 0, 0.25);
-  border: 1px solid var(--border-subtle);
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-}
-
-.faq-line-card.line-1-box {
-  border-left: 3px solid var(--st-green);
-}
-
-.faq-line-card.line-2-box {
-  border-left: 3px solid var(--st-blue);
-}
 
 .faq-links-list {
   display: flex;
@@ -915,9 +774,7 @@
     font-size: 0.82rem;
   }
 
-  .clock-display {
-    display: none;
-  }
+
 
   .header-text-btn {
     font-size: 0.78rem;

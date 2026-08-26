@@ -16,6 +16,43 @@ export class SystemMapModal {
   private lastTapX: number = 0;
   private lastTapY: number = 0;
 
+  private isMouseDown = false;
+  private mouseStartX = 0;
+  private mouseStartY = 0;
+  private mouseStartTransX = 0;
+  private mouseStartTransY = 0;
+
+  private handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === 'Escape' && this.overlay.classList.contains('open')) {
+      this.close();
+    }
+  };
+
+  private handleMouseMove = (e: MouseEvent) => {
+    if (!this.isMouseDown) return;
+    const dx = e.clientX - this.mouseStartX;
+    const dy = e.clientY - this.mouseStartY;
+    const nextX = this.mouseStartTransX + dx;
+    const nextY = this.mouseStartTransY + dy;
+    const clamped = this.clampOffsets(nextX, nextY, this.currentScale);
+    this.currentX = clamped.x;
+    this.currentY = clamped.y;
+    this.applyTransform();
+  };
+
+  private handleMouseUp = () => {
+    if (this.isMouseDown) {
+      this.isMouseDown = false;
+      this.bodyEl.classList.remove('is-panning');
+    }
+  };
+
+  private handleResize = () => {
+    if (this.overlay.classList.contains('open')) {
+      this.fitToScreen();
+    }
+  };
+
   constructor() {
     this.overlay = this.render();
     document.body.appendChild(this.overlay);
@@ -24,6 +61,11 @@ export class SystemMapModal {
 
   public open() {
     this.overlay.classList.add('open');
+    window.addEventListener('keydown', this.handleKeyDown);
+    window.addEventListener('mousemove', this.handleMouseMove);
+    window.addEventListener('mouseup', this.handleMouseUp);
+    window.addEventListener('resize', this.handleResize);
+
     // Ensure viewport is measured accurately on next frame and after transition
     requestAnimationFrame(() => {
       this.fitToScreen();
@@ -35,6 +77,10 @@ export class SystemMapModal {
 
   public close() {
     this.overlay.classList.remove('open');
+    window.removeEventListener('keydown', this.handleKeyDown);
+    window.removeEventListener('mousemove', this.handleMouseMove);
+    window.removeEventListener('mouseup', this.handleMouseUp);
+    window.removeEventListener('resize', this.handleResize);
   }
 
   public fitToScreen() {
@@ -128,12 +174,6 @@ export class SystemMapModal {
   }
 
   private setupEventListeners() {
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && this.overlay.classList.contains('open')) {
-        this.close();
-      }
-    });
-
     if (!this.bodyEl) return;
 
     let isTouching = false;
@@ -252,39 +292,14 @@ export class SystemMapModal {
     this.bodyEl.addEventListener('touchcancel', endTouch);
 
     // Desktop Mouse Controls
-    let isMouseDown = false;
-    let mouseStartX = 0;
-    let mouseStartY = 0;
-    let mouseStartTransX = 0;
-    let mouseStartTransY = 0;
-
     this.bodyEl.addEventListener('mousedown', (e: MouseEvent) => {
-      isMouseDown = true;
-      mouseStartX = e.clientX;
-      mouseStartY = e.clientY;
-      mouseStartTransX = this.currentX;
-      mouseStartTransY = this.currentY;
+      this.isMouseDown = true;
+      this.mouseStartX = e.clientX;
+      this.mouseStartY = e.clientY;
+      this.mouseStartTransX = this.currentX;
+      this.mouseStartTransY = this.currentY;
       this.bodyEl.classList.add('is-panning');
       if (this.canvasEl) this.canvasEl.style.transition = 'none';
-    });
-
-    window.addEventListener('mousemove', (e: MouseEvent) => {
-      if (!isMouseDown) return;
-      const dx = e.clientX - mouseStartX;
-      const dy = e.clientY - mouseStartY;
-      const nextX = mouseStartTransX + dx;
-      const nextY = mouseStartTransY + dy;
-      const clamped = this.clampOffsets(nextX, nextY, this.currentScale);
-      this.currentX = clamped.x;
-      this.currentY = clamped.y;
-      this.applyTransform();
-    });
-
-    window.addEventListener('mouseup', () => {
-      if (isMouseDown) {
-        isMouseDown = false;
-        this.bodyEl.classList.remove('is-panning');
-      }
     });
 
     this.bodyEl.addEventListener(
@@ -309,12 +324,6 @@ export class SystemMapModal {
       },
       { passive: false }
     );
-
-    window.addEventListener('resize', () => {
-      if (this.overlay.classList.contains('open')) {
-        this.fitToScreen();
-      }
-    });
   }
 
   private render(): HTMLElement {
@@ -336,7 +345,7 @@ export class SystemMapModal {
       </div>
       <div class="map-legend-item">
         <span class="map-legend-line-sample line-2"></span>
-        <span><strong>2 Line</strong> (Downtown Redmond ⇄ South Bellevue)</span>
+        <span><strong>2 Line</strong> (Lynnwood ⇄ Downtown Redmond)</span>
       </div>
     `;
 
@@ -491,8 +500,8 @@ export class SystemMapModal {
         ${this.renderLine1Station('federal-way-downtown', 272, 1205, 'Federal Way Downtown', 'Park & Ride / Transit Center', 'left', true)}
 
         <!-- ================= CONNECTING SEGMENT (I-90 CORRIDOR) ================= -->
-        ${this.renderLine2Station('judkins-park', 365, 665, 'Judkins Park', 'Rainier Ave S / I-90 Trail', 'bottom')}
-        ${this.renderLine2Station('mercer-island', 475, 665, 'Mercer Island', 'I-90 Park & Ride / Town Center', 'bottom')}
+        ${this.renderLine2Station('judkins-park', 355, 665, 'Judkins Park', 'Rainier Ave S', 'bottom')}
+        ${this.renderLine2Station('mercer-island', 480, 665, 'Mercer Island', 'Park & Ride', 'bottom')}
 
         <!-- ================= RIGHT SPINE: 2 LINE EASTSIDE STATIONS ================= -->
         ${this.renderLine2Station('south-bellevue', 540, 635, 'South Bellevue', 'Park & Ride / Mercer Slough', 'right', true)}

@@ -95,4 +95,41 @@ describe('OneBusAway API Transformer', () => {
     expect(arrivals.length).toBe(1);
     expect(arrivals[0].tripId).toBe('40_upcoming_trip');
   });
+
+  it('transforms 2 Line arrivals with correct route styling and direction', () => {
+    const mockLine2Platform: StationPlatform = {
+      stopId: '40_E03-T1',
+      directionName: 'Eastbound to Downtown Redmond',
+      cardinalDirection: 'Eastbound',
+      terminalDestination: 'Downtown Redmond',
+    };
+
+    const now = 1700000000000;
+    const rawData = {
+      code: 200,
+      data: {
+        entry: {
+          stopId: '40_E03-T1',
+          arrivalsAndDepartures: [
+            {
+              tripId: '40_2line_01',
+              routeId: '40_2_LINE',
+              routeShortName: '2 Line',
+              tripHeadsign: 'Downtown Redmond',
+              scheduledDepartureTime: now + 8 * 60 * 1000,
+              predictedDepartureTime: now + 8 * 60 * 1000,
+              predicted: true,
+            },
+          ],
+        },
+      },
+    };
+
+    const arrivals = transformObaArrivals(rawData, mockLine2Platform, now);
+    expect(arrivals.length).toBe(1);
+    expect(arrivals[0].routeName).toBe('2 Line');
+    expect(arrivals[0].routeColor).toBe('#0072CE');
+    expect(arrivals[0].direction).toBe('Eastbound');
+    expect(arrivals[0].destination).toBe('Downtown Redmond');
+  });
 });

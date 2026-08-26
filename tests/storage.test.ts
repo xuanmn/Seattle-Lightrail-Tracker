@@ -7,8 +7,8 @@ import {
   setActiveLine,
   getSettings,
   updateSettings,
-  getCollapsedPlatforms,
-  setPlatformCollapsed,
+  getStationDirectionFilters,
+  setStationDirectionFilter,
 } from '../src/services/storage';
 
 describe('Local Storage & Settings Service', () => {
@@ -72,24 +72,23 @@ describe('Local Storage & Settings Service', () => {
     expect(updated.timeFormat24Hour).toBe(true);
   });
 
-  it('persists platform collapse states individually per station', () => {
-    expect(getCollapsedPlatforms()).toEqual({});
+  it('persists station direction filters individually per station', () => {
+    expect(getStationDirectionFilters()).toEqual({});
 
-    // Collapse Northbound (col 1) on Capitol Hill
-    setPlatformCollapsed('capitol-hill', 1, true);
-    let state = getCollapsedPlatforms();
-    expect(state['capitol-hill']?.col1).toBe(true);
-    expect(state['capitol-hill']?.col2).toBeUndefined();
+    // Filter Northbound only (dir1) on Capitol Hill
+    setStationDirectionFilter('capitol-hill', 'dir1');
+    let filters = getStationDirectionFilters();
+    expect(filters['capitol-hill']).toBe('dir1');
 
-    // Collapse Southbound (col 2) on Westlake
-    setPlatformCollapsed('westlake', 2, true);
-    state = getCollapsedPlatforms();
-    expect(state['capitol-hill']?.col1).toBe(true);
-    expect(state['westlake']?.col2).toBe(true);
+    // Filter Southbound only (dir2) on Westlake
+    setStationDirectionFilter('westlake', 'dir2');
+    filters = getStationDirectionFilters();
+    expect(filters['capitol-hill']).toBe('dir1');
+    expect(filters['westlake']).toBe('dir2');
 
-    // Uncollapse Northbound on Capitol Hill
-    setPlatformCollapsed('capitol-hill', 1, false);
-    state = getCollapsedPlatforms();
-    expect(state['capitol-hill']?.col1).toBe(false);
+    // Reset Capitol Hill back to both directions
+    setStationDirectionFilter('capitol-hill', 'both');
+    filters = getStationDirectionFilters();
+    expect(filters['capitol-hill']).toBe('both');
   });
 });

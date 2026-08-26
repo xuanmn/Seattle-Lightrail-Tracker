@@ -26,6 +26,8 @@
   /* Dark Theme Surfaces & Backgrounds */
   --bg-app: #070a0f;
   --bg-surface: #0e1522;
+  --bg-surface-elevated: #131c2e;
+  --bg-surface-subtle: #0c1220;
   --bg-card: rgba(16, 24, 38, 0.75);
   --bg-card-hover: rgba(22, 33, 52, 0.9);
   --bg-card-active: rgba(26, 40, 64, 0.95);
@@ -37,6 +39,7 @@
   /* Borders & Dividers */
   --border-subtle: rgba(255, 255, 255, 0.08);
   --border-medium: rgba(255, 255, 255, 0.15);
+  --border-strong: rgba(255, 255, 255, 0.25);
   --border-active: rgba(255, 255, 255, 0.3);
   --border-focus: #38bdf8;
 
@@ -58,6 +61,7 @@
   --shadow-lg: 0 10px 30px -5px rgba(0, 0, 0, 0.7), 0 0 25px rgba(0, 133, 66, 0.15);
   --shadow-glow-green: 0 0 20px var(--st-green-glow);
   --shadow-glow-blue: 0 0 20px var(--st-blue-glow);
+  --glow-card: 0 0 20px rgba(0, 0, 0, 0.3);
 
   /* Layout Constants */
   --header-height: 72px;
@@ -65,11 +69,13 @@
   --radius-sm: 8px;
   --radius-md: 14px;
   --radius-lg: 20px;
+  --radius-xl: 24px;
   --radius-pill: 9999px;
 
   /* Transitions */
   --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-bounce: 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 

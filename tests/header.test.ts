@@ -8,7 +8,7 @@ describe('HeaderComponent', () => {
     const onSettingsClick = vi.fn();
     const onLineChange = vi.fn();
 
-    const header = new HeaderComponent('line-1', false, {
+    const header = new HeaderComponent('line-1', {
       onMapClick,
       onFaqClick,
       onSettingsClick,
@@ -30,7 +30,7 @@ describe('HeaderComponent', () => {
   });
 
   it('provides a clickable brand logo with reload capability', () => {
-    const header = new HeaderComponent('line-1', false, {
+    const header = new HeaderComponent('line-1', {
       onMapClick: vi.fn(),
       onFaqClick: vi.fn(),
       onSettingsClick: vi.fn(),

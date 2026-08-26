@@ -17,8 +17,6 @@ export class StationCardComponent {
   private starBtn!: HTMLButtonElement;
 
   private platformsEl!: HTMLElement;
-  private col1El!: HTMLElement;
-  private col2El!: HTMLElement;
   private platform1Container!: HTMLElement;
   private platform2Container!: HTMLElement;
 
@@ -88,7 +86,7 @@ export class StationCardComponent {
     }
   }
 
-  public setLoading() {
+  private setLoading() {
     this.platform1Container.innerHTML = `
       <div class="skeleton-row"></div>
       <div class="skeleton-row"></div>
@@ -168,7 +166,27 @@ export class StationCardComponent {
 
       const info = createElement('div', 'dep-info');
       const dest = createElement('div', 'dep-dest');
-      dest.textContent = arrival.destination || defaultDest;
+
+      const isLine2Arrival =
+        arrival.routeName.includes('2') ||
+        arrival.destination.includes('Redmond') ||
+        arrival.destination.includes('Bellevue');
+
+      const lineBadge = createElement(
+        'span',
+        `dep-line-tag ${isLine2Arrival ? 'line-2-tag' : 'line-1-tag'}`,
+        isLine2Arrival ? '2' : '1'
+      );
+      lineBadge.title = isLine2Arrival ? '2 Line Train' : '1 Line Train';
+
+      const destText = createElement(
+        'span',
+        'dep-dest-name',
+        arrival.destination || defaultDest
+      );
+
+      dest.appendChild(lineBadge);
+      dest.appendChild(destText);
 
       const meta = createElement('div', 'dep-meta');
       const clock = createElement(
@@ -300,7 +318,7 @@ export class StationCardComponent {
     const p2 = this.station.platforms.southbound || this.station.platforms.westbound;
 
     // Platform 1 Column
-    this.col1El = createElement('div', 'platform-column');
+    const col1El = createElement('div', 'platform-column');
     const header1 = createElement('div', 'platform-header');
     const dest1 = createElement('div', 'platform-dest');
     const label1 = formatSimpleDestination(p1?.terminalDestination || 'Terminal', this.station.id, true);
@@ -308,11 +326,11 @@ export class StationCardComponent {
     header1.appendChild(dest1);
 
     this.platform1Container = createElement('div', 'platform-departures');
-    this.col1El.appendChild(header1);
-    this.col1El.appendChild(this.platform1Container);
+    col1El.appendChild(header1);
+    col1El.appendChild(this.platform1Container);
 
     // Platform 2 Column
-    this.col2El = createElement('div', 'platform-column');
+    const col2El = createElement('div', 'platform-column');
     const header2 = createElement('div', 'platform-header');
     const dest2 = createElement('div', 'platform-dest');
     const label2 = formatSimpleDestination(p2?.terminalDestination || 'Terminal', this.station.id, false);
@@ -320,11 +338,11 @@ export class StationCardComponent {
     header2.appendChild(dest2);
 
     this.platform2Container = createElement('div', 'platform-departures');
-    this.col2El.appendChild(header2);
-    this.col2El.appendChild(this.platform2Container);
+    col2El.appendChild(header2);
+    col2El.appendChild(this.platform2Container);
 
-    this.platformsEl.appendChild(this.col1El);
-    this.platformsEl.appendChild(this.col2El);
+    this.platformsEl.appendChild(col1El);
+    this.platformsEl.appendChild(col2El);
 
     card.appendChild(header);
     card.appendChild(this.platformsEl);

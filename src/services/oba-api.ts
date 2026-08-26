@@ -53,16 +53,24 @@ export function transformObaArrivals(
     const delayInfo = formatDelayStatus(delaySeconds, isRealtime);
     const minutesRemaining = calculateMinutesRemaining(targetDeparture, nowEpochMs);
 
-    const routeName = item.routeShortName || (platform.cardinalDirection === 'Eastbound' || platform.cardinalDirection === 'Westbound' ? '2 Line' : '1 Line');
-    const isLine2 = routeName.includes('2') || platform.terminalDestination.includes('Redmond') || platform.terminalDestination.includes('Bellevue');
+    const rawRoute = item.routeShortName || item.routeLongName || '';
+    const headsign = item.tripHeadsign || platform.terminalDestination;
+    const isLine2 =
+      rawRoute.includes('2') ||
+      headsign.includes('Redmond') ||
+      headsign.includes('Bellevue') ||
+      platform.cardinalDirection === 'Eastbound' ||
+      platform.cardinalDirection === 'Westbound';
+
+    const routeName = isLine2 ? '2 Line' : '1 Line';
     const routeColor = isLine2 ? '#0072CE' : '#008542';
 
     results.push({
       tripId: item.tripId || `trip_${targetDeparture}`,
       routeId: item.routeId || (isLine2 ? '40_2_LINE' : '40_100479'),
-      routeName: isLine2 ? '2 Line' : '1 Line',
+      routeName,
       routeColor,
-      destination: item.tripHeadsign || platform.terminalDestination,
+      destination: headsign,
       direction: platform.cardinalDirection,
       scheduledDepartureTime: item.scheduledDepartureTime,
       predictedDepartureTime: isRealtime ? item.predictedDepartureTime || null : null,
@@ -91,12 +99,11 @@ export function generateFallbackArrivals(
   platform: StationPlatform,
   nowEpochMs: number = Date.now()
 ): TransitArrival[] {
-  const isLine2 = platform.cardinalDirection === 'Eastbound' || platform.cardinalDirection === 'Westbound';
-  const routeName = isLine2 ? '2 Line' : '1 Line';
-  const routeColor = isLine2 ? '#0072CE' : '#008542';
+  const isEastside =
+    platform.cardinalDirection === 'Eastbound' || platform.cardinalDirection === 'Westbound';
 
-  // Realistic intervals: ~8-10 min headway
-  const offsetsMinutes = [3, 11, 21, 31];
+  // Realistic intervals: ~5-10 min combined headway
+  const offsetsMinutes = [3, 8, 16, 24];
 
   return offsetsMinutes.map((mins, idx) => {
     const schedTime = nowEpochMs + mins * 60 * 1000;
@@ -105,12 +112,34 @@ export function generateFallbackArrivals(
     const predTime = isRt ? schedTime + delaySec * 1000 : null;
     const delayInfo = formatDelayStatus(delaySec, isRt);
 
+    let routeName = '1 Line';
+    let routeColor = '#008542';
+    let destination = platform.terminalDestination;
+
+    if (isEastside) {
+      routeName = '2 Line';
+      routeColor = '#0072CE';
+      destination = platform.terminalDestination;
+    } else if (platform.cardinalDirection === 'Southbound') {
+      // Shared North/Tunnel corridor: alternate 1 Line (Federal Way) & 2 Line (Downtown Redmond)
+      const isAltLine2 = idx % 2 === 1;
+      routeName = isAltLine2 ? '2 Line' : '1 Line';
+      routeColor = isAltLine2 ? '#0072CE' : '#008542';
+      destination = isAltLine2 ? 'Downtown Redmond' : 'Federal Way Downtown';
+    } else if (platform.cardinalDirection === 'Northbound') {
+      // Heading North to Lynnwood: alternate line badges on shared spine
+      const isAltLine2 = idx % 2 === 1;
+      routeName = isAltLine2 ? '2 Line' : '1 Line';
+      routeColor = isAltLine2 ? '#0072CE' : '#008542';
+      destination = 'Lynnwood City Center';
+    }
+
     return {
       tripId: `sim_${platform.stopId}_${idx}`,
-      routeId: isLine2 ? '40_2_LINE' : '40_100479',
+      routeId: routeName === '2 Line' ? '40_2_LINE' : '40_100479',
       routeName,
       routeColor,
-      destination: platform.terminalDestination,
+      destination,
       direction: platform.cardinalDirection,
       scheduledDepartureTime: schedTime,
       predictedDepartureTime: predTime,
@@ -172,8 +201,8 @@ export async function fetchArrivalsForStation(
   direction1: { platform: StationPlatform; arrivals: TransitArrival[] };
   direction2: { platform: StationPlatform; arrivals: TransitArrival[] };
 }> {
-  const p1 = station.platforms.northbound || station.platforms.westbound;
-  const p2 = station.platforms.southbound || station.platforms.eastbound;
+  const p1 = station.platforms.northbound || station.platforms.eastbound;
+  const p2 = station.platforms.southbound || station.platforms.westbound;
 
   if (!p1 || !p2) {
     throw new Error(`Station ${station.name} missing platform definitions`);

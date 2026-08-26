@@ -596,9 +596,9 @@ export const STATIONS: Station[] = [
       },
       westbound: {
         stopId: '40_E31-T1',
-        directionName: 'Westbound to South Bellevue',
+        directionName: 'Westbound to Lynnwood City Center',
         cardinalDirection: 'Westbound',
-        terminalDestination: 'South Bellevue',
+        terminalDestination: 'Lynnwood City Center',
       },
     },
   },
@@ -618,9 +618,9 @@ export const STATIONS: Station[] = [
       },
       westbound: {
         stopId: '40_E29-T1',
-        directionName: 'Westbound to South Bellevue',
+        directionName: 'Westbound to Lynnwood City Center',
         cardinalDirection: 'Westbound',
-        terminalDestination: 'South Bellevue',
+        terminalDestination: 'Lynnwood City Center',
       },
     },
   },
@@ -640,9 +640,9 @@ export const STATIONS: Station[] = [
       },
       westbound: {
         stopId: '40_E27-T1',
-        directionName: 'Westbound to South Bellevue',
+        directionName: 'Westbound to Lynnwood City Center',
         cardinalDirection: 'Westbound',
-        terminalDestination: 'South Bellevue',
+        terminalDestination: 'Lynnwood City Center',
       },
     },
   },
@@ -662,9 +662,9 @@ export const STATIONS: Station[] = [
       },
       westbound: {
         stopId: '40_E25-T1',
-        directionName: 'Westbound to South Bellevue',
+        directionName: 'Westbound to Lynnwood City Center',
         cardinalDirection: 'Westbound',
-        terminalDestination: 'South Bellevue',
+        terminalDestination: 'Lynnwood City Center',
       },
     },
   },
@@ -684,9 +684,9 @@ export const STATIONS: Station[] = [
       },
       westbound: {
         stopId: '40_E23-T1',
-        directionName: 'Westbound to South Bellevue',
+        directionName: 'Westbound to Lynnwood City Center',
         cardinalDirection: 'Westbound',
-        terminalDestination: 'South Bellevue',
+        terminalDestination: 'Lynnwood City Center',
       },
     },
   },
@@ -706,9 +706,9 @@ export const STATIONS: Station[] = [
       },
       westbound: {
         stopId: '40_E21-T1',
-        directionName: 'Westbound to South Bellevue',
+        directionName: 'Westbound to Lynnwood City Center',
         cardinalDirection: 'Westbound',
-        terminalDestination: 'South Bellevue',
+        terminalDestination: 'Lynnwood City Center',
       },
     },
   },
@@ -728,9 +728,9 @@ export const STATIONS: Station[] = [
       },
       westbound: {
         stopId: '40_E19-T2',
-        directionName: 'Westbound to South Bellevue',
+        directionName: 'Westbound to Lynnwood City Center',
         cardinalDirection: 'Westbound',
-        terminalDestination: 'South Bellevue',
+        terminalDestination: 'Lynnwood City Center',
       },
     },
   },
@@ -750,9 +750,9 @@ export const STATIONS: Station[] = [
       },
       westbound: {
         stopId: '40_E15-T1',
-        directionName: 'Westbound to South Bellevue',
+        directionName: 'Westbound to Lynnwood City Center',
         cardinalDirection: 'Westbound',
-        terminalDestination: 'South Bellevue',
+        terminalDestination: 'Lynnwood City Center',
       },
     },
   },
@@ -772,9 +772,9 @@ export const STATIONS: Station[] = [
       },
       westbound: {
         stopId: '40_E11-T2',
-        directionName: 'Westbound to South Bellevue',
+        directionName: 'Westbound to Lynnwood City Center',
         cardinalDirection: 'Westbound',
-        terminalDestination: 'South Bellevue',
+        terminalDestination: 'Lynnwood City Center',
       },
     },
   },
@@ -794,9 +794,9 @@ export const STATIONS: Station[] = [
       },
       westbound: {
         stopId: '40_E09-T2',
-        directionName: 'Westbound Platform (Terminus)',
+        directionName: 'Westbound to Lynnwood City Center',
         cardinalDirection: 'Westbound',
-        terminalDestination: 'South Bellevue',
+        terminalDestination: 'Lynnwood City Center',
       },
     },
   },
@@ -812,21 +812,14 @@ export function getStationById(id: string): Station | undefined {
 
 export const LINE_CONFIG = {
   'line-1': {
-    id: 'line-1' as TransitLineId,
     name: '1 Line',
-    color: '#008542', // Sound Transit Emerald Green
-    secondaryColor: '#006633',
     terminusNorth: 'Lynnwood City Center',
     terminusSouth: 'Federal Way Downtown',
-    badgeText: '1 LINE',
   },
   'line-2': {
-    id: 'line-2' as TransitLineId,
     name: '2 Line',
-    color: '#0072CE', // Sound Transit Cobalt Blue
-    secondaryColor: '#005599',
-    terminusNorth: 'Downtown Redmond',
-    terminusSouth: 'South Bellevue',
-    badgeText: '2 LINE',
+    terminusNorth: 'Lynnwood City Center',
+    terminusSouth: 'Downtown Redmond',
   },
 };
+
