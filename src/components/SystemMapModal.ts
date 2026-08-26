@@ -416,16 +416,14 @@ export class SystemMapModal {
     labelPos: 'left' | 'right' = 'left',
     isTerminus: boolean = false
   ): string {
-    const textX = labelPos === 'left' ? x - 22 : x + 22;
+    const textX = labelPos === 'left' ? x - 18 : x + 18;
     const textAnchor = labelPos === 'left' ? 'end' : 'start';
-    const strokeWidth = isTerminus ? '2.5' : '2';
+    const r = isTerminus ? 7 : 5.5;
 
     return `
       <g class="map-station-node map-elem-line-1 map-elem-line-2 map-elem-shared" id="map-node-${id}">
-        <!-- Dual track capsule node -->
-        <rect x="${x - 13}" y="${y - 6}" width="26" height="12" rx="6" fill="#ffffff" stroke="#0f172a" stroke-width="${strokeWidth}" />
-        <circle cx="${x - 4.5}" cy="${y}" r="3" fill="#008542" />
-        <circle cx="${x + 4.5}" cy="${y}" r="3" fill="#0072CE" />
+        <!-- Single circular node matching eastside -->
+        <circle class="map-station-circle" cx="${x}" cy="${y}" r="${r}" fill="#ffffff" stroke="#0f172a" stroke-width="2.5" />
         <text class="map-station-label" x="${textX}" y="${y + 4.5}" text-anchor="${textAnchor}">${name}</text>
         ${sub ? `<text class="map-station-sublabel" x="${textX}" y="${y + 15}" text-anchor="${textAnchor}">${sub}</text>` : ''}
       </g>
@@ -441,16 +439,15 @@ export class SystemMapModal {
     labelPos: 'left' | 'right' = 'left',
     isMajorHub: boolean = false
   ): string {
-    const textX = labelPos === 'left' ? x - 26 : x + 26;
+    const textX = labelPos === 'left' ? x - 20 : x + 20;
     const textAnchor = labelPos === 'left' ? 'end' : 'start';
+    const r = isMajorHub ? 8 : 6.5;
 
     return `
       <g class="map-station-node map-elem-line-1 map-elem-line-2 map-elem-shared" id="map-node-${id}">
-        <!-- Official Transfer Hub Capsule -->
-        <rect class="map-transfer-pill" x="${x - 17}" y="${y - 8}" width="34" height="16" rx="8" fill="#ffffff" stroke="#0f172a" stroke-width="2.5" />
-        <circle cx="${x - 6}" cy="${y}" r="3.8" fill="#008542" />
-        <circle cx="${x + 6}" cy="${y}" r="3.8" fill="#0072CE" />
-        ${isMajorHub ? `<circle cx="${x}" cy="${y}" r="1.8" fill="#0f172a" />` : ''}
+        <!-- Single transfer circular node -->
+        <circle class="map-station-circle" cx="${x}" cy="${y}" r="${r}" fill="#ffffff" stroke="#0f172a" stroke-width="2.5" />
+        ${isMajorHub ? `<circle cx="${x}" cy="${y}" r="2.8" fill="#008542" />` : ''}
         <text class="map-station-label transfer-label" x="${textX}" y="${y + 4.5}" text-anchor="${textAnchor}">${name}</text>
         ${sub ? `<text class="map-station-sublabel" x="${textX}" y="${y + 15}" text-anchor="${textAnchor}">${sub}</text>` : ''}
       </g>
