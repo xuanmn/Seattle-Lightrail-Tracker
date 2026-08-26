@@ -283,8 +283,8 @@
 }
 
 .map-station-node:hover .map-station-circle {
-  r: 6.5;
-  stroke-width: 3.5;
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.9));
+  stroke-width: 3;
 }
 
 .map-station-label {

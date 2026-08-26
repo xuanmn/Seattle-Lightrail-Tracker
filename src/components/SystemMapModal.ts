@@ -322,27 +322,27 @@ export class SystemMapModal {
 
         <!-- 1 Line Track (Green #008542) -->
         <path class="map-track-path line-1-glow map-elem-line-1"
-          d="M 280,75 L 280,1075" stroke="#008542" stroke-width="14" opacity="0.3" filter="url(#track-glow-green)" />
+          d="M 272,75 L 272,1075" stroke="#008542" stroke-width="14" opacity="0.3" filter="url(#track-glow-green)" />
         <path class="map-track-path line-1-main map-elem-line-1"
-          d="M 280,75 L 280,1075" stroke="#008542" stroke-width="9" stroke-linecap="round" fill="none" />
+          d="M 272,75 L 272,1075" stroke="#008542" stroke-width="9" stroke-linecap="round" fill="none" />
 
         <!-- 2 Line Track (Blue #0072CE) - Shared in North/Tunnel + Eastside Corridor -->
         <path class="map-track-path line-2-glow map-elem-line-2 map-elem-shared"
-          d="M 294,75 L 294,615 Q 294,665 324,665 L 450,665 Q 480,665 480,635 L 480,75"
+          d="M 298,75 L 298,615 Q 298,665 330,665 L 450,665 Q 480,665 480,635 L 480,75"
           stroke="#0072CE" stroke-width="14" opacity="0.3" filter="url(#track-glow-blue)" />
         <path class="map-track-path line-2-main map-elem-line-2 map-elem-shared"
-          d="M 294,75 L 294,615 Q 294,665 324,665 L 450,665 Q 480,665 480,635 L 480,75"
+          d="M 298,75 L 298,615 Q 298,665 330,665 L 450,665 Q 480,665 480,635 L 480,75"
           stroke="#0072CE" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" fill="none" />
 
         <!-- ================= TERMINUS HEADERS & BULLETS ================= -->
 
         <!-- North Terminus (Lynnwood City Center) -->
-        <g class="map-terminus-badge map-elem-line-1 map-elem-line-2" transform="translate(287, 42)">
+        <g class="map-terminus-badge map-elem-line-1 map-elem-line-2" transform="translate(285, 42)">
           <rect x="-42" y="-16" width="84" height="26" rx="13" fill="#0f172a" stroke="rgba(255,255,255,0.35)" stroke-width="1.5" />
-          <circle cx="-16" cy="-3" r="9" fill="#008542" />
-          <text x="-16" y="0.5" fill="#ffffff" font-size="11" font-weight="800" text-anchor="middle">1</text>
-          <circle cx="16" cy="-3" r="9" fill="#0072CE" />
-          <text x="16" y="0.5" fill="#ffffff" font-size="11" font-weight="800" text-anchor="middle">2</text>
+          <circle cx="-13" cy="-3" r="9" fill="#008542" />
+          <text x="-13" y="0.5" fill="#ffffff" font-size="11" font-weight="800" text-anchor="middle">1</text>
+          <circle cx="13" cy="-3" r="9" fill="#0072CE" />
+          <text x="13" y="0.5" fill="#ffffff" font-size="11" font-weight="800" text-anchor="middle">2</text>
         </g>
 
         <!-- 2 Line East Terminus (Downtown Redmond) -->
@@ -353,40 +353,40 @@ export class SystemMapModal {
         </g>
 
         <!-- 1 Line South Terminus (Angle Lake) -->
-        <g class="map-terminus-badge map-elem-line-1" transform="translate(280, 1105)">
+        <g class="map-terminus-badge map-elem-line-1" transform="translate(272, 1105)">
           <rect x="-24" y="-13" width="48" height="24" rx="12" fill="#0f172a" stroke="rgba(0,133,66,0.6)" stroke-width="1.5" />
           <circle cx="0" cy="-1" r="9" fill="#008542" />
           <text x="0" y="2.5" fill="#ffffff" font-size="11" font-weight="800" text-anchor="middle">1</text>
         </g>
 
         <!-- ================= LEFT SPINE: SHARED 1 LINE & 2 LINE STATIONS ================= -->
-        ${this.renderDualCapsuleStation('lynnwood-city-center', 287, 75, 'Lynnwood City Center', '1 Line & 2 Line North Terminus', 'left', true)}
-        ${this.renderDualCapsuleStation('mountlake-terrace', 287, 120, 'Mountlake Terrace', 'Park & Ride', 'left')}
-        ${this.renderDualCapsuleStation('shoreline-north-185th', 287, 165, 'Shoreline North/185th', '', 'left')}
-        ${this.renderDualCapsuleStation('shoreline-south-148th', 287, 210, 'Shoreline South/148th', '', 'left')}
-        ${this.renderDualCapsuleStation('northgate', 287, 255, 'Northgate', 'Kraken Community Iceplex', 'left')}
-        ${this.renderDualCapsuleStation('roosevelt', 287, 300, 'Roosevelt', '', 'left')}
-        ${this.renderDualCapsuleStation('u-district', 287, 345, 'U District', 'UW Tower / The Ave', 'left')}
-        ${this.renderDualCapsuleStation('university-of-washington', 287, 390, 'University of Washington', 'Husky Stadium / UW Medical', 'left')}
-        ${this.renderDualCapsuleStation('capitol-hill', 287, 435, 'Capitol Hill', 'Broadway / First Hill Streetcar', 'left')}
+        ${this.renderDualCapsuleStation('lynnwood-city-center', 285, 75, 'Lynnwood City Center', '1 Line & 2 Line North Terminus', 'left', true)}
+        ${this.renderDualCapsuleStation('mountlake-terrace', 285, 120, 'Mountlake Terrace', 'Park & Ride', 'left')}
+        ${this.renderDualCapsuleStation('shoreline-north-185th', 285, 165, 'Shoreline North/185th', '', 'left')}
+        ${this.renderDualCapsuleStation('shoreline-south-148th', 285, 210, 'Shoreline South/148th', '', 'left')}
+        ${this.renderDualCapsuleStation('northgate', 285, 255, 'Northgate', 'Kraken Community Iceplex', 'left')}
+        ${this.renderDualCapsuleStation('roosevelt', 285, 300, 'Roosevelt', '', 'left')}
+        ${this.renderDualCapsuleStation('u-district', 285, 345, 'U District', 'UW Tower / The Ave', 'left')}
+        ${this.renderDualCapsuleStation('university-of-washington', 285, 390, 'University of Washington', 'Husky Stadium / UW Medical', 'left')}
+        ${this.renderDualCapsuleStation('capitol-hill', 285, 435, 'Capitol Hill', 'Broadway / First Hill Streetcar', 'left')}
 
         <!-- Downtown Seattle Transit Tunnel Transfer Stations -->
-        ${this.renderTransferCapsule('westlake', 287, 480, 'Westlake', 'Seattle Center Monorail 🚝', 'left')}
-        ${this.renderTransferCapsule('symphony', 287, 525, 'Symphony', 'University Street / Benaroya Hall', 'left')}
-        ${this.renderTransferCapsule('pioneer-square', 287, 570, 'Pioneer Square', 'WA State Ferries ⛴️ / Streetcar', 'left')}
-        ${this.renderTransferCapsule('international-district-chinatown', 287, 615, 'Intl. District / Chinatown', '1 Line ⇄ 2 Line Transfer • Sounder 🚆 • Amtrak 🚆', 'left', true)}
+        ${this.renderTransferCapsule('westlake', 285, 480, 'Westlake', 'Seattle Center Monorail 🚝', 'left')}
+        ${this.renderTransferCapsule('symphony', 285, 525, 'Symphony', 'University Street / Benaroya Hall', 'left')}
+        ${this.renderTransferCapsule('pioneer-square', 285, 570, 'Pioneer Square', 'WA State Ferries ⛴️ / Streetcar', 'left')}
+        ${this.renderTransferCapsule('international-district-chinatown', 285, 615, 'Intl. District / Chinatown', '1 Line ⇄ 2 Line Transfer • Sounder 🚆 • Amtrak 🚆', 'left', true)}
 
         <!-- ================= LEFT SPINE: 1 LINE SOUTH STATIONS ================= -->
-        ${this.renderLine1Station('stadium', 280, 665, 'Stadium', 'Lumen Field / T-Mobile Park', 'left')}
-        ${this.renderLine1Station('sodo', 280, 710, 'SODO', 'Busway', 'left')}
-        ${this.renderLine1Station('beacon-hill', 280, 755, 'Beacon Hill', 'Tunnel Station', 'left')}
-        ${this.renderLine1Station('mount-baker', 280, 800, 'Mount Baker', 'Transit Center 🚌', 'left')}
-        ${this.renderLine1Station('columbia-city', 280, 845, 'Columbia City', 'Historic District', 'left')}
-        ${this.renderLine1Station('othello', 280, 890, 'Othello', '', 'left')}
-        ${this.renderLine1Station('rainier-beach', 280, 935, 'Rainier Beach', '', 'left')}
-        ${this.renderLine1Station('tukwila-intl-blvd', 280, 980, 'Tukwila Intl. Blvd.', 'Park & Ride', 'left')}
-        ${this.renderAirportStation('seatac-airport', 280, 1025, 'SeaTac / Airport', "Seattle-Tacoma Int'l Airport ✈️", 'left')}
-        ${this.renderLine1Station('angle-lake', 280, 1070, 'Angle Lake', '1 Line South Terminus', 'left', true)}
+        ${this.renderLine1Station('stadium', 272, 665, 'Stadium', 'Lumen Field / T-Mobile Park', 'left')}
+        ${this.renderLine1Station('sodo', 272, 710, 'SODO', 'Busway', 'left')}
+        ${this.renderLine1Station('beacon-hill', 272, 755, 'Beacon Hill', 'Tunnel Station', 'left')}
+        ${this.renderLine1Station('mount-baker', 272, 800, 'Mount Baker', 'Transit Center 🚌', 'left')}
+        ${this.renderLine1Station('columbia-city', 272, 845, 'Columbia City', 'Historic District', 'left')}
+        ${this.renderLine1Station('othello', 272, 890, 'Othello', '', 'left')}
+        ${this.renderLine1Station('rainier-beach', 272, 935, 'Rainier Beach', '', 'left')}
+        ${this.renderLine1Station('tukwila-intl-blvd', 272, 980, 'Tukwila Intl. Blvd.', 'Park & Ride', 'left')}
+        ${this.renderAirportStation('seatac-airport', 272, 1025, 'SeaTac / Airport', "Seattle-Tacoma Int'l Airport ✈️", 'left')}
+        ${this.renderLine1Station('angle-lake', 272, 1070, 'Angle Lake', '1 Line South Terminus', 'left', true)}
 
         <!-- ================= CONNECTING SEGMENT (I-90 CORRIDOR) ================= -->
         ${this.renderLine2Station('judkins-park', 350, 665, 'Judkins Park', 'Rainier Ave S', 'bottom')}
@@ -416,15 +416,15 @@ export class SystemMapModal {
     labelPos: 'left' | 'right' = 'left',
     isTerminus: boolean = false
   ): string {
-    const textX = labelPos === 'left' ? x - 22 : x + 22;
+    const textX = labelPos === 'left' ? x - 26 : x + 26;
     const textAnchor = labelPos === 'left' ? 'end' : 'start';
-    const r = isTerminus ? 6 : 5;
+    const r = isTerminus ? 5.5 : 4.8;
 
     return `
       <g class="map-station-node map-elem-line-1 map-elem-line-2 map-elem-shared" id="map-node-${id}">
-        <!-- Two circles centered on each parallel line -->
-        <circle class="map-station-circle" cx="${x - 7}" cy="${y}" r="${r}" fill="#ffffff" stroke="#008542" stroke-width="2.5" />
-        <circle class="map-station-circle" cx="${x + 7}" cy="${y}" r="${r}" fill="#ffffff" stroke="#0072CE" stroke-width="2.5" />
+        <!-- Two distinct circles centered on each parallel line with ample separation -->
+        <circle class="map-station-circle" cx="${x - 13}" cy="${y}" r="${r}" fill="#ffffff" stroke="#008542" stroke-width="2.5" />
+        <circle class="map-station-circle" cx="${x + 13}" cy="${y}" r="${r}" fill="#ffffff" stroke="#0072CE" stroke-width="2.5" />
         <text class="map-station-label" x="${textX}" y="${y + 4.5}" text-anchor="${textAnchor}">${name}</text>
         ${sub ? `<text class="map-station-sublabel" x="${textX}" y="${y + 15}" text-anchor="${textAnchor}">${sub}</text>` : ''}
       </g>
@@ -440,16 +440,16 @@ export class SystemMapModal {
     labelPos: 'left' | 'right' = 'left',
     isMajorHub: boolean = false
   ): string {
-    const textX = labelPos === 'left' ? x - 24 : x + 24;
+    const textX = labelPos === 'left' ? x - 28 : x + 28;
     const textAnchor = labelPos === 'left' ? 'end' : 'start';
-    const r = isMajorHub ? 6.5 : 5.5;
+    const r = isMajorHub ? 6 : 5.2;
 
     return `
       <g class="map-station-node map-elem-line-1 map-elem-line-2 map-elem-shared" id="map-node-${id}">
-        <!-- Two circles centered on each line with connector link -->
-        <rect x="${x - 7}" y="${y - 3}" width="14" height="6" fill="#ffffff" />
-        <circle class="map-station-circle" cx="${x - 7}" cy="${y}" r="${r}" fill="#ffffff" stroke="#008542" stroke-width="2.5" />
-        <circle class="map-station-circle" cx="${x + 7}" cy="${y}" r="${r}" fill="#ffffff" stroke="#0072CE" stroke-width="2.5" />
+        <!-- Clean connecting link between the two centered circles -->
+        <line x1="${x - 13}" y1="${y}" x2="${x + 13}" y2="${y}" stroke="#ffffff" stroke-width="4" stroke-linecap="round" />
+        <circle class="map-station-circle" cx="${x - 13}" cy="${y}" r="${r}" fill="#ffffff" stroke="#008542" stroke-width="2.5" />
+        <circle class="map-station-circle" cx="${x + 13}" cy="${y}" r="${r}" fill="#ffffff" stroke="#0072CE" stroke-width="2.5" />
         <text class="map-station-label transfer-label" x="${textX}" y="${y + 4.5}" text-anchor="${textAnchor}">${name}</text>
         ${sub ? `<text class="map-station-sublabel" x="${textX}" y="${y + 15}" text-anchor="${textAnchor}">${sub}</text>` : ''}
       </g>
