@@ -273,18 +273,11 @@
 
 /* Station Nodes in SVG */
 .map-station-node {
-  cursor: pointer;
-  transition: transform var(--transition-fast), opacity var(--transition-base);
+  transition: opacity var(--transition-base);
 }
 
 .map-station-circle {
   stroke-width: 2.5;
-  transition: all var(--transition-fast);
-}
-
-.map-station-node:hover .map-station-circle {
-  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.9));
-  stroke-width: 3;
 }
 
 .map-station-label {
@@ -292,18 +285,12 @@
   font-size: 10.5px;
   font-weight: 600;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9), 0 0 6px rgba(0, 0, 0, 0.9);
-  transition: fill var(--transition-fast), font-weight var(--transition-fast);
 }
 
 .map-station-sublabel {
   fill: var(--text-muted);
   font-size: 8.5px;
   font-weight: 500;
-}
-
-.map-station-node:hover .map-station-label {
-  fill: #ffffff;
-  font-weight: 700;
 }
 
 /* Transfer Hub / Key Stations */

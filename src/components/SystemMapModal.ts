@@ -370,11 +370,11 @@ export class SystemMapModal {
         ${this.renderDualCapsuleStation('university-of-washington', 285, 390, 'University of Washington', 'Husky Stadium / UW Medical', 'left')}
         ${this.renderDualCapsuleStation('capitol-hill', 285, 435, 'Capitol Hill', 'Broadway / First Hill Streetcar', 'left')}
 
-        <!-- Downtown Seattle Transit Tunnel Transfer Stations -->
-        ${this.renderTransferCapsule('westlake', 285, 480, 'Westlake', 'Seattle Center Monorail 🚝', 'left')}
-        ${this.renderTransferCapsule('symphony', 285, 525, 'Symphony', 'University Street / Benaroya Hall', 'left')}
-        ${this.renderTransferCapsule('pioneer-square', 285, 570, 'Pioneer Square', 'WA State Ferries ⛴️ / Streetcar', 'left')}
-        ${this.renderTransferCapsule('international-district-chinatown', 285, 615, 'Intl. District / Chinatown', '1 Line ⇄ 2 Line Transfer • Sounder 🚆 • Amtrak 🚆', 'left', true)}
+        <!-- Downtown Seattle Transit Tunnel Stations -->
+        ${this.renderDualCapsuleStation('westlake', 285, 480, 'Westlake', 'Seattle Center Monorail 🚝', 'left')}
+        ${this.renderDualCapsuleStation('symphony', 285, 525, 'Symphony', 'University Street / Benaroya Hall', 'left')}
+        ${this.renderDualCapsuleStation('pioneer-square', 285, 570, 'Pioneer Square', 'WA State Ferries ⛴️ / Streetcar', 'left')}
+        ${this.renderDualCapsuleStation('international-district-chinatown', 285, 615, 'Intl. District / Chinatown', '1 Line ⇄ 2 Line Transfer • Sounder 🚆 • Amtrak 🚆', 'left', true)}
 
         <!-- ================= LEFT SPINE: 1 LINE SOUTH STATIONS ================= -->
         ${this.renderLine1Station('stadium', 272, 665, 'Stadium', 'Lumen Field / T-Mobile Park', 'left')}
@@ -431,30 +431,6 @@ export class SystemMapModal {
     `;
   }
 
-  private renderTransferCapsule(
-    id: string,
-    x: number,
-    y: number,
-    name: string,
-    sub: string,
-    labelPos: 'left' | 'right' = 'left',
-    isMajorHub: boolean = false
-  ): string {
-    const textX = labelPos === 'left' ? x - 28 : x + 28;
-    const textAnchor = labelPos === 'left' ? 'end' : 'start';
-    const r = isMajorHub ? 6 : 5.2;
-
-    return `
-      <g class="map-station-node map-elem-line-1 map-elem-line-2 map-elem-shared" id="map-node-${id}">
-        <!-- Clean connecting link between the two centered circles -->
-        <line x1="${x - 13}" y1="${y}" x2="${x + 13}" y2="${y}" stroke="#ffffff" stroke-width="4" stroke-linecap="round" />
-        <circle class="map-station-circle" cx="${x - 13}" cy="${y}" r="${r}" fill="#ffffff" stroke="#008542" stroke-width="2.5" />
-        <circle class="map-station-circle" cx="${x + 13}" cy="${y}" r="${r}" fill="#ffffff" stroke="#0072CE" stroke-width="2.5" />
-        <text class="map-station-label transfer-label" x="${textX}" y="${y + 4.5}" text-anchor="${textAnchor}">${name}</text>
-        ${sub ? `<text class="map-station-sublabel" x="${textX}" y="${y + 15}" text-anchor="${textAnchor}">${sub}</text>` : ''}
-      </g>
-    `;
-  }
 
   private renderLine1Station(
     id: string,
