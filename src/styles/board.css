@@ -722,7 +722,7 @@
   font-size: 1rem;
 }
 
-/* Scrollable picker list with sleek custom vertical scrollbar */
+/* Scrollable picker list with sleek custom vertical scrollbar & soft-edge fade */
 .modal-body .departures-list {
   max-height: 390px;
   overflow-y: auto;
@@ -730,9 +730,11 @@
   margin-top: 0.75rem;
   margin-right: -1.15rem;
   padding-right: 0.85rem;
-  padding-bottom: 0.5rem;
+  padding-bottom: 0.75rem;
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+  mask-image: linear-gradient(to bottom, black calc(100% - 24px), transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black calc(100% - 24px), transparent 100%);
 }
 
 .modal-body .departures-list::-webkit-scrollbar {

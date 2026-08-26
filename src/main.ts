@@ -138,6 +138,17 @@ class TransitTrackerApp {
     this.renderStationCards();
   }
 
+  private performViewTransition(updateFn: () => void) {
+    if (
+      'startViewTransition' in document &&
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) {
+      (document as unknown as { startViewTransition: (fn: () => void) => void }).startViewTransition(updateFn);
+    } else {
+      updateFn();
+    }
+  }
+
   private renderViewModePills() {
     this.viewModePillWrap.innerHTML = '';
 
@@ -145,14 +156,16 @@ class TransitTrackerApp {
       'button',
       `view-mode-btn ${this.showOnlyPinned ? 'active' : ''}`
     );
-    myBtn.innerHTML = `★ Favorites`;
+    myBtn.innerHTML = `★ My Stations (${this.pinnedIds.length})`;
     if (this.showOnlyPinned) {
       myBtn.classList.add(this.activeLine === 'line-1' ? 'line-1-active' : 'line-2-active');
     }
     myBtn.onclick = () => {
       this.showOnlyPinned = true;
-      this.renderViewModePills();
-      this.renderStationCards();
+      this.performViewTransition(() => {
+        this.renderViewModePills();
+        this.renderStationCards();
+      });
       this.fetchVisibleArrivals();
     };
 
@@ -166,8 +179,10 @@ class TransitTrackerApp {
     }
     allBtn.onclick = () => {
       this.showOnlyPinned = false;
-      this.renderViewModePills();
-      this.renderStationCards();
+      this.performViewTransition(() => {
+        this.renderViewModePills();
+        this.renderStationCards();
+      });
       this.fetchVisibleArrivals();
     };
 
@@ -180,9 +195,11 @@ class TransitTrackerApp {
     document.body.dataset.activeLine = line;
     setActiveLine(line);
     this.header.setActiveLine(line);
-    this.updateToolbarHeader();
-    this.renderViewModePills();
-    this.renderStationCards();
+    this.performViewTransition(() => {
+      this.updateToolbarHeader();
+      this.renderViewModePills();
+      this.renderStationCards();
+    });
     this.fetchVisibleArrivals(true);
   }
 
