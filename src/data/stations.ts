@@ -48,7 +48,7 @@ export const STATIONS: Station[] = [
   },
   {
     id: 'shoreline-north-185th',
-    name: 'Shoreline North / 185th',
+    name: 'Shoreline North/185th',
     lines: ['line-1'],
     lat: 47.7634,
     lon: -122.3278,
@@ -69,7 +69,7 @@ export const STATIONS: Station[] = [
   },
   {
     id: 'shoreline-south-148th',
-    name: 'Shoreline South / 148th',
+    name: 'Shoreline South/148th',
     lines: ['line-1'],
     lat: 47.7371,
     lon: -122.3283,
@@ -261,7 +261,7 @@ export const STATIONS: Station[] = [
   },
   {
     id: 'international-district-chinatown',
-    name: "Int'l District / Chinatown",
+    name: 'Intl. District / Chinatown',
     lines: ['line-1'],
     lat: 47.5979,
     lon: -122.3283,
@@ -430,7 +430,7 @@ export const STATIONS: Station[] = [
   },
   {
     id: 'tukwila-intl-blvd',
-    name: 'Tukwila Intl Blvd',
+    name: 'Tukwila Intl. Blvd.',
     lines: ['line-1'],
     lat: 47.4644,
     lon: -122.2885,
@@ -452,7 +452,7 @@ export const STATIONS: Station[] = [
   {
     id: 'seatac-airport',
     name: 'SeaTac / Airport',
-    shortName: 'Seattle-Tacoma Int Airport',
+    shortName: "Seattle-Tacoma Int'l Airport",
     lines: ['line-1'],
     lat: 47.4439,
     lon: -122.2989,
@@ -603,7 +603,8 @@ export const STATIONS: Station[] = [
   },
   {
     id: 'bel-red',
-    name: 'Bel-Red / 130th',
+    name: 'BelRed',
+    shortName: '130th Station',
     lines: ['line-2'],
     lat: 47.6288,
     lon: -122.1528,

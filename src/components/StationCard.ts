@@ -74,6 +74,8 @@ export class StationCardComponent {
     this.isCol2Collapsed = collapsed;
     if (this.col1El) this.col1El.classList.toggle('collapsed', collapsed);
     if (this.col2El) this.col2El.classList.toggle('collapsed', collapsed);
+    if (this.col1Header) this.col1Header.setAttribute('aria-expanded', String(!collapsed));
+    if (this.col2Header) this.col2Header.setAttribute('aria-expanded', String(!collapsed));
   }
 
   public setLoading() {
@@ -150,10 +152,12 @@ export class StationCardComponent {
     if (colIndex === 1) {
       this.isCol1Collapsed = !this.isCol1Collapsed;
       this.col1El.classList.toggle('collapsed', this.isCol1Collapsed);
+      this.col1Header.setAttribute('aria-expanded', String(!this.isCol1Collapsed));
       this.callbacks.onToggleCollapse?.(this.station.id, 1, this.isCol1Collapsed);
     } else {
       this.isCol2Collapsed = !this.isCol2Collapsed;
       this.col2El.classList.toggle('collapsed', this.isCol2Collapsed);
+      this.col2Header.setAttribute('aria-expanded', String(!this.isCol2Collapsed));
       this.callbacks.onToggleCollapse?.(this.station.id, 2, this.isCol2Collapsed);
     }
   }
@@ -268,6 +272,7 @@ export class StationCardComponent {
       this.isPinned ? ICONS.starFilled : ICONS.star
     ) as HTMLButtonElement;
     this.starBtn.title = this.isPinned ? 'Remove from favorites' : 'Add to favorites';
+    this.starBtn.setAttribute('aria-label', `${this.isPinned ? 'Remove' : 'Add'} ${this.station.name} to favorites`);
     this.starBtn.onclick = (e) => {
       e.stopPropagation();
       this.callbacks.onTogglePin(this.station.id);
@@ -296,6 +301,9 @@ export class StationCardComponent {
     const label1 = formatSimpleDestination(p1?.terminalDestination || 'Terminal');
     dest1.innerHTML = `${ICONS.arrowUp} <span class="dest-text">${label1}</span>`;
 
+    this.col1Header.setAttribute('aria-expanded', String(!this.isCol1Collapsed));
+    this.col1Header.setAttribute('aria-label', `Toggle departures for ${label1}`);
+
     const rightControls1 = createElement('div', 'platform-header-right');
     this.col1SummaryBadge = createElement('span', 'platform-summary-badge', 'Loading...');
     const chevron1 = createElement('span', 'chevron-icon', ICONS.chevronDown);
@@ -322,6 +330,9 @@ export class StationCardComponent {
     const dest2 = createElement('div', 'platform-dest');
     const label2 = formatSimpleDestination(p2?.terminalDestination || 'Terminal');
     dest2.innerHTML = `${ICONS.arrowDown} <span class="dest-text">${label2}</span>`;
+
+    this.col2Header.setAttribute('aria-expanded', String(!this.isCol2Collapsed));
+    this.col2Header.setAttribute('aria-label', `Toggle departures for ${label2}`);
 
     const rightControls2 = createElement('div', 'platform-header-right');
     this.col2SummaryBadge = createElement('span', 'platform-summary-badge', 'Loading...');

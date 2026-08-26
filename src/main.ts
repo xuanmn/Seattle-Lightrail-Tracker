@@ -1,12 +1,14 @@
 import './styles/theme.css';
 import './styles/layout.css';
 import './styles/board.css';
+import './styles/map.css';
 
 import { FaqModal } from './components/FaqModal';
 import { HeaderComponent } from './components/Header';
 import { SettingsModal } from './components/SettingsModal';
 import { StationCardComponent } from './components/StationCard';
 import { StationPickerModal } from './components/StationPickerModal';
+import { SystemMapModal } from './components/SystemMapModal';
 import { getStationById, getStationsByLine, LINE_CONFIG } from './data/stations';
 import { fetchArrivalsForStation } from './services/oba-api';
 import {
@@ -29,6 +31,7 @@ class TransitTrackerApp {
   private pickerModal!: StationPickerModal;
   private settingsModal!: SettingsModal;
   private faqModal!: FaqModal;
+  private mapModal!: SystemMapModal;
 
   private activeLine: TransitLineId = 'line-1';
   private showOnlyPinned: boolean = true; // Default to showing only user's chosen favorite stations
@@ -47,6 +50,8 @@ class TransitTrackerApp {
   private countdownTickTimer?: number;
   private toastTimeout?: number;
   private isFetching: boolean = false;
+  private activeFetchId: number = 0;
+  private lastPollTime: number = Date.now();
 
   constructor() {
     const root = document.getElementById('app');
@@ -58,6 +63,7 @@ class TransitTrackerApp {
     this.pinnedIds = getPinnedStationIds();
 
     this.initUI();
+    this.setupVisibilityListener();
     this.startPolling();
     this.startSecondTicker();
   }
@@ -76,12 +82,14 @@ class TransitTrackerApp {
     });
 
     this.faqModal = new FaqModal();
+    this.mapModal = new SystemMapModal();
 
     // Header
     this.header = new HeaderComponent(this.activeLine, this.settings.timeFormat24Hour, {
       onLineChange: (line) => this.switchLine(line),
       onSettingsClick: () => this.settingsModal.open(),
       onFaqClick: () => this.faqModal.open(),
+      onMapClick: () => this.mapModal.open(),
     });
     this.appEl.appendChild(this.header.getElement());
 
@@ -131,7 +139,7 @@ class TransitTrackerApp {
       'button',
       `view-mode-btn ${this.showOnlyPinned ? 'active' : ''}`
     );
-    myBtn.innerHTML = `★ My Saved Stations`;
+    myBtn.innerHTML = `★ Favorites`;
     if (this.showOnlyPinned) {
       myBtn.classList.add(this.activeLine === 'line-1' ? 'line-1-active' : 'line-2-active');
     }
@@ -146,7 +154,7 @@ class TransitTrackerApp {
       'button',
       `view-mode-btn ${!this.showOnlyPinned ? 'active' : ''}`
     );
-    allBtn.innerHTML = `All Line Stations`;
+    allBtn.innerHTML = `All Stations`;
     if (!this.showOnlyPinned) {
       allBtn.classList.add(this.activeLine === 'line-1' ? 'line-1-active' : 'line-2-active');
     }
@@ -280,11 +288,12 @@ class TransitTrackerApp {
     const config = LINE_CONFIG[this.activeLine];
     const emptyCard = createElement('div', 'empty-dashboard-card');
 
-    const icon = createElement('div', 'empty-dashboard-icon', ICONS.star);
+    const iconClass = this.activeLine === 'line-1' ? 'line-1-icon' : 'line-2-icon';
+    const icon = createElement('div', `empty-dashboard-icon ${iconClass}`, ICONS.star);
     const title = createElement(
       'h3',
       'empty-dashboard-title',
-      `No saved stations on ${config.name}`
+      `No favorite stations on ${config.name}`
     );
     const desc = createElement(
       'p',
@@ -346,9 +355,32 @@ class TransitTrackerApp {
     this.fetchVisibleArrivals(true);
   }
 
+  private setupVisibilityListener() {
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        // Pause 1-second DOM ticks in background tabs to save battery & CPU
+        if (this.countdownTickTimer) {
+          clearInterval(this.countdownTickTimer);
+          this.countdownTickTimer = undefined;
+        }
+      } else {
+        // Resume ticker and immediately update UI
+        this.startSecondTicker();
+        this.cardComponents.forEach((card) => card.tickCountdowns());
+
+        // If it's been more than 60 seconds since last poll, fetch immediately
+        if (Date.now() - this.lastPollTime >= SYNC_INTERVAL_MS) {
+          this.fetchVisibleArrivals();
+        }
+      }
+    });
+  }
+
   private async fetchVisibleArrivals(isManual: boolean = false) {
     if (this.isFetching) return;
     this.isFetching = true;
+    this.lastPollTime = Date.now();
+    const currentFetchId = ++this.activeFetchId;
 
     const stations = this.getVisibleStations();
     if (stations.length === 0) {
@@ -360,6 +392,9 @@ class TransitTrackerApp {
       const fetchPromises = stations.map(async (station) => {
         try {
           const result = await fetchArrivalsForStation(station);
+          // If a newer fetch was initiated while this one was running, discard old response
+          if (this.activeFetchId !== currentFetchId) return;
+
           const data: StationArrivals = {
             station,
             lastUpdated: Date.now(),
@@ -378,15 +413,19 @@ class TransitTrackerApp {
       });
 
       await Promise.all(fetchPromises);
-      this.staleBannerEl.style.display = 'none';
+      if (this.activeFetchId === currentFetchId) {
+        this.staleBannerEl.style.display = 'none';
+      }
     } catch {
-      if (isManual) {
+      if (isManual && this.activeFetchId === currentFetchId) {
         this.staleBannerEl.style.display = 'flex';
         this.staleBannerEl.textContent =
           'Network connection interrupted. Showing estimated transit schedules while reconnecting...';
       }
     } finally {
-      this.isFetching = false;
+      if (this.activeFetchId === currentFetchId) {
+        this.isFetching = false;
+      }
     }
   }
 

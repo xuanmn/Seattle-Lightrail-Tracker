@@ -31,12 +31,19 @@ export function formatCountdownBadge(
 export function formatDelayStatus(
   delaySeconds: number,
   isRealtime: boolean
-): { text: string; type: 'ontime' | 'delayed' | 'early' | 'scheduled' } {
+): { text: string; type: 'ontime' | 'delayed' | 'delayed-severe' | 'early' | 'scheduled' } {
   if (!isRealtime) {
     return { text: 'Scheduled', type: 'scheduled' };
   }
 
   const delayMinutes = Math.round(Math.abs(delaySeconds) / 60);
+
+  if (delaySeconds >= 600) {
+    return {
+      text: `+${delayMinutes}m Delay`,
+      type: 'delayed-severe',
+    };
+  }
 
   if (delaySeconds >= 60) {
     return {
@@ -72,14 +79,6 @@ export function formatClockTime(epochMs: number, is24Hour: boolean = false): str
   hours = hours % 12;
   hours = hours ? hours : 12; // 0 becomes 12
   return `${hours}:${minutes} ${ampm}`;
-}
-
-export function formatRelativeTimeAgo(epochMs: number, nowMs: number = Date.now()): string {
-  const diffSec = Math.max(0, Math.floor((nowMs - epochMs) / 1000));
-  if (diffSec < 5) return 'Just now';
-  if (diffSec < 60) return `${diffSec}s ago`;
-  const diffMin = Math.floor(diffSec / 60);
-  return `${diffMin}m ago`;
 }
 
 export function formatSimpleDestination(dest: string): string {

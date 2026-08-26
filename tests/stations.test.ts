@@ -33,6 +33,21 @@ describe('Station Catalog', () => {
     expect(downtownRedmond).toBeDefined();
   });
 
+  it('uses official Sound Transit naming for updated stations', () => {
+    expect(getStationById('shoreline-north-185th')?.name).toBe('Shoreline North/185th');
+    expect(getStationById('shoreline-south-148th')?.name).toBe('Shoreline South/148th');
+    expect(getStationById('international-district-chinatown')?.name).toBe('Intl. District / Chinatown');
+    expect(getStationById('tukwila-intl-blvd')?.name).toBe('Tukwila Intl. Blvd.');
+    expect(getStationById('bel-red')?.name).toBe('BelRed');
+    expect(getStationById('symphony')?.name).toBe('Symphony');
+  });
+
+  it('retains valid stop IDs for Puget Sound OneBusAway', () => {
+    const westlake = getStationById('westlake');
+    expect(westlake?.platforms.northbound?.stopId).toBe('1_1121');
+    expect(westlake?.platforms.southbound?.stopId).toBe('1_1122');
+  });
+
   it('should find station by id', () => {
     const capitolHill = getStationById('capitol-hill');
     expect(capitolHill).toBeDefined();

@@ -6,6 +6,7 @@ export interface HeaderCallbacks {
   onLineChange: (line: TransitLineId) => void;
   onSettingsClick: () => void;
   onFaqClick: () => void;
+  onMapClick: () => void;
 }
 
 export class HeaderComponent {
@@ -68,14 +69,27 @@ export class HeaderComponent {
 
     // Brand Left
     const brand = createElement('div', 'brand-section');
+    brand.setAttribute('role', 'button');
+    brand.setAttribute('tabindex', '0');
+    brand.setAttribute('title', 'Reload live tracker');
+    brand.setAttribute('aria-label', 'Reload live tracker');
+    brand.onclick = () => {
+      window.location.reload();
+    };
+    brand.onkeydown = (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        window.location.reload();
+      }
+    };
+
     this.logoEl = createElement(
       'div',
       `brand-logo ${this.activeLine === 'line-1' ? 'line-1-logo' : 'line-2-logo'}`,
       ICONS.train
     );
     const textGroup = createElement('div', 'brand-text');
-    const title = createElement('div', 'brand-title');
-    title.innerHTML = `Seattle Light Rail <span class="live-indicator"><span class="pulse-dot"></span>Live</span>`;
+    const title = createElement('div', 'brand-title', 'Seattle Light Rail');
     const subtitle = createElement('div', 'brand-subtitle', 'Sound Transit Link Real-Time Tracker');
     textGroup.appendChild(title);
     textGroup.appendChild(subtitle);
@@ -113,6 +127,14 @@ export class HeaderComponent {
     const actions = createElement('div', 'header-actions');
     this.clockEl = createElement('div', 'clock-display');
 
+    const mapBtn = createElement(
+      'button',
+      'header-text-btn header-map-btn',
+      `Link Map`
+    );
+    mapBtn.title = 'View Link Light Rail Map';
+    mapBtn.onclick = () => this.callbacks.onMapClick();
+
     const faqBtn = createElement(
       'button',
       'header-text-btn',
@@ -126,6 +148,7 @@ export class HeaderComponent {
     settingsBtn.onclick = () => this.callbacks.onSettingsClick();
 
     actions.appendChild(this.clockEl);
+    actions.appendChild(mapBtn);
     actions.appendChild(faqBtn);
     actions.appendChild(settingsBtn);
 

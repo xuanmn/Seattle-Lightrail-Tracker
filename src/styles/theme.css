@@ -16,6 +16,8 @@
   --status-ontime-bg: rgba(16, 185, 129, 0.15);
   --status-delayed: #f59e0b;
   --status-delayed-bg: rgba(245, 158, 11, 0.15);
+  --status-delayed-severe: #ef4444;
+  --status-delayed-severe-bg: rgba(239, 68, 68, 0.18);
   --status-early: #8b5cf6;
   --status-early-bg: rgba(139, 92, 246, 0.15);
   --status-scheduled: #94a3b8;
