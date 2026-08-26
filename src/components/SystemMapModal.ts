@@ -336,7 +336,7 @@ export class SystemMapModal {
       </div>
       <div class="map-legend-item">
         <span class="map-legend-line-sample line-2"></span>
-        <span><strong>2 Line</strong> (South Bellevue ⇄ Downtown Redmond)</span>
+        <span><strong>2 Line</strong> (Downtown Redmond ⇄ South Bellevue)</span>
       </div>
     `;
 
@@ -457,19 +457,19 @@ export class SystemMapModal {
         </g>
 
         <!-- ================= LEFT SPINE: SHARED 1 LINE & 2 LINE STATIONS ================= -->
-        ${this.renderDualCapsuleStation('lynnwood-city-center', 285, 75, 'Lynnwood City Center', 'Park & Ride', 'left', true)}
-        ${this.renderDualCapsuleStation('mountlake-terrace', 285, 120, 'Mountlake Terrace', 'Park & Ride', 'left')}
-        ${this.renderDualCapsuleStation('shoreline-north-185th', 285, 165, 'Shoreline North/185th', 'Park & Ride', 'left')}
-        ${this.renderDualCapsuleStation('shoreline-south-148th', 285, 210, 'Shoreline South/148th', 'Park & Ride', 'left')}
-        ${this.renderDualCapsuleStation('northgate', 285, 255, 'Northgate', 'Park & Ride', 'left')}
-        ${this.renderDualCapsuleStation('roosevelt', 285, 300, 'Roosevelt', 'Park & Ride', 'left')}
+        ${this.renderDualCapsuleStation('lynnwood-city-center', 285, 75, 'Lynnwood City Center', 'Park & Ride / Transit Center', 'left', true)}
+        ${this.renderDualCapsuleStation('mountlake-terrace', 285, 120, 'Mountlake Terrace', 'Park & Ride / Freeway Station', 'left')}
+        ${this.renderDualCapsuleStation('shoreline-north-185th', 285, 165, 'Shoreline North/185th', 'Park & Ride / NE 185th St', 'left')}
+        ${this.renderDualCapsuleStation('shoreline-south-148th', 285, 210, 'Shoreline South/148th', 'Park & Ride / NE 148th St', 'left')}
+        ${this.renderDualCapsuleStation('northgate', 285, 255, 'Northgate', 'Park & Ride / Kraken Iceplex', 'left')}
+        ${this.renderDualCapsuleStation('roosevelt', 285, 300, 'Roosevelt', 'Park & Ride / Roosevelt High', 'left')}
         ${this.renderDualCapsuleStation('u-district', 285, 345, 'U District', 'UW Tower / The Ave', 'left')}
         ${this.renderDualCapsuleStation('university-of-washington', 285, 390, 'University of Washington', 'Husky Stadium / UW Medical', 'left')}
         ${this.renderDualCapsuleStation('capitol-hill', 285, 435, 'Capitol Hill', 'Broadway / First Hill Streetcar', 'left')}
 
         <!-- Downtown Seattle Transit Tunnel Stations -->
-        ${this.renderDualCapsuleStation('westlake', 285, 480, 'Westlake', 'Seattle Center Monorail', 'left')}
-        ${this.renderDualCapsuleStation('symphony', 285, 525, 'Symphony', 'University Street / Benaroya Hall', 'left')}
+        ${this.renderDualCapsuleStation('westlake', 285, 480, 'Westlake', 'Seattle Center Monorail / Pine St', 'left')}
+        ${this.renderDualCapsuleStation('symphony', 285, 525, 'Symphony', 'Benaroya Hall / University St', 'left')}
         ${this.renderDualCapsuleStation('pioneer-square', 285, 570, 'Pioneer Square', 'WA State Ferries / Streetcar', 'left')}
         
         <!-- Highlighted 1 Line ⇄ 2 Line Transfer Hub -->
@@ -477,34 +477,34 @@ export class SystemMapModal {
 
         <!-- ================= LEFT SPINE: 1 LINE SOUTH STATIONS ================= -->
         ${this.renderLine1Station('stadium', 272, 665, 'Stadium', 'Lumen Field / T-Mobile Park', 'left')}
-        ${this.renderLine1Station('sodo', 272, 710, 'SODO', 'Busway', 'left')}
-        ${this.renderLine1Station('beacon-hill', 272, 755, 'Beacon Hill', 'Tunnel Station', 'left')}
-        ${this.renderLine1Station('mount-baker', 272, 800, 'Mount Baker', 'Transit Center', 'left')}
-        ${this.renderLine1Station('columbia-city', 272, 845, 'Columbia City', 'Historic District', 'left')}
-        ${this.renderLine1Station('othello', 272, 890, 'Othello', '', 'left')}
-        ${this.renderLine1Station('rainier-beach', 272, 935, 'Rainier Beach', '', 'left')}
-        ${this.renderLine1Station('tukwila-intl-blvd', 272, 980, 'Tukwila Intl. Blvd.', 'Park & Ride', 'left')}
+        ${this.renderLine1Station('sodo', 272, 710, 'SODO', 'SODO Busway / Industrial District', 'left')}
+        ${this.renderLine1Station('beacon-hill', 272, 755, 'Beacon Hill', 'Tunnel Station / El Centro', 'left')}
+        ${this.renderLine1Station('mount-baker', 272, 800, 'Mount Baker', 'Transit Center / Franklin High', 'left')}
+        ${this.renderLine1Station('columbia-city', 272, 845, 'Columbia City', 'Historic District / Rainier Ave', 'left')}
+        ${this.renderLine1Station('othello', 272, 890, 'Othello', 'Rainier Valley / Othello Park', 'left')}
+        ${this.renderLine1Station('rainier-beach', 272, 935, 'Rainier Beach', 'Rainier Beach / Chief Sealth Trail', 'left')}
+        ${this.renderLine1Station('tukwila-intl-blvd', 272, 980, 'Tukwila Intl. Blvd.', 'Park & Ride / RapidRide A', 'left')}
         ${this.renderAirportStation('seatac-airport', 272, 1025, 'SeaTac / Airport', "Seattle-Tacoma Int'l Airport", 'left')}
-        ${this.renderLine1Station('angle-lake', 272, 1070, 'Angle Lake', 'Park & Ride', 'left')}
-        ${this.renderLine1Station('kent-des-moines', 272, 1115, 'Kent Des Moines', 'Highline College', 'left')}
-        ${this.renderLine1Station('star-lake', 272, 1160, 'Star Lake', 'Park & Ride', 'left')}
-        ${this.renderLine1Station('federal-way-downtown', 272, 1205, 'Federal Way Downtown', 'Park & Ride', 'left', true)}
+        ${this.renderLine1Station('angle-lake', 272, 1070, 'Angle Lake', 'Park & Ride / S 200th St', 'left')}
+        ${this.renderLine1Station('kent-des-moines', 272, 1115, 'Kent Des Moines', 'Highline College / Park & Ride', 'left')}
+        ${this.renderLine1Station('star-lake', 272, 1160, 'Star Lake', 'Park & Ride / S 272nd St', 'left')}
+        ${this.renderLine1Station('federal-way-downtown', 272, 1205, 'Federal Way Downtown', 'Park & Ride / Transit Center', 'left', true)}
 
         <!-- ================= CONNECTING SEGMENT (I-90 CORRIDOR) ================= -->
-        ${this.renderLine2Station('judkins-park', 365, 665, 'Judkins Park', 'Rainier Ave S', 'bottom')}
-        ${this.renderLine2Station('mercer-island', 475, 665, 'Mercer Island', 'I-90 Park & Ride', 'bottom')}
+        ${this.renderLine2Station('judkins-park', 365, 665, 'Judkins Park', 'Rainier Ave S / I-90 Trail', 'bottom')}
+        ${this.renderLine2Station('mercer-island', 475, 665, 'Mercer Island', 'I-90 Park & Ride / Town Center', 'bottom')}
 
         <!-- ================= RIGHT SPINE: 2 LINE EASTSIDE STATIONS ================= -->
         ${this.renderLine2Station('south-bellevue', 540, 635, 'South Bellevue', 'Park & Ride / Mercer Slough', 'right', true)}
-        ${this.renderLine2Station('east-main', 540, 571, 'East Main', '', 'right')}
+        ${this.renderLine2Station('east-main', 540, 571, 'East Main', 'Surrey Downs / 112th Ave SE', 'right')}
         ${this.renderLine2Station('bellevue-downtown', 540, 509, 'Bellevue Downtown', 'Bellevue Transit Center', 'right', true)}
         ${this.renderLine2Station('wilburton', 540, 447, 'Wilburton', 'Overlake Medical Center', 'right')}
-        ${this.renderLine2Station('spring-district', 540, 385, 'Spring District', '120th Station', 'right')}
-        ${this.renderLine2Station('bel-red', 540, 323, 'BelRed', 'Park & Ride', 'right')}
-        ${this.renderLine2Station('overlake-village', 540, 261, 'Overlake Village', '', 'right')}
+        ${this.renderLine2Station('spring-district', 540, 385, 'Spring District', '120th Station / Spring District', 'right')}
+        ${this.renderLine2Station('bel-red', 540, 323, 'BelRed', 'Park & Ride / 130th Station', 'right')}
+        ${this.renderLine2Station('overlake-village', 540, 261, 'Overlake Village', '152nd Ave NE / Overlake Village', 'right')}
         ${this.renderLine2Station('redmond-technology', 540, 199, 'Redmond Technology', 'Microsoft Campus / Transit Center', 'right', true)}
-        ${this.renderLine2Station('marymoor-village', 540, 137, 'Marymoor Village', 'Park & Ride', 'right')}
-        ${this.renderLine2Station('downtown-redmond', 540, 75, 'Downtown Redmond', '2 Line East Terminus', 'right', true)}
+        ${this.renderLine2Station('marymoor-village', 540, 137, 'Marymoor Village', 'Park & Ride / Marymoor Park', 'right')}
+        ${this.renderLine2Station('downtown-redmond', 540, 75, 'Downtown Redmond', 'Redmond Town Center', 'right', true)}
       </svg>
     `;
   }

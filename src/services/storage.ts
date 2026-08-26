@@ -146,3 +146,31 @@ export function setPlatformCollapsed(
     // ignore storage quota errors
   }
 }
+
+const DIRECTION_FILTERS_KEY = 'seattle_transit_direction_filters';
+
+export type StationDirectionFilter = 'both' | 'dir1' | 'dir2';
+
+export function getStationDirectionFilters(): Record<string, StationDirectionFilter> {
+  try {
+    const raw = localStorage.getItem(DIRECTION_FILTERS_KEY);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    return typeof parsed === 'object' && parsed !== null ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+export function setStationDirectionFilter(
+  stationId: string,
+  filter: StationDirectionFilter
+): void {
+  try {
+    const current = getStationDirectionFilters();
+    current[stationId] = filter;
+    localStorage.setItem(DIRECTION_FILTERS_KEY, JSON.stringify(current));
+  } catch {
+    // ignore
+  }
+}

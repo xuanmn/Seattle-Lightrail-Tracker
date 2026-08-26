@@ -114,7 +114,7 @@ export class HeaderComponent {
       `line-btn ${this.activeLine === 'line-2' ? 'active line-2-active' : ''}`
     ) as HTMLButtonElement;
     this.line2Btn.innerHTML = `<span class="line-badge-circle line-2-circle">2</span> 2 Line`;
-    this.line2Btn.title = 'South Bellevue ⇄ Downtown Redmond';
+    this.line2Btn.title = 'Downtown Redmond ⇄ South Bellevue';
     this.line2Btn.onclick = () => {
       this.setActiveLine('line-2');
       this.callbacks.onLineChange('line-2');

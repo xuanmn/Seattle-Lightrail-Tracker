@@ -13,11 +13,11 @@ import { getStationById, getStationsByLine, LINE_CONFIG } from './data/stations'
 import { fetchArrivalsForStation } from './services/oba-api';
 import {
   getActiveLine,
-  getCollapsedPlatforms,
   getPinnedStationIds,
   getSettings,
+  getStationDirectionFilters,
   setActiveLine,
-  setPlatformCollapsed,
+  setStationDirectionFilter,
   togglePinnedStation,
 } from './services/storage';
 import { AppSettings, Station, StationArrivals, TransitLineId } from './types/transit';
@@ -187,7 +187,7 @@ class TransitTrackerApp {
       </span>
       ${config.name} Live Departures
     `;
-    this.lineSubtitleEl.textContent = `${config.terminusSouth} ⇄ ${config.terminusNorth}`;
+    this.lineSubtitleEl.textContent = `${config.terminusNorth} ⇄ ${config.terminusSouth}`;
   }
 
   private showToast(message: string, isAdded: boolean) {
@@ -237,25 +237,11 @@ class TransitTrackerApp {
       return;
     }
 
-    const savedCollapsedMap = getCollapsedPlatforms();
+    const savedDirectionFilters = getStationDirectionFilters();
 
     stations.forEach((station) => {
       const isPinned = this.pinnedIds.includes(station.id);
-      let initialCol1 = false;
-      let initialCol2 = false;
-
-      if (!this.showOnlyPinned) {
-        // In "All Line Stations", default both directions to collapsed
-        initialCol1 = true;
-        initialCol2 = true;
-      } else {
-        // In "My Saved Stations", restore the user's saved collapsed state for this station
-        const pref = savedCollapsedMap[station.id];
-        if (pref) {
-          initialCol1 = Boolean(pref.col1);
-          initialCol2 = Boolean(pref.col2);
-        }
-      }
+      const initialFilter = savedDirectionFilters[station.id] || 'both';
 
       const cardComp = new StationCardComponent(
         station,
@@ -263,14 +249,11 @@ class TransitTrackerApp {
         this.settings.timeFormat24Hour,
         {
           onTogglePin: (id) => this.handleTogglePin(id),
-          onToggleCollapse: (id, colIndex, isCollapsed) => {
-            if (this.showOnlyPinned) {
-              setPlatformCollapsed(id, colIndex, isCollapsed);
-            }
+          onDirectionFilterChange: (id, filter) => {
+            setStationDirectionFilter(id, filter);
           },
         },
-        initialCol1,
-        initialCol2
+        initialFilter
       );
 
       this.cardComponents.set(station.id, cardComp);

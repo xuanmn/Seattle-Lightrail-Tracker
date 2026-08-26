@@ -146,14 +146,14 @@ export class StationPickerModal {
     this.tab1Btn = createElement(
       'button',
       'filter-pill active line-1',
-      '1 Line (Lynnwood ⇄ Angle Lake)'
+      '1 Line (Lynnwood ⇄ Federal Way Downtown)'
     ) as HTMLButtonElement;
     this.tab1Btn.onclick = () => this.setFilter('line-1');
 
     this.tab2Btn = createElement(
       'button',
       'filter-pill',
-      '2 Line (South Bellevue ⇄ Downtown Redmond)'
+      '2 Line (Downtown Redmond ⇄ South Bellevue)'
     ) as HTMLButtonElement;
     this.tab2Btn.onclick = () => this.setFilter('line-2');
 

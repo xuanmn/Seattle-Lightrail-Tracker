@@ -1,10 +1,11 @@
 import { Station, StationArrivals, TransitArrival } from '../types/transit';
 import { createElement, ICONS } from '../utils/dom';
 import { formatClockTime, formatCountdownBadge, formatSimpleDestination } from '../utils/time';
+import { StationDirectionFilter } from '../services/storage';
 
 export interface StationCardCallbacks {
   onTogglePin: (stationId: string) => void;
-  onToggleCollapse?: (stationId: string, colIndex: 1 | 2, isCollapsed: boolean) => void;
+  onDirectionFilterChange?: (stationId: string, filter: StationDirectionFilter) => void;
 }
 
 export class StationCardComponent {
@@ -15,17 +16,16 @@ export class StationCardComponent {
   private callbacks: StationCardCallbacks;
   private starBtn!: HTMLButtonElement;
 
+  private platformsEl!: HTMLElement;
   private col1El!: HTMLElement;
   private col2El!: HTMLElement;
-  private col1Header!: HTMLButtonElement;
-  private col2Header!: HTMLButtonElement;
-  private col1SummaryBadge!: HTMLElement;
-  private col2SummaryBadge!: HTMLElement;
   private platform1Container!: HTMLElement;
   private platform2Container!: HTMLElement;
 
-  private isCol1Collapsed: boolean = false;
-  private isCol2Collapsed: boolean = false;
+  private directionFilter: StationDirectionFilter = 'both';
+  private btnBoth!: HTMLButtonElement;
+  private btnDir1!: HTMLButtonElement;
+  private btnDir2!: HTMLButtonElement;
 
   private currentArrivals?: StationArrivals;
 
@@ -39,15 +39,13 @@ export class StationCardComponent {
     isPinned: boolean,
     is24Hour: boolean,
     callbacks: StationCardCallbacks,
-    initialCol1Collapsed: boolean = false,
-    initialCol2Collapsed: boolean = false
+    initialDirectionFilter: StationDirectionFilter = 'both'
   ) {
     this.station = station;
     this.isPinned = isPinned;
     this.is24Hour = is24Hour;
     this.callbacks = callbacks;
-    this.isCol1Collapsed = initialCol1Collapsed;
-    this.isCol2Collapsed = initialCol2Collapsed;
+    this.directionFilter = initialDirectionFilter;
     this.element = this.render();
   }
 
@@ -69,13 +67,25 @@ export class StationCardComponent {
     }
   }
 
-  public setCollapsed(collapsed: boolean) {
-    this.isCol1Collapsed = collapsed;
-    this.isCol2Collapsed = collapsed;
-    if (this.col1El) this.col1El.classList.toggle('collapsed', collapsed);
-    if (this.col2El) this.col2El.classList.toggle('collapsed', collapsed);
-    if (this.col1Header) this.col1Header.setAttribute('aria-expanded', String(!collapsed));
-    if (this.col2Header) this.col2Header.setAttribute('aria-expanded', String(!collapsed));
+  public setDirectionFilter(filter: StationDirectionFilter) {
+    this.directionFilter = filter;
+    this.updateDirectionFilterUI();
+    this.callbacks.onDirectionFilterChange?.(this.station.id, filter);
+  }
+
+  private updateDirectionFilterUI() {
+    if (!this.platformsEl) return;
+    this.platformsEl.className = `station-platforms view-${this.directionFilter}`;
+
+    if (this.btnBoth) {
+      this.btnBoth.classList.toggle('active', this.directionFilter === 'both');
+    }
+    if (this.btnDir1) {
+      this.btnDir1.classList.toggle('active', this.directionFilter === 'dir1');
+    }
+    if (this.btnDir2) {
+      this.btnDir2.classList.toggle('active', this.directionFilter === 'dir2');
+    }
   }
 
   public setLoading() {
@@ -100,14 +110,12 @@ export class StationCardComponent {
     this.renderPlatformArrivals(
       this.platform1Container,
       data.direction1.arrivals,
-      data.direction1.platform.terminalDestination,
-      this.col1SummaryBadge
+      data.direction1.platform.terminalDestination
     );
     this.renderPlatformArrivals(
       this.platform2Container,
       data.direction2.arrivals,
-      data.direction2.platform.terminalDestination,
-      this.col2SummaryBadge
+      data.direction2.platform.terminalDestination
     );
   }
 
@@ -134,39 +142,12 @@ export class StationCardComponent {
         row.className = `departure-row ${badge.isNow ? 'arriving-soon' : ''}`;
       }
     }
-
-    // Update summary badges for collapsed state
-    this.tickSummaryBadge(this.currentArrivals.direction1.arrivals, this.col1SummaryBadge);
-    this.tickSummaryBadge(this.currentArrivals.direction2.arrivals, this.col2SummaryBadge);
-  }
-
-  private tickSummaryBadge(arrivals: TransitArrival[], badge: HTMLElement) {
-    if (!arrivals || arrivals.length === 0) return;
-    const nextTime = arrivals[0].predictedDepartureTime || arrivals[0].scheduledDepartureTime;
-    const nextBadge = formatCountdownBadge(nextTime);
-    badge.textContent = nextBadge.text;
-    badge.className = `platform-summary-badge ${nextBadge.isNow ? 'now' : ''}`;
-  }
-
-  private toggleCollapse(colIndex: 1 | 2) {
-    if (colIndex === 1) {
-      this.isCol1Collapsed = !this.isCol1Collapsed;
-      this.col1El.classList.toggle('collapsed', this.isCol1Collapsed);
-      this.col1Header.setAttribute('aria-expanded', String(!this.isCol1Collapsed));
-      this.callbacks.onToggleCollapse?.(this.station.id, 1, this.isCol1Collapsed);
-    } else {
-      this.isCol2Collapsed = !this.isCol2Collapsed;
-      this.col2El.classList.toggle('collapsed', this.isCol2Collapsed);
-      this.col2Header.setAttribute('aria-expanded', String(!this.isCol2Collapsed));
-      this.callbacks.onToggleCollapse?.(this.station.id, 2, this.isCol2Collapsed);
-    }
   }
 
   private renderPlatformArrivals(
     container: HTMLElement,
     arrivals: TransitArrival[],
-    defaultDest: string,
-    summaryBadge: HTMLElement
+    defaultDest: string
   ) {
     container.innerHTML = '';
 
@@ -174,17 +155,8 @@ export class StationCardComponent {
       const empty = createElement('div', 'departures-empty');
       empty.textContent = 'No upcoming trains';
       container.appendChild(empty);
-      summaryBadge.textContent = 'No trains';
-      summaryBadge.className = 'platform-summary-badge';
       return;
     }
-
-    // Update collapsed summary badge with next train
-    const nextTrain = arrivals[0];
-    const nextTargetTime = nextTrain.predictedDepartureTime || nextTrain.scheduledDepartureTime;
-    const nextBadge = formatCountdownBadge(nextTargetTime);
-    summaryBadge.textContent = nextBadge.text;
-    summaryBadge.className = `platform-summary-badge ${nextBadge.isNow ? 'now' : ''}`;
 
     const list = createElement('div', 'departures-list');
 
@@ -265,7 +237,44 @@ export class StationCardComponent {
     titleGroup.appendChild(linePill);
     titleGroup.appendChild(nameWrap);
 
+    // Header Right Controls
     const actions = createElement('div', 'station-actions');
+
+    // Segmented Direction Switcher
+    const segmented = createElement('div', 'direction-segmented-control');
+    this.btnBoth = createElement(
+      'button',
+      `direction-segment-btn ${this.directionFilter === 'both' ? 'active' : ''}`,
+      'Both'
+    ) as HTMLButtonElement;
+    this.btnBoth.type = 'button';
+    this.btnBoth.title = 'Show departures in both directions';
+    this.btnBoth.onclick = () => this.setDirectionFilter('both');
+
+    const dir1Label = isLine1 ? '↑ North' : '→ East';
+    this.btnDir1 = createElement(
+      'button',
+      `direction-segment-btn ${this.directionFilter === 'dir1' ? 'active' : ''}`,
+      dir1Label
+    ) as HTMLButtonElement;
+    this.btnDir1.type = 'button';
+    this.btnDir1.title = isLine1 ? 'Show Northbound only' : 'Show Eastbound only';
+    this.btnDir1.onclick = () => this.setDirectionFilter('dir1');
+
+    const dir2Label = isLine1 ? '↓ South' : '← West';
+    this.btnDir2 = createElement(
+      'button',
+      `direction-segment-btn ${this.directionFilter === 'dir2' ? 'active' : ''}`,
+      dir2Label
+    ) as HTMLButtonElement;
+    this.btnDir2.type = 'button';
+    this.btnDir2.title = isLine1 ? 'Show Southbound only' : 'Show Westbound only';
+    this.btnDir2.onclick = () => this.setDirectionFilter('dir2');
+
+    segmented.appendChild(this.btnBoth);
+    segmented.appendChild(this.btnDir1);
+    segmented.appendChild(this.btnDir2);
+
     this.starBtn = createElement(
       'button',
       `star-btn ${this.isPinned ? 'pinned' : ''}`,
@@ -278,81 +287,47 @@ export class StationCardComponent {
       this.callbacks.onTogglePin(this.station.id);
     };
 
+    actions.appendChild(segmented);
     actions.appendChild(this.starBtn);
+
     header.appendChild(titleGroup);
     header.appendChild(actions);
 
-    // Body: Platforms
-    const platforms = createElement('div', 'station-platforms');
+    // Body: Platforms Container
+    this.platformsEl = createElement('div', `station-platforms view-${this.directionFilter}`);
 
-    const p1 = this.station.platforms.northbound || this.station.platforms.westbound;
-    const p2 = this.station.platforms.southbound || this.station.platforms.eastbound;
+    const p1 = this.station.platforms.northbound || this.station.platforms.eastbound;
+    const p2 = this.station.platforms.southbound || this.station.platforms.westbound;
 
     // Platform 1 Column
-    this.col1El = createElement(
-      'div',
-      `platform-column ${this.isCol1Collapsed ? 'collapsed' : ''}`
-    );
-    this.col1Header = createElement('button', 'platform-header') as HTMLButtonElement;
-    this.col1Header.type = 'button';
-    this.col1Header.title = 'Click to expand or collapse platform departures';
-
+    this.col1El = createElement('div', 'platform-column');
+    const header1 = createElement('div', 'platform-header');
     const dest1 = createElement('div', 'platform-dest');
-    const label1 = formatSimpleDestination(p1?.terminalDestination || 'Terminal');
+    const label1 = formatSimpleDestination(p1?.terminalDestination || 'Terminal', this.station.id, true);
     dest1.innerHTML = `${ICONS.arrowUp} <span class="dest-text">${label1}</span>`;
-
-    this.col1Header.setAttribute('aria-expanded', String(!this.isCol1Collapsed));
-    this.col1Header.setAttribute('aria-label', `Toggle departures for ${label1}`);
-
-    const rightControls1 = createElement('div', 'platform-header-right');
-    this.col1SummaryBadge = createElement('span', 'platform-summary-badge', 'Loading...');
-    const chevron1 = createElement('span', 'chevron-icon', ICONS.chevronDown);
-    rightControls1.appendChild(this.col1SummaryBadge);
-    rightControls1.appendChild(chevron1);
-
-    this.col1Header.appendChild(dest1);
-    this.col1Header.appendChild(rightControls1);
-    this.col1Header.onclick = () => this.toggleCollapse(1);
+    header1.appendChild(dest1);
 
     this.platform1Container = createElement('div', 'platform-departures');
-    this.col1El.appendChild(this.col1Header);
+    this.col1El.appendChild(header1);
     this.col1El.appendChild(this.platform1Container);
 
     // Platform 2 Column
-    this.col2El = createElement(
-      'div',
-      `platform-column ${this.isCol2Collapsed ? 'collapsed' : ''}`
-    );
-    this.col2Header = createElement('button', 'platform-header') as HTMLButtonElement;
-    this.col2Header.type = 'button';
-    this.col2Header.title = 'Click to expand or collapse platform departures';
-
+    this.col2El = createElement('div', 'platform-column');
+    const header2 = createElement('div', 'platform-header');
     const dest2 = createElement('div', 'platform-dest');
-    const label2 = formatSimpleDestination(p2?.terminalDestination || 'Terminal');
+    const label2 = formatSimpleDestination(p2?.terminalDestination || 'Terminal', this.station.id, false);
     dest2.innerHTML = `${ICONS.arrowDown} <span class="dest-text">${label2}</span>`;
-
-    this.col2Header.setAttribute('aria-expanded', String(!this.isCol2Collapsed));
-    this.col2Header.setAttribute('aria-label', `Toggle departures for ${label2}`);
-
-    const rightControls2 = createElement('div', 'platform-header-right');
-    this.col2SummaryBadge = createElement('span', 'platform-summary-badge', 'Loading...');
-    const chevron2 = createElement('span', 'chevron-icon', ICONS.chevronDown);
-    rightControls2.appendChild(this.col2SummaryBadge);
-    rightControls2.appendChild(chevron2);
-
-    this.col2Header.appendChild(dest2);
-    this.col2Header.appendChild(rightControls2);
-    this.col2Header.onclick = () => this.toggleCollapse(2);
+    header2.appendChild(dest2);
 
     this.platform2Container = createElement('div', 'platform-departures');
-    this.col2El.appendChild(this.col2Header);
+    this.col2El.appendChild(header2);
     this.col2El.appendChild(this.platform2Container);
 
-    platforms.appendChild(this.col1El);
-    platforms.appendChild(this.col2El);
+    this.platformsEl.appendChild(this.col1El);
+    this.platformsEl.appendChild(this.col2El);
 
     card.appendChild(header);
-    card.appendChild(platforms);
+    card.appendChild(this.platformsEl);
 
     this.setLoading();
     return card;

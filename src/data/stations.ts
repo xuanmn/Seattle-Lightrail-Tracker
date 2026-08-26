@@ -7,6 +7,7 @@ export const STATIONS: Station[] = [
   {
     id: 'lynnwood-city-center',
     name: 'Lynnwood City Center',
+    shortName: 'Park & Ride / Transit Center',
     lines: ['line-1'],
     lat: 47.8152,
     lon: -122.2965,
@@ -28,6 +29,7 @@ export const STATIONS: Station[] = [
   {
     id: 'mountlake-terrace',
     name: 'Mountlake Terrace',
+    shortName: 'Park & Ride / Freeway Station',
     lines: ['line-1'],
     lat: 47.7901,
     lon: -122.3175,
@@ -49,6 +51,7 @@ export const STATIONS: Station[] = [
   {
     id: 'shoreline-north-185th',
     name: 'Shoreline North/185th',
+    shortName: 'Park & Ride / NE 185th St',
     lines: ['line-1'],
     lat: 47.7634,
     lon: -122.3278,
@@ -70,6 +73,7 @@ export const STATIONS: Station[] = [
   {
     id: 'shoreline-south-148th',
     name: 'Shoreline South/148th',
+    shortName: 'Park & Ride / NE 148th St',
     lines: ['line-1'],
     lat: 47.7371,
     lon: -122.3283,
@@ -91,6 +95,7 @@ export const STATIONS: Station[] = [
   {
     id: 'northgate',
     name: 'Northgate',
+    shortName: 'Park & Ride / Kraken Iceplex',
     lines: ['line-1'],
     lat: 47.7058,
     lon: -122.3289,
@@ -112,6 +117,7 @@ export const STATIONS: Station[] = [
   {
     id: 'roosevelt',
     name: 'Roosevelt',
+    shortName: 'Park & Ride / Roosevelt High',
     lines: ['line-1'],
     lat: 47.6789,
     lon: -122.3178,
@@ -133,6 +139,7 @@ export const STATIONS: Station[] = [
   {
     id: 'u-district',
     name: 'U District',
+    shortName: 'UW Tower / The Ave',
     lines: ['line-1'],
     lat: 47.6608,
     lon: -122.3142,
@@ -154,7 +161,7 @@ export const STATIONS: Station[] = [
   {
     id: 'university-of-washington',
     name: 'University of Washington',
-    shortName: 'UW Station (Husky Stadium)',
+    shortName: 'Husky Stadium / UW Medical',
     lines: ['line-1'],
     lat: 47.6499,
     lon: -122.3038,
@@ -176,6 +183,7 @@ export const STATIONS: Station[] = [
   {
     id: 'capitol-hill',
     name: 'Capitol Hill',
+    shortName: 'Broadway / First Hill Streetcar',
     lines: ['line-1'],
     lat: 47.6198,
     lon: -122.3204,
@@ -197,7 +205,7 @@ export const STATIONS: Station[] = [
   {
     id: 'westlake',
     name: 'Westlake',
-    shortName: 'Downtown Seattle / Pine St',
+    shortName: 'Seattle Center Monorail / Pine St',
     lines: ['line-1'],
     lat: 47.6114,
     lon: -122.3372,
@@ -219,7 +227,7 @@ export const STATIONS: Station[] = [
   {
     id: 'symphony',
     name: 'Symphony',
-    shortName: 'University Street Station',
+    shortName: 'Benaroya Hall / University St',
     lines: ['line-1'],
     lat: 47.6074,
     lon: -122.3359,
@@ -241,6 +249,7 @@ export const STATIONS: Station[] = [
   {
     id: 'pioneer-square',
     name: 'Pioneer Square',
+    shortName: 'WA State Ferries / Streetcar',
     lines: ['line-1'],
     lat: 47.6025,
     lon: -122.3312,
@@ -306,6 +315,7 @@ export const STATIONS: Station[] = [
   {
     id: 'sodo',
     name: 'SODO',
+    shortName: 'SODO Busway / Industrial District',
     lines: ['line-1'],
     lat: 47.5816,
     lon: -122.3273,
@@ -327,6 +337,7 @@ export const STATIONS: Station[] = [
   {
     id: 'beacon-hill',
     name: 'Beacon Hill',
+    shortName: 'Tunnel Station / El Centro',
     lines: ['line-1'],
     lat: 47.5794,
     lon: -122.3117,
@@ -348,6 +359,7 @@ export const STATIONS: Station[] = [
   {
     id: 'mount-baker',
     name: 'Mount Baker',
+    shortName: 'Transit Center / Franklin High',
     lines: ['line-1'],
     lat: 47.5772,
     lon: -122.2978,
@@ -369,6 +381,7 @@ export const STATIONS: Station[] = [
   {
     id: 'columbia-city',
     name: 'Columbia City',
+    shortName: 'Historic District / Rainier Ave',
     lines: ['line-1'],
     lat: 47.5599,
     lon: -122.2858,
@@ -390,6 +403,7 @@ export const STATIONS: Station[] = [
   {
     id: 'othello',
     name: 'Othello',
+    shortName: 'Rainier Valley / Othello Park',
     lines: ['line-1'],
     lat: 47.5372,
     lon: -122.2818,
@@ -411,6 +425,7 @@ export const STATIONS: Station[] = [
   {
     id: 'rainier-beach',
     name: 'Rainier Beach',
+    shortName: 'Rainier Beach / Chief Sealth Trail',
     lines: ['line-1'],
     lat: 47.5222,
     lon: -122.2798,
@@ -432,6 +447,7 @@ export const STATIONS: Station[] = [
   {
     id: 'tukwila-intl-blvd',
     name: 'Tukwila Intl. Blvd.',
+    shortName: 'Park & Ride / RapidRide A',
     lines: ['line-1'],
     lat: 47.4644,
     lon: -122.2885,
@@ -475,6 +491,7 @@ export const STATIONS: Station[] = [
   {
     id: 'angle-lake',
     name: 'Angle Lake',
+    shortName: 'Park & Ride / S 200th St',
     lines: ['line-1'],
     lat: 47.4243,
     lon: -122.2982,
@@ -496,7 +513,7 @@ export const STATIONS: Station[] = [
   {
     id: 'kent-des-moines',
     name: 'Kent Des Moines',
-    shortName: 'Highline College',
+    shortName: 'Highline College / Park & Ride',
     lines: ['line-1'],
     lat: 47.3886,
     lon: -122.2981,
@@ -518,7 +535,7 @@ export const STATIONS: Station[] = [
   {
     id: 'star-lake',
     name: 'Star Lake',
-    shortName: 'S 272nd Park & Ride',
+    shortName: 'Park & Ride / S 272nd St',
     lines: ['line-1'],
     lat: 47.3575,
     lon: -122.3023,
@@ -540,7 +557,7 @@ export const STATIONS: Station[] = [
   {
     id: 'federal-way-downtown',
     name: 'Federal Way Downtown',
-    shortName: 'Federal Way Transit Center',
+    shortName: 'Park & Ride / Transit Center',
     lines: ['line-1'],
     lat: 47.3175,
     lon: -122.3115,
@@ -561,217 +578,225 @@ export const STATIONS: Station[] = [
   },
 
   // ==========================================
-  // Line 2 Stations (West to East)
+  // Line 2 Stations (North to South / East to West)
   // ==========================================
-  {
-    id: 'south-bellevue',
-    name: 'South Bellevue',
-    lines: ['line-2'],
-    lat: 47.5878,
-    lon: -122.1869,
-    platforms: {
-      westbound: {
-        stopId: '40_E09-T2',
-        directionName: 'Westbound Platform (Terminus)',
-        cardinalDirection: 'Westbound',
-        terminalDestination: 'South Bellevue',
-      },
-      eastbound: {
-        stopId: '40_E09-T1',
-        directionName: 'Eastbound to Downtown Redmond',
-        cardinalDirection: 'Eastbound',
-        terminalDestination: 'Downtown Redmond',
-      },
-    },
-  },
-  {
-    id: 'east-main',
-    name: 'East Main',
-    lines: ['line-2'],
-    lat: 47.6041,
-    lon: -122.1904,
-    platforms: {
-      westbound: {
-        stopId: '40_E11-T2',
-        directionName: 'Westbound to South Bellevue',
-        cardinalDirection: 'Westbound',
-        terminalDestination: 'South Bellevue',
-      },
-      eastbound: {
-        stopId: '40_E11-T1',
-        directionName: 'Eastbound to Downtown Redmond',
-        cardinalDirection: 'Eastbound',
-        terminalDestination: 'Downtown Redmond',
-      },
-    },
-  },
-  {
-    id: 'bellevue-downtown',
-    name: 'Bellevue Downtown',
-    lines: ['line-2'],
-    lat: 47.6166,
-    lon: -122.1932,
-    platforms: {
-      westbound: {
-        stopId: '40_E15-T1',
-        directionName: 'Westbound to South Bellevue',
-        cardinalDirection: 'Westbound',
-        terminalDestination: 'South Bellevue',
-      },
-      eastbound: {
-        stopId: '40_E15-T2',
-        directionName: 'Eastbound to Downtown Redmond',
-        cardinalDirection: 'Eastbound',
-        terminalDestination: 'Downtown Redmond',
-      },
-    },
-  },
-  {
-    id: 'wilburton',
-    name: 'Wilburton',
-    lines: ['line-2'],
-    lat: 47.6186,
-    lon: -122.1802,
-    platforms: {
-      westbound: {
-        stopId: '40_E19-T2',
-        directionName: 'Westbound to South Bellevue',
-        cardinalDirection: 'Westbound',
-        terminalDestination: 'South Bellevue',
-      },
-      eastbound: {
-        stopId: '40_E19-T1',
-        directionName: 'Eastbound to Downtown Redmond',
-        cardinalDirection: 'Eastbound',
-        terminalDestination: 'Downtown Redmond',
-      },
-    },
-  },
-  {
-    id: 'spring-district',
-    name: 'Spring District',
-    lines: ['line-2'],
-    lat: 47.6247,
-    lon: -122.1648,
-    platforms: {
-      westbound: {
-        stopId: '40_E21-T1',
-        directionName: 'Westbound to South Bellevue',
-        cardinalDirection: 'Westbound',
-        terminalDestination: 'South Bellevue',
-      },
-      eastbound: {
-        stopId: '40_E21-T2',
-        directionName: 'Eastbound to Downtown Redmond',
-        cardinalDirection: 'Eastbound',
-        terminalDestination: 'Downtown Redmond',
-      },
-    },
-  },
-  {
-    id: 'bel-red',
-    name: 'BelRed',
-    shortName: '130th Station',
-    lines: ['line-2'],
-    lat: 47.6288,
-    lon: -122.1528,
-    platforms: {
-      westbound: {
-        stopId: '40_E23-T1',
-        directionName: 'Westbound to South Bellevue',
-        cardinalDirection: 'Westbound',
-        terminalDestination: 'South Bellevue',
-      },
-      eastbound: {
-        stopId: '40_E23-T2',
-        directionName: 'Eastbound to Downtown Redmond',
-        cardinalDirection: 'Eastbound',
-        terminalDestination: 'Downtown Redmond',
-      },
-    },
-  },
-  {
-    id: 'overlake-village',
-    name: 'Overlake Village',
-    lines: ['line-2'],
-    lat: 47.6384,
-    lon: -122.1408,
-    platforms: {
-      westbound: {
-        stopId: '40_E25-T1',
-        directionName: 'Westbound to South Bellevue',
-        cardinalDirection: 'Westbound',
-        terminalDestination: 'South Bellevue',
-      },
-      eastbound: {
-        stopId: '40_E25-T2',
-        directionName: 'Eastbound to Downtown Redmond',
-        cardinalDirection: 'Eastbound',
-        terminalDestination: 'Downtown Redmond',
-      },
-    },
-  },
-  {
-    id: 'redmond-technology',
-    name: 'Redmond Technology',
-    shortName: 'Microsoft Campus',
-    lines: ['line-2'],
-    lat: 47.6437,
-    lon: -122.1287,
-    platforms: {
-      westbound: {
-        stopId: '40_E27-T1',
-        directionName: 'Westbound to South Bellevue',
-        cardinalDirection: 'Westbound',
-        terminalDestination: 'South Bellevue',
-      },
-      eastbound: {
-        stopId: '40_E27-T2',
-        directionName: 'Eastbound to Downtown Redmond',
-        cardinalDirection: 'Eastbound',
-        terminalDestination: 'Downtown Redmond',
-      },
-    },
-  },
-  {
-    id: 'marymoor-village',
-    name: 'Marymoor Village',
-    lines: ['line-2'],
-    lat: 47.6658,
-    lon: -122.1158,
-    platforms: {
-      westbound: {
-        stopId: '40_E29-T1',
-        directionName: 'Westbound to South Bellevue',
-        cardinalDirection: 'Westbound',
-        terminalDestination: 'South Bellevue',
-      },
-      eastbound: {
-        stopId: '40_E29-T2',
-        directionName: 'Eastbound to Downtown Redmond',
-        cardinalDirection: 'Eastbound',
-        terminalDestination: 'Downtown Redmond',
-      },
-    },
-  },
   {
     id: 'downtown-redmond',
     name: 'Downtown Redmond',
+    shortName: 'Redmond Town Center',
     lines: ['line-2'],
     lat: 47.6740,
     lon: -122.1228,
     platforms: {
+      eastbound: {
+        stopId: '40_E31-T2',
+        directionName: 'Eastbound Platform (Terminus)',
+        cardinalDirection: 'Eastbound',
+        terminalDestination: 'Downtown Redmond',
+      },
       westbound: {
         stopId: '40_E31-T1',
         directionName: 'Westbound to South Bellevue',
         cardinalDirection: 'Westbound',
         terminalDestination: 'South Bellevue',
       },
+    },
+  },
+  {
+    id: 'marymoor-village',
+    name: 'Marymoor Village',
+    shortName: 'Park & Ride / Marymoor Park',
+    lines: ['line-2'],
+    lat: 47.6658,
+    lon: -122.1158,
+    platforms: {
       eastbound: {
-        stopId: '40_E31-T2',
-        directionName: 'Eastbound Platform (Terminus)',
+        stopId: '40_E29-T2',
+        directionName: 'Eastbound to Downtown Redmond',
         cardinalDirection: 'Eastbound',
         terminalDestination: 'Downtown Redmond',
+      },
+      westbound: {
+        stopId: '40_E29-T1',
+        directionName: 'Westbound to South Bellevue',
+        cardinalDirection: 'Westbound',
+        terminalDestination: 'South Bellevue',
+      },
+    },
+  },
+  {
+    id: 'redmond-technology',
+    name: 'Redmond Technology',
+    shortName: 'Microsoft Campus / Transit Center',
+    lines: ['line-2'],
+    lat: 47.6437,
+    lon: -122.1287,
+    platforms: {
+      eastbound: {
+        stopId: '40_E27-T2',
+        directionName: 'Eastbound to Downtown Redmond',
+        cardinalDirection: 'Eastbound',
+        terminalDestination: 'Downtown Redmond',
+      },
+      westbound: {
+        stopId: '40_E27-T1',
+        directionName: 'Westbound to South Bellevue',
+        cardinalDirection: 'Westbound',
+        terminalDestination: 'South Bellevue',
+      },
+    },
+  },
+  {
+    id: 'overlake-village',
+    name: 'Overlake Village',
+    shortName: '152nd Ave NE / Overlake Village',
+    lines: ['line-2'],
+    lat: 47.6384,
+    lon: -122.1408,
+    platforms: {
+      eastbound: {
+        stopId: '40_E25-T2',
+        directionName: 'Eastbound to Downtown Redmond',
+        cardinalDirection: 'Eastbound',
+        terminalDestination: 'Downtown Redmond',
+      },
+      westbound: {
+        stopId: '40_E25-T1',
+        directionName: 'Westbound to South Bellevue',
+        cardinalDirection: 'Westbound',
+        terminalDestination: 'South Bellevue',
+      },
+    },
+  },
+  {
+    id: 'bel-red',
+    name: 'BelRed',
+    shortName: 'Park & Ride / 130th Station',
+    lines: ['line-2'],
+    lat: 47.6288,
+    lon: -122.1528,
+    platforms: {
+      eastbound: {
+        stopId: '40_E23-T2',
+        directionName: 'Eastbound to Downtown Redmond',
+        cardinalDirection: 'Eastbound',
+        terminalDestination: 'Downtown Redmond',
+      },
+      westbound: {
+        stopId: '40_E23-T1',
+        directionName: 'Westbound to South Bellevue',
+        cardinalDirection: 'Westbound',
+        terminalDestination: 'South Bellevue',
+      },
+    },
+  },
+  {
+    id: 'spring-district',
+    name: 'Spring District',
+    shortName: '120th Station / Spring District',
+    lines: ['line-2'],
+    lat: 47.6247,
+    lon: -122.1648,
+    platforms: {
+      eastbound: {
+        stopId: '40_E21-T2',
+        directionName: 'Eastbound to Downtown Redmond',
+        cardinalDirection: 'Eastbound',
+        terminalDestination: 'Downtown Redmond',
+      },
+      westbound: {
+        stopId: '40_E21-T1',
+        directionName: 'Westbound to South Bellevue',
+        cardinalDirection: 'Westbound',
+        terminalDestination: 'South Bellevue',
+      },
+    },
+  },
+  {
+    id: 'wilburton',
+    name: 'Wilburton',
+    shortName: 'Overlake Medical Center',
+    lines: ['line-2'],
+    lat: 47.6186,
+    lon: -122.1802,
+    platforms: {
+      eastbound: {
+        stopId: '40_E19-T1',
+        directionName: 'Eastbound to Downtown Redmond',
+        cardinalDirection: 'Eastbound',
+        terminalDestination: 'Downtown Redmond',
+      },
+      westbound: {
+        stopId: '40_E19-T2',
+        directionName: 'Westbound to South Bellevue',
+        cardinalDirection: 'Westbound',
+        terminalDestination: 'South Bellevue',
+      },
+    },
+  },
+  {
+    id: 'bellevue-downtown',
+    name: 'Bellevue Downtown',
+    shortName: 'Bellevue Transit Center',
+    lines: ['line-2'],
+    lat: 47.6166,
+    lon: -122.1932,
+    platforms: {
+      eastbound: {
+        stopId: '40_E15-T2',
+        directionName: 'Eastbound to Downtown Redmond',
+        cardinalDirection: 'Eastbound',
+        terminalDestination: 'Downtown Redmond',
+      },
+      westbound: {
+        stopId: '40_E15-T1',
+        directionName: 'Westbound to South Bellevue',
+        cardinalDirection: 'Westbound',
+        terminalDestination: 'South Bellevue',
+      },
+    },
+  },
+  {
+    id: 'east-main',
+    name: 'East Main',
+    shortName: 'Surrey Downs / 112th Ave SE',
+    lines: ['line-2'],
+    lat: 47.6041,
+    lon: -122.1904,
+    platforms: {
+      eastbound: {
+        stopId: '40_E11-T1',
+        directionName: 'Eastbound to Downtown Redmond',
+        cardinalDirection: 'Eastbound',
+        terminalDestination: 'Downtown Redmond',
+      },
+      westbound: {
+        stopId: '40_E11-T2',
+        directionName: 'Westbound to South Bellevue',
+        cardinalDirection: 'Westbound',
+        terminalDestination: 'South Bellevue',
+      },
+    },
+  },
+  {
+    id: 'south-bellevue',
+    name: 'South Bellevue',
+    shortName: 'Park & Ride / Mercer Slough',
+    lines: ['line-2'],
+    lat: 47.5878,
+    lon: -122.1869,
+    platforms: {
+      eastbound: {
+        stopId: '40_E09-T1',
+        directionName: 'Eastbound to Downtown Redmond',
+        cardinalDirection: 'Eastbound',
+        terminalDestination: 'Downtown Redmond',
+      },
+      westbound: {
+        stopId: '40_E09-T2',
+        directionName: 'Westbound Platform (Terminus)',
+        cardinalDirection: 'Westbound',
+        terminalDestination: 'South Bellevue',
       },
     },
   },
