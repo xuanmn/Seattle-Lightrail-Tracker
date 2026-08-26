@@ -23,11 +23,11 @@ A modern, responsive, real-time departure countdown board and multi-station trac
 - **Directional Departure Cards**: View Northbound/Southbound or Eastbound/Westbound platforms side-by-side with high-visibility countdown badges (`ARRIVING`, `3 MIN`, `12 MIN`) and real-time status indicators.
 - **Collapsible Platform Columns**: Expand or collapse platform departures independently. When collapsed, a live summary badge displays the next upcoming arrival.
 - **Dual Dashboard View Modes**:
-  - **★ My Saved Stations**: Focused view showing only your starred stations, with persistent collapse states.
-  - **All Line Stations**: Geographic route-order listing of all stations along the active line.
+  - **★ Favorites**: Focused view showing only your starred stations, with persistent collapse states.
+  - **All Stations**: Geographic route-order listing of all stations along the active line.
 - **One-Click Station Management**:
   - Star or unstar stations to instantly customize your saved list.
-  - Station picker modal with line filtering tabs, real-time scroll progress indicator, and quick add/remove buttons.
+  - Station picker modal with line filtering tabs, sleek scrollable browsing, and quick add/remove buttons.
   - Toast notifications confirming favorite station updates.
 - **Configurable Time Format**: Toggle between 12-hour (`2:30 PM`) and 24-hour (`14:30`) clock and departure timestamps in Settings.
 - **Smooth Real-time Tickers**: Automatic 60-second background sync cycle with lightweight second-by-second countdown ticks (optimized DOM patching without full card re-renders).
@@ -107,7 +107,7 @@ A modern, responsive, real-time departure countdown board and multi-station trac
 │   ├── components/
 │   │   ├── Header.ts          # Top navigation bar, line switcher, clock, and action buttons
 │   │   ├── StationCard.ts     # Multi-platform station card with live countdowns & collapsible columns
-│   │   ├── StationPickerModal.ts # Station catalog modal with line filters & scroll progress
+│   │   ├── StationPickerModal.ts # Station catalog modal with line filters & station toggling
 │   │   ├── SettingsModal.ts   # Settings modal (12h / 24h time format switch)
 │   │   ├── FaqModal.ts        # Transit guide, fare details, and FAQ modal
 │   │   └── SystemMapModal.ts  # Interactive SVG schematic route map with zoom & pan controls

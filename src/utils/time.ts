@@ -31,12 +31,19 @@ export function formatCountdownBadge(
 export function formatDelayStatus(
   delaySeconds: number,
   isRealtime: boolean
-): { text: string; type: 'ontime' | 'delayed' | 'early' | 'scheduled' } {
+): { text: string; type: 'ontime' | 'delayed' | 'delayed-severe' | 'early' | 'scheduled' } {
   if (!isRealtime) {
     return { text: 'Scheduled', type: 'scheduled' };
   }
 
   const delayMinutes = Math.round(Math.abs(delaySeconds) / 60);
+
+  if (delaySeconds >= 600) {
+    return {
+      text: `+${delayMinutes}m Delay`,
+      type: 'delayed-severe',
+    };
+  }
 
   if (delaySeconds >= 60) {
     return {

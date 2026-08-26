@@ -136,7 +136,7 @@ class TransitTrackerApp {
       'button',
       `view-mode-btn ${this.showOnlyPinned ? 'active' : ''}`
     );
-    myBtn.innerHTML = `★ My Saved Stations`;
+    myBtn.innerHTML = `★ Favorites`;
     if (this.showOnlyPinned) {
       myBtn.classList.add(this.activeLine === 'line-1' ? 'line-1-active' : 'line-2-active');
     }
@@ -151,7 +151,7 @@ class TransitTrackerApp {
       'button',
       `view-mode-btn ${!this.showOnlyPinned ? 'active' : ''}`
     );
-    allBtn.innerHTML = `All Line Stations`;
+    allBtn.innerHTML = `All Stations`;
     if (!this.showOnlyPinned) {
       allBtn.classList.add(this.activeLine === 'line-1' ? 'line-1-active' : 'line-2-active');
     }
@@ -289,7 +289,7 @@ class TransitTrackerApp {
     const title = createElement(
       'h3',
       'empty-dashboard-title',
-      `No saved stations on ${config.name}`
+      `No favorite stations on ${config.name}`
     );
     const desc = createElement(
       'p',

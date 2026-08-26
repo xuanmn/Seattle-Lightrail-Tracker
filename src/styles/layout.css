@@ -372,6 +372,19 @@
   transform: translateY(-1px);
 }
 
+.btn-modal-close {
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #fca5a5;
+}
+
+.btn-modal-close:hover {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: #ef4444;
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 0 14px rgba(239, 68, 68, 0.4);
+}
+
 /* ==========================================================================
    Main Content Layout & Section Banners
    ========================================================================== */

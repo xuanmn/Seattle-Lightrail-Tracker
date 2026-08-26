@@ -35,7 +35,7 @@ export interface TransitArrival {
   isRealtime: boolean;         // True if live GPS tracking available
   delaySeconds: number;        // Real-time delay (>0 late, <0 early, 0 on-time)
   statusText: string;          // "On Time", "+2m Delay", "Early", "Scheduled"
-  statusType: 'ontime' | 'delayed' | 'early' | 'scheduled';
+  statusType: 'ontime' | 'delayed' | 'delayed-severe' | 'early' | 'scheduled';
 }
 
 export interface StationArrivals {

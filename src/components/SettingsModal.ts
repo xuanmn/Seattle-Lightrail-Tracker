@@ -15,6 +15,12 @@ export class SettingsModal {
     this.callbacks = callbacks;
     this.overlay = this.render();
     document.body.appendChild(this.overlay);
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && this.overlay.classList.contains('open')) {
+        this.close();
+      }
+    });
   }
 
   public open() {
