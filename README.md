@@ -32,6 +32,7 @@ A modern, responsive, real-time departure countdown board and multi-station trac
 - **Configurable Time Format**: Toggle between 12-hour (`2:30 PM`) and 24-hour (`14:30`) clock and departure timestamps in Settings.
 - **Smooth Real-time Tickers**: Automatic 60-second background sync cycle with lightweight second-by-second countdown ticks (optimized DOM patching without full card re-renders).
 - **Regional Transit Guide & FAQ**: Built-in modal guide with cross-lake route details, travel times, fare information (flat $3 adult, free youth under 18), operating hours, and resource links.
+- **Interactive System Map**: Built-in dark-mode vector SVG schematic route map of Link Light Rail (1 Line & 2 Line) with interactive zoom/pan controls, line highlight toggles, and official Sound Transit references.
 - **Local Storage Persistence**: Pinned stations, active line selection, 12h/24h time format preference, and platform collapse states are saved automatically in your browser.
 - **Dynamic Theming**: Header branding, active pill highlights, and accent colors automatically adapt to the active line (Emerald Green for 1 Line, Cobalt Blue for 2 Line).
 - **GitHub Pages Ready**: 100% client-side static web application with responsive layout and relative asset bundling.
@@ -108,16 +109,18 @@ A modern, responsive, real-time departure countdown board and multi-station trac
 │   │   ├── StationCard.ts     # Multi-platform station card with live countdowns & collapsible columns
 │   │   ├── StationPickerModal.ts # Station catalog modal with line filters & scroll progress
 │   │   ├── SettingsModal.ts   # Settings modal (12h / 24h time format switch)
-│   │   └── FaqModal.ts        # Transit guide, fare details, and FAQ modal
+│   │   ├── FaqModal.ts        # Transit guide, fare details, and FAQ modal
+│   │   └── SystemMapModal.ts  # Interactive SVG schematic route map with zoom & pan controls
 │   ├── data/
-│   │   └── stations.ts        # Station database, stop IDs, coordinates, and line definitions
+│   │   └── stations.ts        # Official station database, stop IDs, coordinates, and line definitions
 │   ├── services/
 │   │   ├── oba-api.ts         # Puget Sound OneBusAway REST API client
 │   │   └── storage.ts         # LocalStorage persistence for pinned stations & preferences
 │   ├── styles/
 │   │   ├── theme.css          # Design tokens, color palette, typography, and dark mode variables
 │   │   ├── layout.css         # Responsive layout, grid containers, modals, and navigation
-│   │   └── board.css          # Departure rows, countdown chips, station cards, and animations
+│   │   ├── board.css          # Departure rows, countdown chips, station cards, and animations
+│   │   └── map.css            # System map modal, vector canvas, floating controls, and glowing tracks
 │   ├── types/
 │   │   └── transit.ts         # TypeScript interfaces and data models
 │   └── utils/
@@ -125,9 +128,11 @@ A modern, responsive, real-time departure countdown board and multi-station trac
 │       └── time.ts            # Time formatting, countdown calculations, and destination labels
 └── tests/
     ├── oba-api.test.ts        # API response parsing and prediction tests
-    ├── stations.test.ts       # Station dataset and line query tests
+    ├── stations.test.ts       # Station dataset and official name tests
     ├── storage.test.ts        # LocalStorage settings and pinned station tests
-    └── time.test.ts           # Countdown badge and time formatting tests
+    ├── time.test.ts           # Countdown badge and time formatting tests
+    ├── header.test.ts         # Header component and navigation callback tests
+    └── map.test.ts            # System map modal rendering and filter tests
 ```
 
 ---
