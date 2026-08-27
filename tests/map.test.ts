@@ -66,4 +66,17 @@ describe('SystemMapModal Component', () => {
     expect(chinatownNode?.classList.contains('map-transfer-hub-node')).toBe(true);
     expect(chinatownNode?.textContent).toContain('TRANSFER');
   });
+
+  it('renders I-90 Trail sublabels on Judkins Park and Mercer Island stations', () => {
+    const svg = document.querySelector('svg.system-map-svg');
+    const judkinsNode = svg?.querySelector('#map-node-judkins-park');
+    expect(judkinsNode).not.toBeNull();
+    expect(judkinsNode?.textContent).toContain('Judkins Park');
+    expect(judkinsNode?.textContent).toContain('I-90 Trail');
+
+    const mercerNode = svg?.querySelector('#map-node-mercer-island');
+    expect(mercerNode).not.toBeNull();
+    expect(mercerNode?.textContent).toContain('Mercer Island');
+    expect(mercerNode?.textContent).toContain('I-90 Trail');
+  });
 });

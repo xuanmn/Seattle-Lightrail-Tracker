@@ -319,7 +319,7 @@
 @media (max-width: 650px) {
   .station-header {
     flex-wrap: wrap;
-    gap: 0.6rem;
+    gap: 0.65rem;
     padding: 0.85rem 1rem;
   }
 
@@ -329,11 +329,28 @@
   }
 
   .station-name {
-    font-size: 1.05rem;
+    font-size: 1.08rem;
   }
 
   .station-actions {
     margin-left: auto;
+    gap: 0.45rem;
+  }
+
+  .direction-segmented-control {
+    padding: 2px;
+  }
+
+  .direction-segment-btn {
+    padding: 0.25rem 0.6rem;
+    font-size: 0.74rem;
+    height: 30px;
+    line-height: 1;
+  }
+
+  .star-btn {
+    width: 36px;
+    height: 36px;
   }
 
   .station-platforms.view-both {
@@ -344,11 +361,6 @@
   .station-platforms.view-both .platform-column:nth-child(2) {
     border-left: none;
     border-top: 1px solid var(--border-subtle);
-  }
-
-  .direction-segment-btn {
-    padding: 0.2rem 0.45rem;
-    font-size: 0.68rem;
   }
 }
 

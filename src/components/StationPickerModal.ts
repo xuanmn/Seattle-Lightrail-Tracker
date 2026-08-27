@@ -11,6 +11,8 @@ export class StationPickerModal {
   private overlay: HTMLElement;
   private listContainer!: HTMLElement;
   private activeFilterLine: TransitLineId = 'line-1';
+  private searchQuery: string = '';
+  private searchInput!: HTMLInputElement;
   private callbacks: StationPickerCallbacks;
   private tab1Btn!: HTMLButtonElement;
   private tab2Btn!: HTMLButtonElement;
@@ -32,6 +34,10 @@ export class StationPickerModal {
       this.setFilter(initialLine);
     } else {
       this.setFilter(this.activeFilterLine);
+    }
+    if (this.searchInput) {
+      this.searchInput.value = '';
+      this.searchQuery = '';
     }
     if (this.listContainer) {
       this.listContainer.scrollTop = 0;
@@ -60,9 +66,26 @@ export class StationPickerModal {
   private renderStationsList() {
     this.listContainer.innerHTML = '';
 
-    const filtered = STATIONS.filter((station) =>
-      station.lines.includes(this.activeFilterLine)
-    );
+    const query = this.searchQuery.trim().toLowerCase();
+
+    const filtered = STATIONS.filter((station) => {
+      const matchesLine = station.lines.includes(this.activeFilterLine);
+      if (!matchesLine) return false;
+      if (!query) return true;
+      return (
+        station.name.toLowerCase().includes(query) ||
+        (station.shortName && station.shortName.toLowerCase().includes(query))
+      );
+    });
+
+    if (filtered.length === 0) {
+      const empty = createElement('div', 'departures-empty');
+      empty.textContent = query
+        ? `No stations matching "${query}" on ${this.activeFilterLine === 'line-1' ? '1 Line' : '2 Line'}`
+        : 'No stations found';
+      this.listContainer.appendChild(empty);
+      return;
+    }
 
     filtered.forEach((station) => {
       const item = this.createStationRow(station);
@@ -130,6 +153,10 @@ export class StationPickerModal {
     const overlay = createElement('div', 'modal-overlay');
     const modal = createElement('div', 'modal-container');
 
+    // Mobile Drag Handle Indicator
+    const dragHandle = createElement('div', 'modal-drag-handle');
+    modal.appendChild(dragHandle);
+
     // Header
     const header = createElement('div', 'modal-header');
     const title = createElement('h3', 'modal-title', 'Add & Remove Stations');
@@ -143,19 +170,34 @@ export class StationPickerModal {
     // Body
     const body = createElement('div', 'modal-body');
 
+    // Search bar for fast mobile filtering
+    const searchWrap = createElement('div', 'picker-search-wrap');
+    const searchIcon = createElement('span', 'picker-search-icon', ICONS.search);
+    this.searchInput = createElement('input', 'picker-search-input') as HTMLInputElement;
+    this.searchInput.type = 'search';
+    this.searchInput.placeholder = 'Search stations (e.g. Westlake, UW, Bellevue)...';
+    this.searchInput.setAttribute('aria-label', 'Search stations');
+    this.searchInput.oninput = () => {
+      this.searchQuery = this.searchInput.value;
+      this.renderStationsList();
+    };
+
+    searchWrap.appendChild(searchIcon);
+    searchWrap.appendChild(this.searchInput);
+
     // Line Filter Pills
     const filtersWrap = createElement('div', 'picker-filter-pills');
     this.tab1Btn = createElement(
       'button',
       'filter-pill active line-1',
-      '1 Line (Lynnwood ⇄ Federal Way Downtown)'
+      `<span class="filter-pill-label">1 Line</span><span class="filter-pill-route">Lynnwood ⇄ Federal Way</span>`
     ) as HTMLButtonElement;
     this.tab1Btn.onclick = () => this.setFilter('line-1');
 
     this.tab2Btn = createElement(
       'button',
       'filter-pill',
-      '2 Line (Lynnwood ⇄ Downtown Redmond)'
+      `<span class="filter-pill-label">2 Line</span><span class="filter-pill-route">Lynnwood ⇄ Redmond</span>`
     ) as HTMLButtonElement;
     this.tab2Btn.onclick = () => this.setFilter('line-2');
 
@@ -165,6 +207,7 @@ export class StationPickerModal {
     // List
     this.listContainer = createElement('div', 'departures-list');
 
+    body.appendChild(searchWrap);
     body.appendChild(filtersWrap);
     body.appendChild(this.listContainer);
 

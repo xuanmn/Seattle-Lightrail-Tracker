@@ -500,8 +500,8 @@ export class SystemMapModal {
         ${this.renderLine1Station('federal-way-downtown', 272, 1205, 'Federal Way Downtown', 'Park & Ride / Transit Center', 'left', true)}
 
         <!-- ================= CONNECTING SEGMENT (I-90 CORRIDOR) ================= -->
-        ${this.renderLine2Station('judkins-park', 355, 665, 'Judkins Park', 'Rainier Ave S', 'bottom')}
-        ${this.renderLine2Station('mercer-island', 480, 665, 'Mercer Island', 'Park & Ride', 'bottom')}
+        ${this.renderLine2Station('judkins-park', 355, 665, 'Judkins Park', 'Rainier Ave S / I-90 Trail', 'bottom')}
+        ${this.renderLine2Station('mercer-island', 480, 665, 'Mercer Island', 'Park & Ride / I-90 Trail', 'bottom')}
 
         <!-- ================= RIGHT SPINE: 2 LINE EASTSIDE STATIONS ================= -->
         ${this.renderLine2Station('south-bellevue', 540, 635, 'South Bellevue', 'Park & Ride / Mercer Slough', 'right', true)}
@@ -643,7 +643,7 @@ export class SystemMapModal {
       <g class="map-station-node map-elem-line-2" id="map-node-${id}">
         <circle class="map-station-circle" cx="${x}" cy="${y}" r="${r}" fill="#ffffff" stroke="#0072CE" stroke-width="3" />
         <text class="map-station-label" x="${textX}" y="${textY}" text-anchor="${textAnchor}">${name}</text>
-        ${sub ? `<text class="map-station-sublabel" x="${textX}" y="${textY + (labelPos === 'bottom' ? 10 : 12)}" text-anchor="${textAnchor}">${sub}</text>` : ''}
+        ${sub ? `<text class="map-station-sublabel" x="${textX}" y="${textY + 12}" text-anchor="${textAnchor}">${sub}</text>` : ''}
       </g>
     `;
   }

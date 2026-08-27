@@ -110,21 +110,22 @@ export class HeaderComponent {
     const mapBtn = createElement(
       'button',
       'header-text-btn header-map-btn',
-      `Link Map`
+      `${ICONS.map} <span class="header-btn-label-desktop">Link Map</span><span class="header-btn-label-mobile">Map</span>`
     );
     mapBtn.title = 'View Link Light Rail Map';
     mapBtn.onclick = () => this.callbacks.onMapClick();
 
     const faqBtn = createElement(
       'button',
-      'header-text-btn',
-      `Transit Guide & FAQ`
+      'header-text-btn header-faq-btn',
+      `${ICONS.guide} <span class="header-btn-label-desktop">Transit Guide & FAQ</span><span class="header-btn-label-mobile">Guide</span>`
     );
     faqBtn.title = 'How to travel between Lynnwood, Seattle, and Bellevue';
     faqBtn.onclick = () => this.callbacks.onFaqClick();
 
-    const settingsBtn = createElement('button', 'icon-btn', ICONS.settings);
+    const settingsBtn = createElement('button', 'icon-btn header-settings-btn', ICONS.settings);
     settingsBtn.title = 'Settings & Preferences';
+    settingsBtn.setAttribute('aria-label', 'Settings & Preferences');
     settingsBtn.onclick = () => this.callbacks.onSettingsClick();
 
     actions.appendChild(mapBtn);

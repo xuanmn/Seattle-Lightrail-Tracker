@@ -47,6 +47,10 @@ export class SettingsModal {
     const overlay = createElement('div', 'modal-overlay');
     const modal = createElement('div', 'modal-container');
 
+    // Mobile Drag Handle
+    const dragHandle = createElement('div', 'modal-drag-handle');
+    modal.appendChild(dragHandle);
+
     // Header
     const header = createElement('div', 'modal-header');
     const title = createElement('h3', 'modal-title', 'Tracker Settings');

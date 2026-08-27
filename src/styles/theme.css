@@ -66,7 +66,7 @@
   --shadow-glow-blue: 0 0 20px var(--st-blue-glow);
   --glow-card: 0 0 20px rgba(0, 0, 0, 0.3);
 
-  /* Layout Constants */
+  /* Layout Constants & Mobile Safe Areas */
   --header-height: 72px;
   --max-width: 1320px;
   --radius-sm: 8px;
@@ -74,6 +74,15 @@
   --radius-lg: 20px;
   --radius-xl: 24px;
   --radius-pill: 9999px;
+
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+
+  /* Touch Targets */
+  --touch-target-min: 44px;
+  --touch-target-compact: 38px;
 
   /* Transitions */
   --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
@@ -90,6 +99,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html {
@@ -103,6 +113,7 @@ html {
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
   height: 100%;
+  overscroll-behavior-y: none;
 }
 
 /* Modern Web Typography: text-wrap balance & pretty */
@@ -173,7 +184,14 @@ button {
   color: inherit;
   font-size: inherit;
   outline: none;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
   transition: all var(--transition-fast);
+}
+
+button:active {
+  transform: scale(0.97);
 }
 
 button:focus-visible {

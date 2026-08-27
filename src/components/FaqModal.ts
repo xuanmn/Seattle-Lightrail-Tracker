@@ -27,6 +27,10 @@ export class FaqModal {
     const overlay = createElement('div', 'modal-overlay');
     const modal = createElement('div', 'modal-container modal-container-wide');
 
+    // Mobile Drag Handle
+    const dragHandle = createElement('div', 'modal-drag-handle');
+    modal.appendChild(dragHandle);
+
     // Header
     const header = createElement('div', 'modal-header');
     const title = createElement('h3', 'modal-title', 'Seattle Transit Guide & FAQ');
