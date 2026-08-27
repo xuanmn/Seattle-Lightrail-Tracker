@@ -69,9 +69,7 @@ export class SettingsModal {
     const timeLabelWrap = createElement('div', 'settings-label-wrap');
     const timeLabel = createElement('label', 'form-label form-label-inline', '24-Hour Clock Format');
     timeLabel.setAttribute('for', 'toggle-24h-format');
-    const timeDesc = createElement('div', 'settings-desc', 'Display arrival departure times as 14:05 instead of 2:05 PM.');
     timeLabelWrap.appendChild(timeLabel);
-    timeLabelWrap.appendChild(timeDesc);
 
     const switchLabel = createElement('label', 'toggle-switch');
     this.timeFormatCheckbox = createElement('input') as HTMLInputElement;
