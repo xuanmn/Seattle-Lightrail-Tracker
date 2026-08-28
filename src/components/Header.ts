@@ -40,9 +40,6 @@ export class HeaderComponent {
     }
   }
 
-  public setTimeFormat(_is24Hour: boolean) {
-    // Retained for interface compatibility with settings changes
-  }
 
   private render(): HTMLElement {
     const header = createElement('header', 'app-header');

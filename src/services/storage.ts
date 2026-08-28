@@ -14,8 +14,6 @@ const DEFAULT_PINNED_STATIONS: string[] = [
 
 const DEFAULT_SETTINGS: AppSettings = {
   timeFormat24Hour: false,
-  activeLine: 'line-1',
-  pinnedStationIds: DEFAULT_PINNED_STATIONS,
 };
 
 export function getPinnedStationIds(): string[] {
@@ -52,10 +50,6 @@ export function togglePinnedStation(stationId: string): boolean {
   return !exists; // returns new pinned status
 }
 
-export function isStationPinned(stationId: string, cachedPinnedIds?: string[]): boolean {
-  const ids = cachedPinnedIds ?? getPinnedStationIds();
-  return ids.includes(stationId);
-}
 
 export function getActiveLine(): TransitLineId {
   try {
@@ -82,8 +76,6 @@ export function getSettings(): AppSettings {
     return {
       ...DEFAULT_SETTINGS,
       ...parsed,
-      pinnedStationIds: getPinnedStationIds(),
-      activeLine: getActiveLine(),
     };
   } catch {
     return { ...DEFAULT_SETTINGS };
@@ -95,12 +87,6 @@ export function updateSettings(partial: Partial<AppSettings>): AppSettings {
     const current = getSettings();
     const merged = { ...current, ...partial };
     localStorage.setItem(SETTINGS_KEY, JSON.stringify(merged));
-    if (partial.activeLine) {
-      setActiveLine(partial.activeLine);
-    }
-    if (partial.pinnedStationIds) {
-      setPinnedStationIds(partial.pinnedStationIds);
-    }
     return merged;
   } catch {
     return getSettings();

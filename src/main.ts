@@ -61,7 +61,6 @@ class TransitTrackerApp {
     this.settings = getSettings();
     this.activeLine = getActiveLine();
     this.pinnedIds = getPinnedStationIds();
-    this.showOnlyPinned = true; // Always default to My Favorite Stations on startup
     document.body.dataset.activeLine = this.activeLine;
 
     this.initUI();
@@ -349,7 +348,6 @@ class TransitTrackerApp {
 
   private handleSettingsSaved(newSettings: AppSettings) {
     this.settings = newSettings;
-    this.header.setTimeFormat(newSettings.timeFormat24Hour);
 
     this.cardComponents.forEach((card) => {
       card.setTimeFormat(newSettings.timeFormat24Hour);

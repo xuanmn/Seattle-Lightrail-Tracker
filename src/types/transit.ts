@@ -54,6 +54,4 @@ export interface StationArrivals {
 
 export interface AppSettings {
   timeFormat24Hour: boolean;
-  activeLine: TransitLineId;
-  pinnedStationIds: string[];
 }
