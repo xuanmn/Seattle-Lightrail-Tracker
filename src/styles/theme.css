@@ -113,7 +113,6 @@ html {
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
   height: 100%;
-  overscroll-behavior-y: none;
 }
 
 /* Modern Web Typography: text-wrap balance & pretty */

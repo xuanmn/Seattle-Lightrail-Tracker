@@ -95,4 +95,12 @@ describe('Mobile Frontend Design & UX Specifications', () => {
     const segmentBtns = segmented?.querySelectorAll('.direction-segment-btn');
     expect(segmentBtns?.length).toBe(3); // Both, North, South
   });
+
+  it('preserves native mobile pull-to-refresh without overscroll-behavior-y: none on root html', async () => {
+    // @ts-ignore vite raw import
+    const themeCss = (await import('../src/styles/theme.css?raw')).default as string;
+    
+    // Ensure overscroll-behavior-y: none is not set on html, which breaks mobile pull-to-refresh
+    expect(themeCss).not.toMatch(/html\s*\{[^}]*overscroll-behavior-y:\s*none/);
+  });
 });
