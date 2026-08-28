@@ -79,4 +79,68 @@ describe('SystemMapModal Component', () => {
     expect(mercerNode?.textContent).toContain('Mercer Island');
     expect(mercerNode?.textContent).toContain('I-90 Trail');
   });
+
+  it('aligns all left spine station labels to uniform x=252 coordinate with end text-anchor', () => {
+    const svg = document.querySelector('svg.system-map-svg');
+    const leftStations = [
+      'lynnwood-city-center',
+      'mountlake-terrace',
+      'shoreline-north-185th',
+      'shoreline-south-148th',
+      'northgate',
+      'roosevelt',
+      'u-district',
+      'university-of-washington',
+      'capitol-hill',
+      'westlake',
+      'symphony',
+      'pioneer-square',
+      'international-district-chinatown',
+      'stadium',
+      'sodo',
+      'beacon-hill',
+      'mount-baker',
+      'columbia-city',
+      'othello',
+      'rainier-beach',
+      'tukwila-intl-blvd',
+      'seatac-airport',
+      'angle-lake',
+      'kent-des-moines',
+      'star-lake',
+      'federal-way-downtown',
+    ];
+
+    for (const id of leftStations) {
+      const node = svg?.querySelector(`#map-node-${id}`);
+      expect(node).not.toBeNull();
+      const label = node?.querySelector('.map-station-label');
+      expect(label?.getAttribute('x')).toBe('252');
+      expect(label?.getAttribute('text-anchor')).toBe('end');
+    }
+  });
+
+  it('aligns all right spine Eastside station labels to uniform x=558 coordinate with start text-anchor', () => {
+    const svg = document.querySelector('svg.system-map-svg');
+    const rightStations = [
+      'south-bellevue',
+      'east-main',
+      'bellevue-downtown',
+      'wilburton',
+      'spring-district',
+      'bel-red',
+      'overlake-village',
+      'redmond-technology',
+      'marymoor-village',
+      'downtown-redmond',
+    ];
+
+    for (const id of rightStations) {
+      const node = svg?.querySelector(`#map-node-${id}`);
+      expect(node).not.toBeNull();
+      const label = node?.querySelector('.map-station-label');
+      expect(label?.getAttribute('x')).toBe('558');
+      expect(label?.getAttribute('text-anchor')).toBe('start');
+    }
+  });
 });

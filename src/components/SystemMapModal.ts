@@ -341,11 +341,11 @@ export class SystemMapModal {
     headerLegend.innerHTML = `
       <div class="map-legend-item">
         <span class="map-legend-line-sample line-1"></span>
-        <span><strong>1 Line</strong> (Lynnwood ⇄ Federal Way Downtown)</span>
+        <span><strong>1 Line</strong> (Lynnwood City Center ⇄ Federal Way Downtown)</span>
       </div>
       <div class="map-legend-item">
         <span class="map-legend-line-sample line-2"></span>
-        <span><strong>2 Line</strong> (Lynnwood ⇄ Downtown Redmond)</span>
+        <span><strong>2 Line</strong> (Lynnwood City Center ⇄ Downtown Redmond)</span>
       </div>
     `;
 
@@ -459,10 +459,10 @@ export class SystemMapModal {
         </g>
 
         <!-- 1 Line South Terminus (Federal Way Downtown) -->
-        <g class="map-terminus-badge map-elem-line-1" transform="translate(272, 1240)">
-          <rect x="-24" y="-13" width="48" height="24" rx="12" fill="#0f172a" stroke="rgba(0,133,66,0.6)" stroke-width="1.5" />
-          <circle cx="0" cy="-1" r="9" fill="#008542" />
-          <text x="0" y="2.5" fill="#ffffff" font-size="11" font-weight="800" text-anchor="middle">1</text>
+        <g class="map-terminus-badge map-elem-line-1" transform="translate(272, 1242)">
+          <rect x="-24" y="-16" width="48" height="26" rx="13" fill="#0f172a" stroke="rgba(0,133,66,0.6)" stroke-width="1.5" />
+          <circle cx="0" cy="-3" r="9" fill="#008542" />
+          <text x="0" y="0.5" fill="#ffffff" font-size="11" font-weight="800" text-anchor="middle">1</text>
         </g>
 
         <!-- ================= LEFT SPINE: SHARED 1 LINE & 2 LINE STATIONS ================= -->
@@ -524,7 +524,7 @@ export class SystemMapModal {
     y: number,
     name: string
   ): string {
-    const textX = x - 28;
+    const textX = 252;
 
     return `
       <!-- ================= KEY 1 LINE & 2 LINE TRANSFER HUB ================= -->
@@ -577,7 +577,7 @@ export class SystemMapModal {
     labelPos: 'left' | 'right' = 'left',
     isTerminus: boolean = false
   ): string {
-    const textX = labelPos === 'left' ? x - 26 : x + 26;
+    const textX = labelPos === 'left' ? 252 : x + 26;
     const textAnchor = labelPos === 'left' ? 'end' : 'start';
     const r = isTerminus ? 5.5 : 4.8;
 
@@ -587,7 +587,7 @@ export class SystemMapModal {
         <circle class="map-station-circle" cx="${x - 13}" cy="${y}" r="${r}" fill="#ffffff" stroke="#008542" stroke-width="2.5" />
         <circle class="map-station-circle" cx="${x + 13}" cy="${y}" r="${r}" fill="#ffffff" stroke="#0072CE" stroke-width="2.5" />
         <text class="map-station-label" x="${textX}" y="${y + 4.5}" text-anchor="${textAnchor}">${name}</text>
-        ${sub ? `<text class="map-station-sublabel" x="${textX}" y="${y + 15}" text-anchor="${textAnchor}">${sub}</text>` : ''}
+        ${sub ? `<text class="map-station-sublabel" x="${textX}" y="${y + 16.5}" text-anchor="${textAnchor}">${sub}</text>` : ''}
       </g>
     `;
   }
@@ -601,7 +601,7 @@ export class SystemMapModal {
     labelPos: 'left' | 'right' = 'left',
     isTerminus: boolean = false
   ): string {
-    const textX = labelPos === 'left' ? x - 18 : x + 18;
+    const textX = labelPos === 'left' ? 252 : x + 18;
     const textAnchor = labelPos === 'left' ? 'end' : 'start';
     const r = isTerminus ? 7 : 5.5;
 
@@ -609,7 +609,7 @@ export class SystemMapModal {
       <g class="map-station-node map-elem-line-1" id="map-node-${id}">
         <circle class="map-station-circle" cx="${x}" cy="${y}" r="${r}" fill="#ffffff" stroke="#008542" stroke-width="3" />
         <text class="map-station-label" x="${textX}" y="${y + 4.5}" text-anchor="${textAnchor}">${name}</text>
-        ${sub ? `<text class="map-station-sublabel" x="${textX}" y="${y + 15}" text-anchor="${textAnchor}">${sub}</text>` : ''}
+        ${sub ? `<text class="map-station-sublabel" x="${textX}" y="${y + 16.5}" text-anchor="${textAnchor}">${sub}</text>` : ''}
       </g>
     `;
   }
@@ -632,7 +632,7 @@ export class SystemMapModal {
       textY = y + 22;
       textAnchor = 'middle';
     } else if (labelPos === 'left') {
-      textX = x - 18;
+      textX = 252;
       textY = y + 4.5;
       textAnchor = 'end';
     }
@@ -656,7 +656,7 @@ export class SystemMapModal {
     sub: string,
     labelPos: 'left' | 'right' = 'left'
   ): string {
-    const textX = labelPos === 'left' ? x - 22 : x + 22;
+    const textX = labelPos === 'left' ? 252 : x + 22;
     const textAnchor = labelPos === 'left' ? 'end' : 'start';
 
     return `
@@ -665,7 +665,7 @@ export class SystemMapModal {
         <rect x="${x - 7}" y="${y - 7}" width="14" height="14" rx="3" fill="#f59e0b" />
         <text x="${x}" y="${y + 3.5}" fill="#0f172a" font-size="9" font-weight="900" text-anchor="middle">✈</text>
         <text class="map-station-label" x="${textX}" y="${y + 4.5}" text-anchor="${textAnchor}">${name}</text>
-        ${sub ? `<text class="map-station-sublabel" x="${textX}" y="${y + 15}" text-anchor="${textAnchor}">${sub}</text>` : ''}
+        ${sub ? `<text class="map-station-sublabel" x="${textX}" y="${y + 16.5}" text-anchor="${textAnchor}">${sub}</text>` : ''}
       </g>
     `;
   }
