@@ -27,7 +27,7 @@ export function getPinnedStationIds(): string[] {
   }
 }
 
-export function setPinnedStationIds(ids: string[]): void {
+function setPinnedStationIds(ids: string[]): void {
   try {
     localStorage.setItem(PINNED_STATIONS_KEY, JSON.stringify(ids));
   } catch {

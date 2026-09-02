@@ -280,11 +280,6 @@
   transition: all var(--transition-normal);
 }
 
-.station-platforms.view-both {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
-
 .station-platforms.view-both .platform-column:nth-child(2) {
   border-left: 1px solid var(--border-subtle);
 }
