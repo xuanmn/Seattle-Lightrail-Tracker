@@ -51,13 +51,18 @@ export class HeaderComponent {
     brand.setAttribute('tabindex', '0');
     brand.setAttribute('title', 'Reload live tracker');
     brand.setAttribute('aria-label', 'Reload live tracker');
-    brand.onclick = () => {
-      window.location.reload();
+    const handleBrandClick = () => {
+      if (window.scrollY > 60) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        window.location.reload();
+      }
     };
+    brand.onclick = handleBrandClick;
     brand.onkeydown = (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
-        window.location.reload();
+        handleBrandClick();
       }
     };
 

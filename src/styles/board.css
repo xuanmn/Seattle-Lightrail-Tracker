@@ -252,6 +252,10 @@
   background: rgba(255, 255, 255, 0.06);
 }
 
+.direction-segment-btn:active {
+  transform: scale(0.96);
+}
+
 .direction-segment-btn.active {
   background: var(--bg-surface-elevated);
   color: #ffffff;
@@ -877,6 +881,11 @@
 .filter-pill:hover {
   color: var(--text-primary);
   background: var(--bg-pill-hover);
+}
+
+.filter-pill:active {
+  transform: scale(0.96);
+  opacity: 0.9;
 }
 
 .filter-pill.active {
