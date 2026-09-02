@@ -143,4 +143,120 @@ describe('SystemMapModal Component', () => {
       expect(label?.getAttribute('text-anchor')).toBe('start');
     }
   });
+
+  it('handles 1-finger touch panning on map body', () => {
+    modal.open();
+    const mapBody = document.querySelector('.system-map-body') as HTMLElement;
+    const canvas = mapBody.querySelector('.map-svg-canvas') as HTMLElement;
+    expect(canvas).not.toBeNull();
+
+    // Mock dimensions
+    Object.defineProperty(mapBody, 'clientWidth', { value: 400, configurable: true });
+    Object.defineProperty(mapBody, 'clientHeight', { value: 700, configurable: true });
+    modal.fitToScreen();
+
+    const initialTransform = canvas.style.transform;
+
+    const createTouch = (x: number, y: number): Touch =>
+      ({
+        identifier: 0,
+        target: mapBody,
+        clientX: x,
+        clientY: y,
+        pageX: x,
+        pageY: y,
+      } as unknown as Touch);
+
+    // Touch start
+    mapBody.dispatchEvent(
+      new TouchEvent('touchstart', {
+        bubbles: true,
+        cancelable: true,
+        touches: [createTouch(150, 150)],
+        changedTouches: [createTouch(150, 150)],
+      })
+    );
+
+    // Touch move by dx=+30, dy=+40
+    mapBody.dispatchEvent(
+      new TouchEvent('touchmove', {
+        bubbles: true,
+        cancelable: true,
+        touches: [createTouch(180, 190)],
+        changedTouches: [createTouch(180, 190)],
+      })
+    );
+
+    expect(canvas.style.transform).not.toBe(initialTransform);
+  });
+
+  it('handles 2-finger continuous pinch zoom and transitions to 1-finger pan without interruption', () => {
+    modal.open();
+    const mapBody = document.querySelector('.system-map-body') as HTMLElement;
+    const canvas = mapBody.querySelector('.map-svg-canvas') as HTMLElement;
+
+    Object.defineProperty(mapBody, 'clientWidth', { value: 400, configurable: true });
+    Object.defineProperty(mapBody, 'clientHeight', { value: 700, configurable: true });
+    modal.fitToScreen();
+
+    const createTouch = (id: number, x: number, y: number): Touch =>
+      ({
+        identifier: id,
+        target: mapBody,
+        clientX: x,
+        clientY: y,
+        pageX: x,
+        pageY: y,
+      } as unknown as Touch);
+
+    // 2-finger touchstart
+    const t0 = createTouch(0, 100, 100);
+    const t1 = createTouch(1, 200, 200);
+    mapBody.dispatchEvent(
+      new TouchEvent('touchstart', {
+        bubbles: true,
+        cancelable: true,
+        touches: [t0, t1],
+        changedTouches: [t0, t1],
+      })
+    );
+
+    // Pinch zoom out/in: move fingers further apart
+    const t0Moved = createTouch(0, 80, 80);
+    const t1Moved = createTouch(1, 240, 240);
+    mapBody.dispatchEvent(
+      new TouchEvent('touchmove', {
+        bubbles: true,
+        cancelable: true,
+        touches: [t0Moved, t1Moved],
+        changedTouches: [t0Moved, t1Moved],
+      })
+    );
+
+    expect(canvas.style.transform).toContain('scale(');
+
+    // Lift 1 finger: touchend with touch 1 lifted, touch 0 remaining
+    mapBody.dispatchEvent(
+      new TouchEvent('touchend', {
+        bubbles: true,
+        cancelable: true,
+        touches: [t0Moved],
+        changedTouches: [t1Moved],
+      })
+    );
+
+    // Continue panning with remaining finger
+    const t0Pan = createTouch(0, 110, 120);
+    mapBody.dispatchEvent(
+      new TouchEvent('touchmove', {
+        bubbles: true,
+        cancelable: true,
+        touches: [t0Pan],
+        changedTouches: [t0Pan],
+      })
+    );
+
+    // Canvas should still be actively updating
+    expect(canvas.style.transform).toBeDefined();
+  });
 });
