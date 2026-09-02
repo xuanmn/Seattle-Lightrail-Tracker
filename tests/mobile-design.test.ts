@@ -151,4 +151,22 @@ describe('Mobile Frontend Design & UX Specifications', () => {
     // Ensure overscroll-behavior-y: none is not set on html, which breaks mobile pull-to-refresh
     expect(themeCss).not.toMatch(/html\s*\{[^}]*overscroll-behavior-y:\s*none/);
   });
+
+  it('displays verified, accurate Sound Transit fares, tapping rules, and regional guides in FaqModal', () => {
+    const faq = new FaqModal();
+    faq.open();
+
+    const text = document.body.textContent || '';
+    // Verified Flat Fare
+    expect(text).toContain('$3.00');
+    // Verified Tap Rule (no tap off)
+    expect(text).toContain('do NOT need to tap off');
+    // Verified Free Youth
+    expect(text).toContain('Youth (18 & under): Ride 100% FREE');
+    // Verified 2 Line Crosslake Guide
+    expect(text).toContain('Direct 2 Line Service');
+    expect(text).toContain('Downtown Redmond');
+    // Verified Security Contact
+    expect(text).toContain('206-398-5268');
+  });
 });
