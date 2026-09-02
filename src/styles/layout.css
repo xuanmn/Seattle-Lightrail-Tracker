@@ -401,6 +401,12 @@
   font-weight: 500;
 }
 
+/* Body scroll lock when any modal is open */
+body.modal-open {
+  overflow: hidden;
+  touch-action: none;
+}
+
 /* Modal Dialog Styles */
 .modal-overlay {
   position: fixed;
@@ -416,6 +422,7 @@
   pointer-events: none;
   transition: opacity var(--transition-normal);
   padding: 1.5rem;
+  overscroll-behavior: contain;
 }
 
 .modal-overlay.open {
@@ -437,6 +444,7 @@
   transform: scale(0.96) translateY(8px);
   transition: transform var(--transition-bounce);
   position: relative;
+  overscroll-behavior: contain;
 }
 
 .modal-drag-handle {
@@ -447,6 +455,23 @@
   margin: 10px auto 2px;
   display: none;
   flex-shrink: 0;
+  cursor: grab;
+  touch-action: none;
+  position: relative;
+}
+
+.modal-drag-handle::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  bottom: -12px;
+  left: -24px;
+  right: -24px;
+}
+
+.modal-drag-handle:active {
+  cursor: grabbing;
+  background: rgba(255, 255, 255, 0.55);
 }
 
 .modal-container-wide {
@@ -521,6 +546,7 @@
 .modal-body {
   padding: 1.5rem;
   overflow-y: auto;
+  overscroll-behavior: contain;
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
@@ -933,10 +959,13 @@
     align-items: flex-end;
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
+    overscroll-behavior: contain;
   }
 
   .modal-drag-handle {
     display: block;
+    cursor: grab;
+    touch-action: none;
   }
 
   .modal-container {
@@ -949,6 +978,8 @@
     width: 100%;
     transform: translateY(100%);
     padding-bottom: max(0.85rem, env(safe-area-inset-bottom));
+    overscroll-behavior: contain;
+    touch-action: pan-y;
   }
 
   .modal-overlay.open .modal-container {
@@ -957,6 +988,7 @@
 
   .modal-header {
     padding: 0.75rem 1.25rem 0.85rem;
+    touch-action: pan-y;
   }
 
   .modal-title {
