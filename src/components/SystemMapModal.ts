@@ -356,6 +356,7 @@ export class SystemMapModal {
             now - this.lastTapTime < 300 &&
             Math.hypot(tapX - this.lastTapX, tapY - this.lastTapY) < 40
           ) {
+            if (e.cancelable) e.preventDefault();
             this.handleDoubleTap(t.clientX, t.clientY);
             this.lastTapTime = 0;
             isTouching = false;
@@ -592,9 +593,22 @@ export class SystemMapModal {
     this.canvasEl.innerHTML = this.generateOfficialSchematicSvg();
     this.bodyEl.appendChild(this.canvasEl);
 
+    // Mobile Drag Handle Indicator
+    const dragHandle = createElement('div', 'modal-drag-handle');
+    container.appendChild(dragHandle);
+
     container.appendChild(header);
     container.appendChild(this.bodyEl);
     overlay.appendChild(container);
+
+    // Enable mobile bottom sheet swipe-to-dismiss gesture
+    attachBottomSheetSwipe({
+      overlay,
+      container,
+      handle: dragHandle,
+      header,
+      onClose: () => this.close(),
+    });
 
     overlay.onclick = (e) => {
       if (e.target === overlay) this.close();
