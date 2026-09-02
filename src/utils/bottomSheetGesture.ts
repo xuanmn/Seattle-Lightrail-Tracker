@@ -34,9 +34,18 @@ export function attachBottomSheetSwipe(options: BottomSheetSwipeOptions): () => 
   let currentY = 0;
   let startTime = 0;
   let isDragging = false;
+  let resetTimer: number | undefined;
+
+  const clearResetTimer = () => {
+    if (resetTimer !== undefined) {
+      clearTimeout(resetTimer);
+      resetTimer = undefined;
+    }
+  };
 
   const onTouchStart = (e: TouchEvent) => {
     if (e.touches.length !== 1) return;
+    clearResetTimer();
     const touch = e.touches[0];
     startY = touch.clientY;
     currentY = startY;
@@ -76,20 +85,23 @@ export function attachBottomSheetSwipe(options: BottomSheetSwipeOptions): () => 
     const isFlick = deltaY > 30 && deltaTime >= 30 && velocity > velocityThreshold;
     const shouldDismiss = deltaY >= thresholdPx || isFlick;
 
+    clearResetTimer();
     if (shouldDismiss) {
       container.style.transition = 'transform 0.22s cubic-bezier(0.32, 0.72, 0, 1)';
       container.style.transform = 'translateY(100%)';
       onClose();
-      setTimeout(() => {
+      resetTimer = window.setTimeout(() => {
         container.style.transform = '';
         container.style.transition = '';
+        resetTimer = undefined;
       }, 250);
     } else {
       // Snap back smoothly
       container.style.transition = 'transform 0.2s cubic-bezier(0.2, 0.9, 0.3, 1)';
       container.style.transform = '';
-      setTimeout(() => {
+      resetTimer = window.setTimeout(() => {
         container.style.transition = '';
+        resetTimer = undefined;
       }, 200);
     }
   };
@@ -97,10 +109,12 @@ export function attachBottomSheetSwipe(options: BottomSheetSwipeOptions): () => 
   const onTouchCancel = () => {
     if (!isDragging) return;
     isDragging = false;
+    clearResetTimer();
     container.style.transition = 'transform 0.2s ease-out';
     container.style.transform = '';
-    setTimeout(() => {
+    resetTimer = window.setTimeout(() => {
       container.style.transition = '';
+      resetTimer = undefined;
     }, 200);
   };
 
@@ -130,6 +144,7 @@ export function attachBottomSheetSwipe(options: BottomSheetSwipeOptions): () => 
 
   // Return cleanup function
   return () => {
+    clearResetTimer();
     handle.removeEventListener('touchstart', onTouchStart);
     handle.removeEventListener('touchmove', onTouchMove);
     handle.removeEventListener('touchend', onTouchEnd);

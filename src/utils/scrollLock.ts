@@ -21,7 +21,3 @@ export function unlockBodyScroll(): void {
     document.body.classList.remove('modal-open');
   }
 }
-
-export function isBodyScrollLocked(): boolean {
-  return activeLocks > 0;
-}

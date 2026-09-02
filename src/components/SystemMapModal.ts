@@ -22,6 +22,8 @@ export class SystemMapModal {
   private bodyRectLeft: number = 0;
   private bodyRectTop: number = 0;
   private momentumRaf: number | null = null;
+  private openTimer?: number;
+  private animTimer?: number;
 
   private isMouseDown = false;
   private mouseStartX = 0;
@@ -79,14 +81,24 @@ export class SystemMapModal {
     requestAnimationFrame(() => {
       this.fitToScreen();
     });
-    setTimeout(() => {
+    if (this.openTimer !== undefined) clearTimeout(this.openTimer);
+    this.openTimer = window.setTimeout(() => {
       this.fitToScreen();
+      this.openTimer = undefined;
     }, 60);
   }
 
   public close() {
     if (!this.overlay.classList.contains('open')) return;
     this.stopMomentum();
+    if (this.openTimer !== undefined) {
+      clearTimeout(this.openTimer);
+      this.openTimer = undefined;
+    }
+    if (this.animTimer !== undefined) {
+      clearTimeout(this.animTimer);
+      this.animTimer = undefined;
+    }
     this.overlay.classList.remove('open');
     unlockBodyScroll();
     window.removeEventListener('keydown', this.handleKeyDown);
@@ -175,6 +187,10 @@ export class SystemMapModal {
       cancelAnimationFrame(this.momentumRaf);
       this.momentumRaf = null;
     }
+    if (this.animTimer !== undefined) {
+      clearTimeout(this.animTimer);
+      this.animTimer = undefined;
+    }
   }
 
   private snapToBoundsIfNeeded() {
@@ -242,8 +258,9 @@ export class SystemMapModal {
     this.currentX = targetX;
     this.currentY = targetY;
     this.applyTransform();
-    setTimeout(() => {
+    this.animTimer = window.setTimeout(() => {
       if (this.canvasEl) this.canvasEl.style.transition = 'none';
+      this.animTimer = undefined;
     }, 290);
   }
 

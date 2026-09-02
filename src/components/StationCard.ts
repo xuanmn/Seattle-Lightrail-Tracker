@@ -132,18 +132,20 @@ export class StationCardComponent {
 
     const now = Date.now();
 
-    // Update each cached countdown chip
+    // Update each cached countdown chip only when values change to avoid DOM churn
     for (let i = 0; i < this.countdownChips.length; i++) {
       const chip = this.countdownChips[i];
       const row = this.countdownRows[i];
       const targetTime = this.arrivalTimes[i];
       const badge = formatCountdownBadge(targetTime, now);
 
-      chip.textContent = badge.text;
-      chip.className = `countdown-chip ${badge.isNow ? 'now' : ''}`;
+      if (chip.textContent !== badge.text) {
+        chip.textContent = badge.text;
+      }
+      chip.classList.toggle('now', badge.isNow);
 
       if (row) {
-        row.className = `departure-row ${badge.isNow ? 'arriving-soon' : ''}`;
+        row.classList.toggle('arriving-soon', badge.isNow);
       }
     }
 
