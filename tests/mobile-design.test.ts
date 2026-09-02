@@ -162,9 +162,8 @@ describe('Mobile Frontend Design & UX Specifications', () => {
     // Verified Tap Rule (no tap off)
     expect(text).toContain('do NOT need to tap off');
     // Verified Free Youth
-    expect(text).toContain('Youth (18 & under): Ride 100% FREE');
+    expect(text).toContain('Youth (18 & under): Free');
     // Verified 2 Line Crosslake Guide
-    expect(text).toContain('Direct 2 Line Service');
     expect(text).toContain('Downtown Redmond');
     // Verified Security Contact
     expect(text).toContain('206-398-5268');

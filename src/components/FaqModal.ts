@@ -57,28 +57,28 @@ export class FaqModal {
     const connectionGuideCard = createElement('div', 'faq-featured-card');
     connectionGuideCard.innerHTML = `
       <div class="faq-featured-header">
-        <div class="faq-tag">Regional Transit Guide</div>
-        <h4 class="faq-featured-title">Can I ride light rail from <span class="faq-hl-line1">Lynnwood / Seattle</span> to <span class="faq-hl-line2">Bellevue / Redmond</span>?</h4>
+        <div class="faq-tag">Regional Route Guide</div>
+        <h4 class="faq-featured-title">Lynnwood / Seattle ⇄ Bellevue / Redmond Connection</h4>
       </div>
       <div class="faq-featured-body">
         <div class="route-option-card">
-          <div class="route-badge direct">Yes! Direct 2 Line Service</div>
-          <div class="route-title">Single Continuous Train — No Transfer Needed</div>
+          <div class="route-badge direct">Direct 2 Line</div>
+          <div class="route-title">Single Train — No Transfer</div>
           <p class="route-desc">
-            The <strong>2 Line</strong> connects <strong>Lynnwood City Center</strong> directly through Seattle (<em>Northgate, UW, Capitol Hill, Westlake, Pioneer Square, Chinatown-ID</em>), across Lake Washington via the I-90 bridge (<em>Mercer Island & Judkins Park</em>), straight to <strong>Bellevue</strong> and <strong>Downtown Redmond</strong>!
+            The <strong>2 Line</strong> runs directly between <strong>Lynnwood City Center</strong> and <strong>Downtown Redmond</strong> via Downtown Seattle and the I-90 bridge.
           </p>
         </div>
 
         <div class="route-option-card">
-          <div class="route-badge transfer">Key Travel Times & Connections</div>
-          <div class="route-title">Fast, Traffic-Proof Commute</div>
+          <div class="route-badge transfer">Travel Times & Connections</div>
+          <div class="route-title">Key Station Pairs</div>
           <p class="route-desc">
-            • <strong>Downtown Redmond ⇄ Lynnwood City Center:</strong> ~55–60 minutes (direct, no transfer in either direction).<br/>
-            • <strong>Bellevue Downtown ⇄ Westlake (Seattle):</strong> ~25–28 minutes.<br/>
-            • <strong>Bellevue Downtown ⇄ Capitol Hill:</strong> ~35–40 minutes (direct, no transfer).<br/>
-            • <strong>Bellevue Downtown ⇄ UW & Northgate:</strong> Direct on the 2 Line.<br/>
-            • <strong>Combined Core Frequency:</strong> On the shared spine between Lynnwood and Chinatown-ID, both 1 Line and 2 Line trains arrive every <strong>4 to 5 minutes</strong> during peak commute hours!<br/>
-            • <strong>To SeaTac Airport from Eastside:</strong> Take the 2 Line to any shared station (such as <strong>International District / Chinatown</strong>) and make a quick cross-platform transfer to the southbound <strong>1 Line</strong> (~55–60 min total from Bellevue).
+            • <strong>Bellevue ⇄ Westlake (Seattle):</strong> ~25 min<br/>
+            • <strong>Bellevue ⇄ Capitol Hill:</strong> ~35 min (direct)<br/>
+            • <strong>Downtown Redmond ⇄ Lynnwood:</strong> ~55 min (direct)<br/>
+            • <strong>Bellevue ⇄ UW & Northgate:</strong> Direct on 2 Line<br/>
+            • <strong>Shared Core (Lynnwood ⇄ Chinatown-ID):</strong> Trains arrive every <strong>4–5 min</strong> during peak hours.<br/>
+            • <strong>To SeaTac Airport:</strong> Take 2 Line to Chinatown-ID, then cross-platform transfer to 1 Line Southbound (~55 min total from Bellevue).
           </p>
         </div>
       </div>
@@ -90,67 +90,67 @@ export class FaqModal {
       <h4 class="faq-section-heading">Frequently Asked Questions</h4>
 
       <div class="faq-item">
-        <div class="faq-q">📱 How do I use and customize this departure board?</div>
+        <div class="faq-q">📱 Tracker Usage</div>
         <div class="faq-a">
-          • <strong>Save Favorite Stations:</strong> Click the Star icon on any card or open <strong>+ Add Station</strong> to pin your daily commute stops to the top.<br/>
-          • <strong>Colored Line Badges:</strong> On shared stations, upcoming departures display colored pills for <strong>(1) 1 Line</strong> (to Federal Way) and <strong>(2) 2 Line</strong> (to Downtown Redmond).<br/>
-          • <strong>Live GPS Badges:</strong> Green glowing badges indicate live satellite-tracked trains from Sound Transit; white badges indicate scheduled timetables.<br/>
-          • <strong>Live Data Sync:</strong> Automatically synchronizes real-time arrival predictions every 60 seconds with continuous second-by-second countdown ticks. Switch between <strong>1 Line</strong> and <strong>2 Line</strong> using the header toggle.<br/>
-          • <strong>Time Format Settings:</strong> Open the gear icon in the header to toggle between 12-hour (2:30 PM) and 24-hour (14:30) arrival times.
+          • <strong>Pin Stations:</strong> Click the Star icon on any card or use <strong>+ Add Station</strong> to pin favorite stops.<br/>
+          • <strong>Line Toggle:</strong> Switch between 1 Line and 2 Line in the top header.<br/>
+          • <strong>GPS vs Scheduled:</strong> Green badges indicate live satellite-tracked trains. White badges show scheduled timetable data.<br/>
+          • <strong>Updates:</strong> Countdown ticks every second. Live arrivals refresh automatically every 60 seconds.<br/>
+          • <strong>Time Format:</strong> Toggle between 12-hour and 24-hour display in Settings.
         </div>
       </div>
 
       <div class="faq-item">
-        <div class="faq-q">💳 How much does it cost and how do I pay?</div>
+        <div class="faq-q">💳 Fares & Payment</div>
         <div class="faq-a">
-          • <strong>Link Light Rail Adult Fare:</strong> Flat <strong>$3.00</strong> regardless of distance traveled.<br/>
-          • <strong>Youth (18 & under):</strong> Ride <strong>100% FREE</strong> on all Sound Transit trains and buses!<br/>
-          • <strong>Reduced Fares:</strong> Flat <strong>$1.00</strong> for ORCA LIFT (income-qualified) and Regional Reduced Fare Permit (RRFP for seniors 65+ and riders with disabilities).<br/>
-          • <strong>How to Tap (Flat Fare Rule):</strong> Tap your physical or digital <strong>ORCA card</strong> (available in Google Wallet) at the yellow station readers once before boarding. <strong>You do NOT need to tap off when exiting Link light rail!</strong><br/>
-          • <strong>Alternative Payment:</strong> You can also purchase mobile tickets via the <strong>Transit GO Ticket</strong> app or buy single-ride paper tickets at station vending machines.<br/>
-          • <strong>2-Hour Transfer Credit:</strong> ORCA transfers between Link light rail, King County Metro buses, Sound Transit Express buses, and Seattle Streetcars are automatically credited for up to 2 hours.
+          • <strong>Adult Fare:</strong> Flat <strong>$3.00</strong> per trip (distance does not affect price).<br/>
+          • <strong>Youth (18 & under):</strong> <strong>Free</strong> on all trains and buses.<br/>
+          • <strong>Reduced Fare:</strong> Flat <strong>$1.00</strong> for ORCA LIFT and RRFP (seniors 65+ / disability).<br/>
+          • <strong>How to Tap:</strong> Tap your ORCA card once before boarding. <strong>You do NOT need to tap off</strong> when exiting.<br/>
+          • <strong>Transfers:</strong> ORCA includes automatic 2-hour transfer credit across Metro, ST Express, and Streetcar.<br/>
+          • <strong>Other Payments:</strong> Transit GO Ticket app or station ticket machines.
         </div>
       </div>
 
       <div class="faq-item">
-        <div class="faq-q">⏰ How frequently do trains run and what are the operating hours?</div>
+        <div class="faq-q">⏰ Frequency & Operating Hours</div>
         <div class="faq-a">
-          • <strong>Peak & Daytime Frequency:</strong> Trains arrive every <strong>8 to 10 minutes</strong> on each line (every <strong>4 to 5 minutes</strong> where lines share tracks between Lynnwood and Chinatown-ID).<br/>
-          • <strong>Early Morning / Late Night:</strong> Trains arrive every <strong>10 to 15 minutes</strong>.<br/>
-          • <strong>Operating Hours:</strong> Monday – Saturday from <strong>~5:00 AM to 1:00 AM</strong>; Sundays and holidays from <strong>~6:00 AM to 12:00 AM (midnight)</strong>.
+          • <strong>Peak:</strong> Every 8–10 min per line (every 4–5 min on shared Lynnwood–Chinatown segment).<br/>
+          • <strong>Off-Peak & Weekends:</strong> Every 10–15 min.<br/>
+          • <strong>Operating Span:</strong> Mon–Sat ~5:00 AM – 1:00 AM; Sun & Holidays ~6:00 AM – 12:00 AM.
         </div>
       </div>
 
       <div class="faq-item">
-        <div class="faq-q">🚲 Can I bring bicycles, luggage, or strollers on board?</div>
+        <div class="faq-q">🚲 Bikes, Luggage & Accessibility</div>
         <div class="faq-a">
-          • <strong>Bicycles:</strong> Yes! Every Link light rail car features dedicated hanging hooks and priority storage space for up to 4 bikes. There is no extra charge.<br/>
-          • <strong>Luggage & Strollers:</strong> All stations have level boarding from platforms directly into train cars, making suitcases, strollers, wheelchairs, and mobility devices easy to board.
+          • <strong>Bicycles:</strong> Allowed free on all trains. Up to 4 hanging hooks per car.<br/>
+          • <strong>Luggage & Strollers:</strong> Allowed. All stations and platforms provide step-free, level boarding.
         </div>
       </div>
 
       <div class="faq-item">
-        <div class="faq-q">🛡️ How do I contact Sound Transit Security or get assistance?</div>
+        <div class="faq-q">🛡️ Security & Lost and Found</div>
         <div class="faq-a">
-          • <strong>Security (Call or Text 24/7):</strong> Call or text <strong>206-398-5268</strong> for non-emergencies, safety concerns, or security on trains and platforms.<br/>
-          • <strong>Emergency:</strong> Call <strong>911</strong> immediately or use the emergency call buttons on any station platform.<br/>
-          • <strong>Lost & Found:</strong> Call <strong>206-553-3000</strong> (managed by King County Metro on behalf of Sound Transit).
+          • <strong>Security (24/7 call or text):</strong> <strong>206-398-5268</strong><br/>
+          • <strong>Emergency:</strong> Call <strong>911</strong> or use platform emergency call boxes.<br/>
+          • <strong>Lost & Found:</strong> <strong>206-553-3000</strong> (King County Metro).
         </div>
       </div>
 
       <div class="faq-item">
-        <div class="faq-q">🔗 Official Resources & Service Alerts</div>
+        <div class="faq-q">🔗 Official Resources</div>
         <div class="faq-links-list">
           <a href="https://www.soundtransit.org/ride-with-us/routes-schedules" target="_blank" rel="noopener noreferrer" class="faq-link-row">
-            <span>Sound Transit Official Schedules & Alerts</span>
+            <span>Sound Transit Schedules & Alerts</span>
             <span>↗</span>
           </a>
           <a href="https://www.soundtransit.org/ride-with-us/stations/link-light-rail-stations" target="_blank" rel="noopener noreferrer" class="faq-link-row">
-            <span>Sound Transit Station Directory & Parking</span>
+            <span>Station Directory & Parking Facilities</span>
             <span>↗</span>
           </a>
           <a href="https://myorca.com/" target="_blank" rel="noopener noreferrer" class="faq-link-row">
-            <span>myORCA Card Management & Online Reload</span>
+            <span>myORCA Card Management</span>
             <span>↗</span>
           </a>
           <a href="https://github.com/xuanmn/Seattle-Lightrail-Tracker" target="_blank" rel="noopener noreferrer" class="faq-link-row">
