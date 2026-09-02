@@ -31,18 +31,66 @@ describe('Mobile Frontend Design & UX Specifications', () => {
     expect(faqBtn.querySelector('.header-btn-label-mobile')?.textContent).toBe('Guide');
   });
 
-  it('renders mobile bottom sheet drag handles on all modal dialogs', () => {
+  it('supports swipe-to-dismiss on modal headers without visual drag handle indicators', () => {
     new StationPickerModal({
       onTogglePin: () => {},
       isStationPinned: () => false,
     });
     new FaqModal();
-    new SettingsModal({
+    const settings = new SettingsModal({
       onSettingsSaved: () => {},
     });
 
     const dragHandles = document.querySelectorAll('.modal-drag-handle');
-    expect(dragHandles.length).toBeGreaterThanOrEqual(3);
+    expect(dragHandles.length).toBe(0);
+
+    // Open settings modal and test swipe down on header
+    settings.open();
+    const settingsOverlay = document.querySelectorAll('.modal-overlay')[2] as HTMLElement;
+    expect(settingsOverlay.classList.contains('open')).toBe(true);
+
+    const header = settingsOverlay.querySelector('.modal-header') as HTMLElement;
+    expect(header).not.toBeNull();
+
+    const touch = (y: number) =>
+      ({
+        identifier: 0,
+        target: header,
+        clientX: 100,
+        clientY: y,
+        pageX: 100,
+        pageY: y,
+      } as unknown as Touch);
+
+    // Swipe down 120px on modal header (exceeds 80px threshold)
+    header.dispatchEvent(
+      new TouchEvent('touchstart', {
+        bubbles: true,
+        cancelable: true,
+        touches: [touch(50)],
+        changedTouches: [touch(50)],
+      })
+    );
+
+    header.dispatchEvent(
+      new TouchEvent('touchmove', {
+        bubbles: true,
+        cancelable: true,
+        touches: [touch(180)],
+        changedTouches: [touch(180)],
+      })
+    );
+
+    header.dispatchEvent(
+      new TouchEvent('touchend', {
+        bubbles: true,
+        cancelable: true,
+        touches: [],
+        changedTouches: [touch(180)],
+      })
+    );
+
+    expect(settingsOverlay.classList.contains('open')).toBe(false);
   });
 
   it('supports real-time search filtering in StationPickerModal for fast mobile station discovery', () => {

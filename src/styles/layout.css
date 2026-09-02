@@ -447,33 +447,6 @@ body.modal-open {
   overscroll-behavior: contain;
 }
 
-.modal-drag-handle {
-  width: 44px;
-  height: 5px;
-  background: rgba(255, 255, 255, 0.28);
-  border-radius: var(--radius-pill);
-  margin: 10px auto 2px;
-  display: none;
-  flex-shrink: 0;
-  cursor: grab;
-  touch-action: none;
-  position: relative;
-}
-
-.modal-drag-handle::before {
-  content: '';
-  position: absolute;
-  top: -12px;
-  bottom: -12px;
-  left: -24px;
-  right: -24px;
-}
-
-.modal-drag-handle:active {
-  cursor: grabbing;
-  background: rgba(255, 255, 255, 0.55);
-}
-
 .modal-container-wide {
   max-width: 700px;
 }
@@ -962,10 +935,6 @@ body.modal-open {
     overscroll-behavior: contain;
   }
 
-  .modal-drag-handle {
-    display: block;
-  }
-
   .modal-container {
     max-height: 88vh;
     max-height: 88dvh;
@@ -985,7 +954,7 @@ body.modal-open {
   }
 
   .modal-header {
-    padding: 0.75rem 1.25rem 0.85rem;
+    padding: 1.15rem 1.25rem 0.85rem;
     touch-action: pan-y;
   }
 
