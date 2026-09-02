@@ -1,5 +1,6 @@
 import { createElement, ICONS } from '../utils/dom';
 import { lockBodyScroll, unlockBodyScroll } from '../utils/scrollLock';
+import { attachBottomSheetSwipe } from '../utils/bottomSheetGesture';
 
 export class SystemMapModal {
   private overlay: HTMLElement;
@@ -22,8 +23,8 @@ export class SystemMapModal {
   private bodyRectLeft: number = 0;
   private bodyRectTop: number = 0;
   private momentumRaf: number | null = null;
+  private tweenRaf: number | null = null;
   private openTimer?: number;
-  private animTimer?: number;
 
   private isMouseDown = false;
   private mouseStartX = 0;
@@ -91,13 +92,10 @@ export class SystemMapModal {
   public close() {
     if (!this.overlay.classList.contains('open')) return;
     this.stopMomentum();
+    this.stopTween();
     if (this.openTimer !== undefined) {
       clearTimeout(this.openTimer);
       this.openTimer = undefined;
-    }
-    if (this.animTimer !== undefined) {
-      clearTimeout(this.animTimer);
-      this.animTimer = undefined;
     }
     this.overlay.classList.remove('open');
     unlockBodyScroll();
@@ -182,15 +180,19 @@ export class SystemMapModal {
     return { x, y };
   }
 
+  private stopTween() {
+    if (this.tweenRaf !== null) {
+      cancelAnimationFrame(this.tweenRaf);
+      this.tweenRaf = null;
+    }
+  }
+
   private stopMomentum() {
     if (this.momentumRaf !== null) {
       cancelAnimationFrame(this.momentumRaf);
       this.momentumRaf = null;
     }
-    if (this.animTimer !== undefined) {
-      clearTimeout(this.animTimer);
-      this.animTimer = undefined;
-    }
+    this.stopTween();
   }
 
   private snapToBoundsIfNeeded() {
@@ -201,7 +203,7 @@ export class SystemMapModal {
     const needsScaleSnap = Math.abs(targetScale - this.currentScale) > 0.005;
 
     if (needsPositionSnap || needsScaleSnap) {
-      this.animateTo(targetScale, strict.x, strict.y);
+      this.animateTo(targetScale, strict.x, strict.y, 220);
     }
   }
 
@@ -250,18 +252,58 @@ export class SystemMapModal {
     this.momentumRaf = requestAnimationFrame(step);
   }
 
-  private animateTo(targetScale: number, targetX: number, targetY: number) {
+  private animateTo(targetScale: number, targetX: number, targetY: number, duration: number = 200) {
     if (!this.canvasEl) return;
     this.stopMomentum();
-    this.canvasEl.style.transition = 'transform 0.28s cubic-bezier(0.16, 1, 0.3, 1)';
-    this.currentScale = targetScale;
-    this.currentX = targetX;
-    this.currentY = targetY;
+
+    const startScale = this.currentScale;
+    const startX = this.currentX;
+    const startY = this.currentY;
+
+    if (
+      Math.abs(targetScale - startScale) < 0.001 &&
+      Math.abs(targetX - startX) < 0.5 &&
+      Math.abs(targetY - startY) < 0.5
+    ) {
+      this.currentScale = targetScale;
+      this.currentX = targetX;
+      this.currentY = targetY;
+      this.applyTransform();
+      return;
+    }
+
+    this.canvasEl.style.transition = 'none';
+    const startTime = performance.now();
+    const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+
+    // Micro-advance immediately on this tick so the user sees an instantaneous, zero-delay response
+    this.currentScale = startScale + (targetScale - startScale) * 0.06;
+    this.currentX = startX + (targetX - startX) * 0.06;
+    this.currentY = startY + (targetY - startY) * 0.06;
     this.applyTransform();
-    this.animTimer = window.setTimeout(() => {
-      if (this.canvasEl) this.canvasEl.style.transition = 'none';
-      this.animTimer = undefined;
-    }, 290);
+
+    const step = (now: number) => {
+      const elapsed = now - startTime;
+      const progress = Math.min(1, elapsed / duration);
+      const eased = easeOutCubic(progress);
+
+      this.currentScale = startScale + (targetScale - startScale) * eased;
+      this.currentX = startX + (targetX - startX) * eased;
+      this.currentY = startY + (targetY - startY) * eased;
+      this.applyTransform();
+
+      if (progress < 1) {
+        this.tweenRaf = requestAnimationFrame(step);
+      } else {
+        this.tweenRaf = null;
+        this.currentScale = targetScale;
+        this.currentX = targetX;
+        this.currentY = targetY;
+        this.applyTransform();
+      }
+    };
+
+    this.tweenRaf = requestAnimationFrame(step);
   }
 
   private handleDoubleTap(clientX: number, clientY: number) {

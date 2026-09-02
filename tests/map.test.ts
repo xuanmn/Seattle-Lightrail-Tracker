@@ -259,4 +259,113 @@ describe('SystemMapModal Component', () => {
     // Canvas should still be actively updating
     expect(canvas.style.transform).toBeDefined();
   });
+
+  it('renders mobile drag handle and supports swipe-to-dismiss on header/drag handle', () => {
+    modal.open();
+    const overlay = document.querySelector('.system-map-modal-overlay') as HTMLElement;
+    const handle = overlay.querySelector('.modal-drag-handle') as HTMLElement;
+    expect(handle).not.toBeNull();
+    expect(overlay.classList.contains('open')).toBe(true);
+
+    const createTouch = (y: number): Touch =>
+      ({
+        identifier: 0,
+        target: handle,
+        clientX: 100,
+        clientY: y,
+        pageX: 100,
+        pageY: y,
+      } as unknown as Touch);
+
+    // Touch handle and swipe down 120px (exceeding 80px threshold)
+    handle.dispatchEvent(
+      new TouchEvent('touchstart', {
+        bubbles: true,
+        cancelable: true,
+        touches: [createTouch(50)],
+        changedTouches: [createTouch(50)],
+      })
+    );
+
+    handle.dispatchEvent(
+      new TouchEvent('touchmove', {
+        bubbles: true,
+        cancelable: true,
+        touches: [createTouch(180)],
+        changedTouches: [createTouch(180)],
+      })
+    );
+
+    handle.dispatchEvent(
+      new TouchEvent('touchend', {
+        bubbles: true,
+        cancelable: true,
+        touches: [],
+        changedTouches: [createTouch(180)],
+      })
+    );
+
+    // Modal should have closed
+    expect(overlay.classList.contains('open')).toBe(false);
+  });
+
+  it('zooms smoothly on double tap and cancels mobile browser 300ms tap delay', () => {
+    modal.open();
+    modal.fitToScreen();
+    const mapBody = document.querySelector('.system-map-body') as HTMLElement;
+    const canvas = document.querySelector('.map-svg-canvas') as HTMLElement;
+
+    const initialTransform = canvas.style.transform;
+
+    const createTouch = (x: number, y: number): Touch =>
+      ({
+        identifier: 0,
+        target: mapBody,
+        clientX: x,
+        clientY: y,
+        pageX: x,
+        pageY: y,
+      } as unknown as Touch);
+
+    // First tap
+    mapBody.dispatchEvent(
+      new TouchEvent('touchstart', {
+        bubbles: true,
+        cancelable: true,
+        touches: [createTouch(150, 150)],
+        changedTouches: [createTouch(150, 150)],
+      })
+    );
+    mapBody.dispatchEvent(
+      new TouchEvent('touchend', {
+        bubbles: true,
+        cancelable: true,
+        touches: [],
+        changedTouches: [createTouch(150, 150)],
+      })
+    );
+
+    // Second tap 80ms later
+    let defaultPrevented = false;
+    const secondTouchEvent = new TouchEvent('touchstart', {
+      bubbles: true,
+      cancelable: true,
+      touches: [createTouch(152, 151)],
+      changedTouches: [createTouch(152, 151)],
+    });
+
+    // Spy on preventDefault
+    const origPreventDefault = secondTouchEvent.preventDefault.bind(secondTouchEvent);
+    secondTouchEvent.preventDefault = () => {
+      defaultPrevented = true;
+      origPreventDefault();
+    };
+
+    mapBody.dispatchEvent(secondTouchEvent);
+
+    // Browser 300ms delay should be cancelled
+    expect(defaultPrevented).toBe(true);
+    // Transform should have updated
+    expect(canvas.style.transform).not.toBe(initialTransform);
+  });
 });
