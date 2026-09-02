@@ -179,6 +179,7 @@
   user-select: none;
   -webkit-user-select: none;
   cursor: grab;
+  contain: layout paint;
 }
 
 .system-map-body.is-panning {
@@ -193,12 +194,18 @@
   left: 0;
   transform-origin: 0 0;
   will-change: transform;
+  contain: layout style paint;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-style: flat;
 }
 
 .system-map-svg {
   width: 830px;
   height: 1280px;
   display: block;
+  shape-rendering: geometricPrecision;
+  text-rendering: optimizeLegibility;
 }
 
 /* Map SVG Graphic Styles */

@@ -17,6 +17,12 @@ export class SystemMapModal {
   private lastTapX: number = 0;
   private lastTapY: number = 0;
 
+  private viewportW: number = 400;
+  private viewportH: number = 700;
+  private bodyRectLeft: number = 0;
+  private bodyRectTop: number = 0;
+  private momentumRaf: number | null = null;
+
   private isMouseDown = false;
   private mouseStartX = 0;
   private mouseStartY = 0;
@@ -35,7 +41,7 @@ export class SystemMapModal {
     const dy = e.clientY - this.mouseStartY;
     const nextX = this.mouseStartTransX + dx;
     const nextY = this.mouseStartTransY + dy;
-    const clamped = this.clampOffsets(nextX, nextY, this.currentScale);
+    const clamped = this.clampOffsets(nextX, nextY, this.currentScale, true);
     this.currentX = clamped.x;
     this.currentY = clamped.y;
     this.applyTransform();
@@ -45,6 +51,7 @@ export class SystemMapModal {
     if (this.isMouseDown) {
       this.isMouseDown = false;
       this.bodyEl.classList.remove('is-panning');
+      this.snapToBoundsIfNeeded();
     }
   };
 
@@ -79,6 +86,7 @@ export class SystemMapModal {
 
   public close() {
     if (!this.overlay.classList.contains('open')) return;
+    this.stopMomentum();
     this.overlay.classList.remove('open');
     unlockBodyScroll();
     window.removeEventListener('keydown', this.handleKeyDown);
@@ -87,10 +95,23 @@ export class SystemMapModal {
     window.removeEventListener('resize', this.handleResize);
   }
 
+  private updateCachedDimensions() {
+    if (!this.bodyEl) return;
+    this.viewportW = this.bodyEl.clientWidth || (typeof window !== 'undefined' ? window.innerWidth : 400) || 400;
+    this.viewportH = this.bodyEl.clientHeight || (typeof window !== 'undefined' ? window.innerHeight * 0.75 : 700) || 700;
+    if (typeof this.bodyEl.getBoundingClientRect === 'function') {
+      const rect = this.bodyEl.getBoundingClientRect();
+      this.bodyRectLeft = rect.left;
+      this.bodyRectTop = rect.top;
+    }
+  }
+
   public fitToScreen() {
     if (!this.bodyEl) return;
-    const w = this.bodyEl.clientWidth || window.innerWidth;
-    const h = this.bodyEl.clientHeight || window.innerHeight * 0.75;
+    this.stopMomentum();
+    this.updateCachedDimensions();
+    const w = this.viewportW;
+    const h = this.viewportH;
     const padding = 16;
 
     const scaleX = (w - padding * 2) / 830;
@@ -115,36 +136,107 @@ export class SystemMapModal {
     }
   }
 
-  private clampOffsets(tx: number, ty: number, s: number): { x: number; y: number } {
-    const containerW = this.bodyEl.clientWidth;
-    const containerH = this.bodyEl.clientHeight;
+  private clampOffsets(tx: number, ty: number, s: number, allowElastic: boolean = false): { x: number; y: number } {
+    const w = this.viewportW || 400;
+    const h = this.viewportH || 700;
     const mapW = 830 * s;
     const mapH = 1280 * s;
+    const margin = allowElastic ? 60 : 16;
 
-    let x = tx;
-    let y = ty;
-
-    if (mapW <= containerW) {
-      x = (containerW - mapW) / 2;
+    let minX: number;
+    let maxX: number;
+    if (mapW <= w) {
+      const center = (w - mapW) / 2;
+      minX = allowElastic ? center - margin : center;
+      maxX = allowElastic ? center + margin : center;
     } else {
-      const minX = containerW - mapW - 30;
-      const maxX = 30;
-      x = Math.min(maxX, Math.max(minX, x));
+      minX = w - mapW - margin;
+      maxX = margin;
     }
 
-    if (mapH <= containerH) {
-      y = (containerH - mapH) / 2;
+    let minY: number;
+    let maxY: number;
+    if (mapH <= h) {
+      const center = (h - mapH) / 2;
+      minY = allowElastic ? center - margin : center;
+      maxY = allowElastic ? center + margin : center;
     } else {
-      const minY = containerH - mapH - 30;
-      const maxY = 30;
-      y = Math.min(maxY, Math.max(minY, y));
+      minY = h - mapH - margin;
+      maxY = margin;
     }
 
+    const x = Math.min(maxX, Math.max(minX, tx));
+    const y = Math.min(maxY, Math.max(minY, ty));
     return { x, y };
+  }
+
+  private stopMomentum() {
+    if (this.momentumRaf !== null) {
+      cancelAnimationFrame(this.momentumRaf);
+      this.momentumRaf = null;
+    }
+  }
+
+  private snapToBoundsIfNeeded() {
+    const strict = this.clampOffsets(this.currentX, this.currentY, this.currentScale, false);
+    const targetScale = Math.min(this.maxScale, Math.max(this.fitScale, this.currentScale));
+
+    const needsPositionSnap = Math.abs(strict.x - this.currentX) > 0.5 || Math.abs(strict.y - this.currentY) > 0.5;
+    const needsScaleSnap = Math.abs(targetScale - this.currentScale) > 0.005;
+
+    if (needsPositionSnap || needsScaleSnap) {
+      this.animateTo(targetScale, strict.x, strict.y);
+    }
+  }
+
+  private startMomentum(initialVx: number, initialVy: number) {
+    this.stopMomentum();
+    let vx = initialVx;
+    let vy = initialVy;
+    const speed = Math.hypot(vx, vy);
+
+    if (speed < 0.2) {
+      this.snapToBoundsIfNeeded();
+      return;
+    }
+
+    const maxSpeed = 35;
+    if (speed > maxSpeed) {
+      vx = (vx / speed) * maxSpeed;
+      vy = (vy / speed) * maxSpeed;
+    }
+
+    const friction = 0.93;
+
+    const step = () => {
+      vx *= friction;
+      vy *= friction;
+
+      if (Math.hypot(vx, vy) < 0.15) {
+        this.snapToBoundsIfNeeded();
+        return;
+      }
+
+      const nextX = this.currentX + vx;
+      const nextY = this.currentY + vy;
+      const clamped = this.clampOffsets(nextX, nextY, this.currentScale, false);
+
+      if (Math.abs(clamped.x - this.currentX) < 0.01) vx = 0;
+      if (Math.abs(clamped.y - this.currentY) < 0.01) vy = 0;
+
+      this.currentX = clamped.x;
+      this.currentY = clamped.y;
+      this.applyTransform();
+
+      this.momentumRaf = requestAnimationFrame(step);
+    };
+
+    this.momentumRaf = requestAnimationFrame(step);
   }
 
   private animateTo(targetScale: number, targetX: number, targetY: number) {
     if (!this.canvasEl) return;
+    this.stopMomentum();
     this.canvasEl.style.transition = 'transform 0.28s cubic-bezier(0.16, 1, 0.3, 1)';
     this.currentScale = targetScale;
     this.currentX = targetX;
@@ -156,23 +248,24 @@ export class SystemMapModal {
   }
 
   private handleDoubleTap(clientX: number, clientY: number) {
-    const rect = this.bodyEl.getBoundingClientRect();
-    const px = clientX - rect.left;
-    const py = clientY - rect.top;
+    this.stopMomentum();
+    this.updateCachedDimensions();
+    const px = clientX - this.bodyRectLeft;
+    const py = clientY - this.bodyRectTop;
 
     if (this.currentScale > this.fitScale * 1.3) {
       // Zoom out to fit
       this.animateTo(
         this.fitScale,
-        (this.bodyEl.clientWidth - 830 * this.fitScale) / 2,
-        (this.bodyEl.clientHeight - 1280 * this.fitScale) / 2
+        (this.viewportW - 830 * this.fitScale) / 2,
+        (this.viewportH - 1280 * this.fitScale) / 2
       );
     } else {
       // Zoom in 2.4x
       const targetScale = Math.min(this.maxScale, this.fitScale * 2.4);
       const targetX = px - (px - this.currentX) * (targetScale / this.currentScale);
       const targetY = py - (py - this.currentY) * (targetScale / this.currentScale);
-      const clamped = this.clampOffsets(targetX, targetY, targetScale);
+      const clamped = this.clampOffsets(targetX, targetY, targetScale, false);
       this.animateTo(targetScale, clamped.x, clamped.y);
     }
   }
@@ -181,26 +274,23 @@ export class SystemMapModal {
     if (!this.bodyEl) return;
 
     let isTouching = false;
-    let touchMode: 'none' | 'pan' | 'pinch' = 'none';
-    let touchDragStartX = 0;
-    let touchDragStartY = 0;
-    let touchStartTransX = 0;
-    let touchStartTransY = 0;
-    let touchStartDist = 0;
-    let touchStartScale = 1;
-    let touchStartMidX = 0;
-    let touchStartMidY = 0;
-    let touchStartX0 = 0;
-    let touchStartY0 = 0;
+    let lastMidX = 0;
+    let lastMidY = 0;
+    let lastDist = 0;
+    let velocityX = 0;
+    let velocityY = 0;
+    let lastMoveTime = 0;
 
     this.bodyEl.addEventListener(
       'touchstart',
       (e: TouchEvent) => {
+        this.stopMomentum();
+        this.updateCachedDimensions();
+
         if (e.touches.length === 1) {
           const t = e.touches[0];
-          const rect = this.bodyEl.getBoundingClientRect();
-          const tapX = t.clientX - rect.left;
-          const tapY = t.clientY - rect.top;
+          const tapX = t.clientX - this.bodyRectLeft;
+          const tapY = t.clientY - this.bodyRectTop;
           const now = Date.now();
 
           if (
@@ -209,6 +299,7 @@ export class SystemMapModal {
           ) {
             this.handleDoubleTap(t.clientX, t.clientY);
             this.lastTapTime = 0;
+            isTouching = false;
             return;
           }
           this.lastTapTime = now;
@@ -216,24 +307,23 @@ export class SystemMapModal {
           this.lastTapY = tapY;
 
           isTouching = true;
-          touchMode = 'pan';
-          touchDragStartX = t.clientX;
-          touchDragStartY = t.clientY;
-          touchStartTransX = this.currentX;
-          touchStartTransY = this.currentY;
+          lastMidX = t.clientX;
+          lastMidY = t.clientY;
+          lastDist = 0;
+          velocityX = 0;
+          velocityY = 0;
+          lastMoveTime = now;
           if (this.canvasEl) this.canvasEl.style.transition = 'none';
-        } else if (e.touches.length === 2) {
+        } else if (e.touches.length >= 2) {
           isTouching = true;
-          touchMode = 'pinch';
-          const t1 = e.touches[0];
-          const t2 = e.touches[1];
-          touchStartDist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
-          touchStartScale = this.currentScale;
-          const rect = this.bodyEl.getBoundingClientRect();
-          touchStartMidX = (t1.clientX + t2.clientX) / 2 - rect.left;
-          touchStartMidY = (t1.clientY + t2.clientY) / 2 - rect.top;
-          touchStartX0 = this.currentX;
-          touchStartY0 = this.currentY;
+          const t0 = e.touches[0];
+          const t1 = e.touches[1];
+          lastMidX = (t0.clientX + t1.clientX) / 2;
+          lastMidY = (t0.clientY + t1.clientY) / 2;
+          lastDist = Math.hypot(t0.clientX - t1.clientX, t0.clientY - t1.clientY);
+          velocityX = 0;
+          velocityY = 0;
+          lastMoveTime = Date.now();
           if (this.canvasEl) this.canvasEl.style.transition = 'none';
         }
       },
@@ -244,59 +334,113 @@ export class SystemMapModal {
       'touchmove',
       (e: TouchEvent) => {
         if (!isTouching) return;
-        e.preventDefault();
+        if (e.cancelable) e.preventDefault();
 
-        if (e.touches.length === 1 && touchMode === 'pan') {
+        const now = Date.now();
+        const dt = Math.max(1, now - lastMoveTime);
+
+        if (e.touches.length === 1) {
           const t = e.touches[0];
-          const dx = t.clientX - touchDragStartX;
-          const dy = t.clientY - touchDragStartY;
-          const nextX = touchStartTransX + dx;
-          const nextY = touchStartTransY + dy;
-          const clamped = this.clampOffsets(nextX, nextY, this.currentScale);
+          const dx = t.clientX - lastMidX;
+          const dy = t.clientY - lastMidY;
+
+          // Velocity smoothing for momentum release
+          velocityX = velocityX * 0.4 + (dx / dt) * 16 * 0.6;
+          velocityY = velocityY * 0.4 + (dy / dt) * 16 * 0.6;
+
+          const nextX = this.currentX + dx;
+          const nextY = this.currentY + dy;
+          const clamped = this.clampOffsets(nextX, nextY, this.currentScale, true);
+
           this.currentX = clamped.x;
           this.currentY = clamped.y;
           this.applyTransform();
-        } else if (e.touches.length === 2 && touchMode === 'pinch') {
-          const t1 = e.touches[0];
-          const t2 = e.touches[1];
-          const dist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
-          if (touchStartDist > 0) {
-            const factor = dist / touchStartDist;
-            const newScale = Math.min(
+
+          lastMidX = t.clientX;
+          lastMidY = t.clientY;
+          lastMoveTime = now;
+        } else if (e.touches.length >= 2) {
+          const t0 = e.touches[0];
+          const t1 = e.touches[1];
+          const curMidX = (t0.clientX + t1.clientX) / 2;
+          const curMidY = (t0.clientY + t1.clientY) / 2;
+          const curDist = Math.hypot(t0.clientX - t1.clientX, t0.clientY - t1.clientY);
+
+          const dx = curMidX - lastMidX;
+          const dy = curMidY - lastMidY;
+
+          let newScale = this.currentScale;
+          if (lastDist > 0 && curDist > 0) {
+            const factor = curDist / lastDist;
+            newScale = Math.min(
               this.maxScale,
-              Math.max(this.minScale, touchStartScale * factor)
+              Math.max(this.minScale, this.currentScale * factor)
             );
-            const scaleChange = newScale / touchStartScale;
-            const nextX = touchStartMidX - (touchStartMidX - touchStartX0) * scaleChange;
-            const nextY = touchStartMidY - (touchStartMidY - touchStartY0) * scaleChange;
-            const clamped = this.clampOffsets(nextX, nextY, newScale);
-            this.currentScale = newScale;
-            this.currentX = clamped.x;
-            this.currentY = clamped.y;
-            this.applyTransform();
           }
+
+          // Focal zoom around touch midpoint
+          const focalX = curMidX - this.bodyRectLeft;
+          const focalY = curMidY - this.bodyRectTop;
+          const scaleChange = newScale / this.currentScale;
+
+          const nextX = focalX - (focalX - this.currentX) * scaleChange + dx;
+          const nextY = focalY - (focalY - this.currentY) * scaleChange + dy;
+          const clamped = this.clampOffsets(nextX, nextY, newScale, true);
+
+          this.currentScale = newScale;
+          this.currentX = clamped.x;
+          this.currentY = clamped.y;
+          this.applyTransform();
+
+          lastMidX = curMidX;
+          lastMidY = curMidY;
+          lastDist = curDist;
+          lastMoveTime = now;
+          velocityX = 0;
+          velocityY = 0;
         }
       },
       { passive: false }
     );
 
-    const endTouch = () => {
-      isTouching = false;
-      touchMode = 'none';
-      if (this.currentScale < this.fitScale) {
-        this.animateTo(
-          this.fitScale,
-          (this.bodyEl.clientWidth - 830 * this.fitScale) / 2,
-          (this.bodyEl.clientHeight - 1280 * this.fitScale) / 2
-        );
+    const handleTouchEnd = (e: TouchEvent) => {
+      if (!isTouching) return;
+
+      if (e.touches.length === 1) {
+        // Seamless 2-finger to 1-finger transition
+        const t = e.touches[0];
+        lastMidX = t.clientX;
+        lastMidY = t.clientY;
+        lastDist = 0;
+        velocityX = 0;
+        velocityY = 0;
+        lastMoveTime = Date.now();
+      } else if (e.touches.length === 0) {
+        isTouching = false;
+        const timeSinceLastMove = Date.now() - lastMoveTime;
+
+        if (timeSinceLastMove > 80) {
+          velocityX = 0;
+          velocityY = 0;
+        }
+
+        if (this.currentScale < this.fitScale) {
+          this.snapToBoundsIfNeeded();
+        } else if (Math.hypot(velocityX, velocityY) > 0.5) {
+          this.startMomentum(velocityX, velocityY);
+        } else {
+          this.snapToBoundsIfNeeded();
+        }
       }
     };
 
-    this.bodyEl.addEventListener('touchend', endTouch);
-    this.bodyEl.addEventListener('touchcancel', endTouch);
+    this.bodyEl.addEventListener('touchend', handleTouchEnd);
+    this.bodyEl.addEventListener('touchcancel', handleTouchEnd);
 
     // Desktop Mouse Controls
     this.bodyEl.addEventListener('mousedown', (e: MouseEvent) => {
+      this.stopMomentum();
+      this.updateCachedDimensions();
       this.isMouseDown = true;
       this.mouseStartX = e.clientX;
       this.mouseStartY = e.clientY;
@@ -310,9 +454,10 @@ export class SystemMapModal {
       'wheel',
       (e: WheelEvent) => {
         e.preventDefault();
-        const rect = this.bodyEl.getBoundingClientRect();
-        const px = e.clientX - rect.left;
-        const py = e.clientY - rect.top;
+        this.stopMomentum();
+        this.updateCachedDimensions();
+        const px = e.clientX - this.bodyRectLeft;
+        const py = e.clientY - this.bodyRectTop;
         const factor = e.deltaY < 0 ? 1.14 : 0.88;
         const newScale = Math.min(
           this.maxScale,
@@ -320,7 +465,7 @@ export class SystemMapModal {
         );
         const nextX = px - (px - this.currentX) * (newScale / this.currentScale);
         const nextY = py - (py - this.currentY) * (newScale / this.currentScale);
-        const clamped = this.clampOffsets(nextX, nextY, newScale);
+        const clamped = this.clampOffsets(nextX, nextY, newScale, false);
         this.currentScale = newScale;
         this.currentX = clamped.x;
         this.currentY = clamped.y;
