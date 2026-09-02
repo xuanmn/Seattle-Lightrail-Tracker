@@ -29,8 +29,8 @@ export class FaqModal {
   }
 
   private render(): HTMLElement {
-    const overlay = createElement('div', 'modal-overlay');
-    const modal = createElement('div', 'modal-container modal-container-wide');
+    const overlay = createElement('div', 'modal-overlay faq-modal-overlay');
+    const modal = createElement('div', 'modal-container modal-container-wide faq-modal-container');
 
     // Header
     const header = createElement('div', 'modal-header');

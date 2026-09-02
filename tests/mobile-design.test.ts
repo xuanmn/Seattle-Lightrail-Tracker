@@ -168,4 +168,15 @@ describe('Mobile Frontend Design & UX Specifications', () => {
     // Verified Security Contact
     expect(text).toContain('206-398-5268');
   });
+
+  it('renders FaqModal with dedicated full-screen mobile classes', () => {
+    const faq = new FaqModal();
+    faq.open();
+
+    const overlay = document.querySelector('.faq-modal-overlay');
+    expect(overlay).not.toBeNull();
+
+    const container = document.querySelector('.faq-modal-container');
+    expect(container).not.toBeNull();
+  });
 });

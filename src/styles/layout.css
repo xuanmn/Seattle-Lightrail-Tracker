@@ -953,6 +953,43 @@ body.modal-open {
     transform: translateY(0);
   }
 
+  /* FAQ Modal - Immersive Full-Screen Presentation on Mobile */
+  .faq-modal-overlay {
+    padding: 0;
+    margin: 0;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    align-items: stretch;
+    justify-content: stretch;
+  }
+
+  .faq-modal-container {
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    max-height: 100dvh;
+    border-radius: 0;
+    border: none;
+    margin: 0;
+    transform: translateY(100%);
+    transition: transform var(--transition-normal);
+  }
+
+  .faq-modal-overlay.open .faq-modal-container {
+    transform: translateY(0);
+  }
+
+  .faq-modal-container .modal-header {
+    padding: max(0.85rem, env(safe-area-inset-top)) 1.25rem 0.85rem;
+    touch-action: pan-y;
+  }
+
+  .faq-modal-container .modal-body {
+    padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+  }
+
   .modal-header {
     padding: 1.15rem 1.25rem 0.85rem;
     touch-action: pan-y;
