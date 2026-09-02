@@ -964,8 +964,6 @@ body.modal-open {
 
   .modal-drag-handle {
     display: block;
-    cursor: grab;
-    touch-action: none;
   }
 
   .modal-container {
