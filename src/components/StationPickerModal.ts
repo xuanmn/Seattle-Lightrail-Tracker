@@ -1,6 +1,8 @@
 import { STATIONS } from '../data/stations';
 import { Station, TransitLineId } from '../types/transit';
 import { createElement, ICONS } from '../utils/dom';
+import { lockBodyScroll, unlockBodyScroll } from '../utils/scrollLock';
+import { attachBottomSheetSwipe } from '../utils/bottomSheetGesture';
 
 export interface StationPickerCallbacks {
   onTogglePin: (stationId: string) => void;
@@ -44,11 +46,14 @@ export class StationPickerModal {
     }
     this.renderStationsList();
     this.overlay.classList.add('open');
+    lockBodyScroll();
     window.addEventListener('keydown', this.handleKeyDown);
   }
 
   public close() {
+    if (!this.overlay.classList.contains('open')) return;
     this.overlay.classList.remove('open');
+    unlockBodyScroll();
     window.removeEventListener('keydown', this.handleKeyDown);
   }
 
@@ -166,6 +171,15 @@ export class StationPickerModal {
     closeBtn.onclick = () => this.close();
     header.appendChild(title);
     header.appendChild(closeBtn);
+
+    // Enable mobile bottom sheet swipe-to-dismiss gesture
+    attachBottomSheetSwipe({
+      overlay,
+      container: modal,
+      handle: dragHandle,
+      header,
+      onClose: () => this.close(),
+    });
 
     // Body
     const body = createElement('div', 'modal-body');
