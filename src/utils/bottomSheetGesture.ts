@@ -12,7 +12,7 @@
 export interface BottomSheetSwipeOptions {
   overlay: HTMLElement;
   container: HTMLElement;
-  handle: HTMLElement;
+  handle?: HTMLElement;
   header?: HTMLElement;
   onClose: () => void;
   thresholdPx?: number;
@@ -29,6 +29,11 @@ export function attachBottomSheetSwipe(options: BottomSheetSwipeOptions): () => 
     thresholdPx = 80,
     velocityThreshold = 0.5,
   } = options;
+
+  const primaryTarget = handle || header;
+  if (!primaryTarget) {
+    throw new Error('attachBottomSheetSwipe requires at least a handle or a header');
+  }
 
   let startY = 0;
   let currentY = 0;
@@ -125,14 +130,14 @@ export function attachBottomSheetSwipe(options: BottomSheetSwipeOptions): () => 
     }
   };
 
-  // Register listeners on handle
-  handle.addEventListener('touchstart', onTouchStart, { passive: true });
-  handle.addEventListener('touchmove', onTouchMove, { passive: false });
-  handle.addEventListener('touchend', onTouchEnd, { passive: true });
-  handle.addEventListener('touchcancel', onTouchCancel, { passive: true });
+  // Register listeners on primary target (handle or header)
+  primaryTarget.addEventListener('touchstart', onTouchStart, { passive: true });
+  primaryTarget.addEventListener('touchmove', onTouchMove, { passive: false });
+  primaryTarget.addEventListener('touchend', onTouchEnd, { passive: true });
+  primaryTarget.addEventListener('touchcancel', onTouchCancel, { passive: true });
 
-  // If header exists, register on header as well for broader hit-target
-  if (header && header !== handle) {
+  // If both handle and header are provided and distinct, register on both
+  if (handle && header && header !== handle) {
     header.addEventListener('touchstart', onTouchStart, { passive: true });
     header.addEventListener('touchmove', onTouchMove, { passive: false });
     header.addEventListener('touchend', onTouchEnd, { passive: true });
@@ -145,12 +150,12 @@ export function attachBottomSheetSwipe(options: BottomSheetSwipeOptions): () => 
   // Return cleanup function
   return () => {
     clearResetTimer();
-    handle.removeEventListener('touchstart', onTouchStart);
-    handle.removeEventListener('touchmove', onTouchMove);
-    handle.removeEventListener('touchend', onTouchEnd);
-    handle.removeEventListener('touchcancel', onTouchCancel);
+    primaryTarget.removeEventListener('touchstart', onTouchStart);
+    primaryTarget.removeEventListener('touchmove', onTouchMove);
+    primaryTarget.removeEventListener('touchend', onTouchEnd);
+    primaryTarget.removeEventListener('touchcancel', onTouchCancel);
 
-    if (header && header !== handle) {
+    if (handle && header && header !== handle) {
       header.removeEventListener('touchstart', onTouchStart);
       header.removeEventListener('touchmove', onTouchMove);
       header.removeEventListener('touchend', onTouchEnd);

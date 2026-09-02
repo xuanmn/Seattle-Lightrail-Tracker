@@ -260,25 +260,28 @@ describe('SystemMapModal Component', () => {
     expect(canvas.style.transform).toBeDefined();
   });
 
-  it('renders mobile drag handle and supports swipe-to-dismiss on header/drag handle', () => {
+  it('does not render a visible drag handle and supports swipe-to-dismiss on header', () => {
     modal.open();
     const overlay = document.querySelector('.system-map-modal-overlay') as HTMLElement;
-    const handle = overlay.querySelector('.modal-drag-handle') as HTMLElement;
-    expect(handle).not.toBeNull();
+    const handle = overlay.querySelector('.modal-drag-handle');
+    expect(handle).toBeNull(); // gesture indicator removed per design requirements
     expect(overlay.classList.contains('open')).toBe(true);
+
+    const header = overlay.querySelector('.system-map-header') as HTMLElement;
+    expect(header).not.toBeNull();
 
     const createTouch = (y: number): Touch =>
       ({
         identifier: 0,
-        target: handle,
+        target: header,
         clientX: 100,
         clientY: y,
         pageX: 100,
         pageY: y,
       } as unknown as Touch);
 
-    // Touch handle and swipe down 120px (exceeding 80px threshold)
-    handle.dispatchEvent(
+    // Touch header and swipe down 120px (exceeding 80px threshold)
+    header.dispatchEvent(
       new TouchEvent('touchstart', {
         bubbles: true,
         cancelable: true,
@@ -287,7 +290,7 @@ describe('SystemMapModal Component', () => {
       })
     );
 
-    handle.dispatchEvent(
+    header.dispatchEvent(
       new TouchEvent('touchmove', {
         bubbles: true,
         cancelable: true,
@@ -296,7 +299,7 @@ describe('SystemMapModal Component', () => {
       })
     );
 
-    handle.dispatchEvent(
+    header.dispatchEvent(
       new TouchEvent('touchend', {
         bubbles: true,
         cancelable: true,

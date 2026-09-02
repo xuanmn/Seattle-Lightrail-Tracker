@@ -541,49 +541,52 @@ export class SystemMapModal {
 
     // Header
     const header = createElement('div', 'system-map-header');
+
+    // Header Top Row: Brand & Title on left, Close button on right
+    const headerTop = createElement('div', 'system-map-header-top');
     const titleGroup = createElement('div', 'system-map-title-group');
     const iconBadge = createElement('div', 'system-map-icon-badge', ICONS.train);
     const textGroup = createElement('div', 'system-map-text');
     const title = createElement('h3', 'system-map-title', 'Sound Transit Link Map');
+    textGroup.appendChild(title);
+    titleGroup.appendChild(iconBadge);
+    titleGroup.appendChild(textGroup);
 
+    const actions = createElement('div', 'system-map-header-actions');
+    const closeBtn = createElement('button', 'icon-btn modal-close-btn', ICONS.close);
+    closeBtn.setAttribute('aria-label', 'Close Link Map');
+    closeBtn.title = 'Close Link Map';
+    closeBtn.onclick = () => this.close();
+    actions.appendChild(closeBtn);
+
+    headerTop.appendChild(titleGroup);
+    headerTop.appendChild(actions);
+
+    // Header Legend Row: Clean pills underneath title, never competing with close button
     const headerLegend = createElement('div', 'system-map-header-legend');
     headerLegend.innerHTML = `
       <div class="map-legend-item">
         <span class="map-legend-line-sample line-1"></span>
-        <span><strong>1 Line</strong> (Lynnwood City Center ⇄ Federal Way Downtown)</span>
+        <span><strong>1 Line</strong> <span class="legend-dest-desc">(Lynnwood ⇄ Federal Way)</span></span>
       </div>
       <div class="map-legend-item">
         <span class="map-legend-line-sample line-2"></span>
-        <span><strong>2 Line</strong> (Lynnwood City Center ⇄ Downtown Redmond)</span>
+        <span><strong>2 Line</strong> <span class="legend-dest-desc">(Lynnwood ⇄ Redmond)</span></span>
       </div>
     `;
 
     const officialLink = createElement(
       'a',
       'map-official-link',
-      `Sound Transit Stations Directory ↗`
+      `Stations Directory ↗`
     ) as HTMLAnchorElement;
     officialLink.href = 'https://www.soundtransit.org/ride-with-us/stations/link-light-rail-stations';
     officialLink.target = '_blank';
     officialLink.rel = 'noopener noreferrer';
     headerLegend.appendChild(officialLink);
 
-    textGroup.appendChild(title);
-    textGroup.appendChild(headerLegend);
-    titleGroup.appendChild(iconBadge);
-    titleGroup.appendChild(textGroup);
-
-    const actions = createElement('div', 'system-map-header-actions');
-
-    const closeBtn = createElement('button', 'icon-btn modal-close-btn', ICONS.close);
-    closeBtn.setAttribute('aria-label', 'Close Link Map');
-    closeBtn.title = 'Close Link Map';
-    closeBtn.onclick = () => this.close();
-
-    actions.appendChild(closeBtn);
-
-    header.appendChild(titleGroup);
-    header.appendChild(actions);
+    header.appendChild(headerTop);
+    header.appendChild(headerLegend);
 
     // Map Viewport Body
     this.bodyEl = createElement('div', 'system-map-body');
@@ -593,19 +596,14 @@ export class SystemMapModal {
     this.canvasEl.innerHTML = this.generateOfficialSchematicSvg();
     this.bodyEl.appendChild(this.canvasEl);
 
-    // Mobile Drag Handle Indicator
-    const dragHandle = createElement('div', 'modal-drag-handle');
-    container.appendChild(dragHandle);
-
     container.appendChild(header);
     container.appendChild(this.bodyEl);
     overlay.appendChild(container);
 
-    // Enable mobile bottom sheet swipe-to-dismiss gesture
+    // Enable mobile swipe-to-dismiss gesture directly on header (no indicator bar needed)
     attachBottomSheetSwipe({
       overlay,
       container,
-      handle: dragHandle,
       header,
       onClose: () => this.close(),
     });
