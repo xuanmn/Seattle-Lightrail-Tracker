@@ -64,7 +64,7 @@ export function attachBottomSheetSwipe(options: BottomSheetSwipeOptions): () => 
     }
   };
 
-  const onTouchEnd = (e: TouchEvent) => {
+  const onTouchEnd = () => {
     if (!isDragging) return;
     isDragging = false;
 

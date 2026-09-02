@@ -1,4 +1,5 @@
 import { createElement, ICONS } from '../utils/dom';
+import { lockBodyScroll, unlockBodyScroll } from '../utils/scrollLock';
 
 export class SystemMapModal {
   private overlay: HTMLElement;
@@ -61,6 +62,7 @@ export class SystemMapModal {
 
   public open() {
     this.overlay.classList.add('open');
+    lockBodyScroll();
     window.addEventListener('keydown', this.handleKeyDown);
     window.addEventListener('mousemove', this.handleMouseMove);
     window.addEventListener('mouseup', this.handleMouseUp);
@@ -76,7 +78,9 @@ export class SystemMapModal {
   }
 
   public close() {
+    if (!this.overlay.classList.contains('open')) return;
     this.overlay.classList.remove('open');
+    unlockBodyScroll();
     window.removeEventListener('keydown', this.handleKeyDown);
     window.removeEventListener('mousemove', this.handleMouseMove);
     window.removeEventListener('mouseup', this.handleMouseUp);
