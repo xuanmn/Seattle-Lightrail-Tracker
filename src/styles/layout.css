@@ -850,7 +850,7 @@
   }
 
   .header-actions {
-    gap: 0.4rem;
+    gap: 0.5rem;
   }
 
   .header-btn-label-desktop {
@@ -863,14 +863,14 @@
 
   .header-text-btn {
     font-size: 0.78rem;
-    padding: 0.35rem 0.65rem;
-    height: 34px;
+    padding: 0.35rem 0.75rem;
+    min-height: 44px;
     gap: 0.3rem;
   }
 
   .icon-btn {
-    width: 34px;
-    height: 34px;
+    width: 44px;
+    min-height: 44px;
   }
 
   .line-switcher {
