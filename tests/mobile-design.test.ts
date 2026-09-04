@@ -1,4 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
+// @ts-ignore
+import { readFileSync } from 'node:fs';
+declare const process: any;
 import { HeaderComponent } from '../src/components/Header';
 import { StationPickerModal } from '../src/components/StationPickerModal';
 import { FaqModal } from '../src/components/FaqModal';
@@ -177,4 +180,12 @@ describe('Mobile Frontend Design & UX Specifications', () => {
     const container = document.querySelector('.faq-modal-container');
     expect(container).not.toBeNull();
   });
+
+  it('prevents mobile background flicker when opening Transit Guide FaqModal', () => {
+    const layoutCss = readFileSync(process.cwd() + '/src/styles/layout.css', 'utf-8');
+
+    // Mobile media query must disable backdrop-filter on .faq-modal-overlay to prevent GPU blur pass flicker
+    expect(layoutCss).toMatch(/@media\s*\([^)]*max-width:\s*768px[^)]*\)[\s\S]*?\.faq-modal-overlay[\s\S]*?backdrop-filter:\s*none/);
+  });
 });
+
