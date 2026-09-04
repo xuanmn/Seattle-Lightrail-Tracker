@@ -1,4 +1,7 @@
 import { describe, it, expect } from 'vitest';
+// @ts-ignore
+import { readFileSync } from 'node:fs';
+declare const process: any;
 import { StationCardComponent } from '../src/components/StationCard';
 import { Station, StationArrivals } from '../src/types/transit';
 import manifest from '../public/manifest.json';
@@ -131,3 +134,30 @@ describe('PWA Manifest Configuration', () => {
     expect(hasMaskable).toBe(true);
   });
 });
+
+describe('SEO Configuration & Discoverability', () => {
+  it('contains canonical URL, robots meta, JSON-LD structured data, and noscript crawler fallback in index.html', () => {
+    const html = readFileSync(process.cwd() + '/index.html', 'utf-8');
+
+    expect(html).toContain('<link rel="canonical" href="https://xuanmn.github.io/Seattle-Lightrail-Tracker/" />');
+    expect(html).toContain('<meta name="robots" content="index, follow');
+    expect(html).toContain('application/ld+json');
+    expect(html).toContain('"@type": "WebApplication"');
+    expect(html).toContain('Seattle Light Rail Tracker');
+    expect(html).toContain('<noscript>');
+    expect(html).toContain('1 Line:');
+    expect(html).toContain('2 Line:');
+  });
+
+  it('provides valid robots.txt and sitemap.xml files', () => {
+    const robots = readFileSync(process.cwd() + '/public/robots.txt', 'utf-8');
+    expect(robots).toContain('User-agent: *');
+    expect(robots).toContain('Allow: /');
+    expect(robots).toContain('Sitemap: https://xuanmn.github.io/Seattle-Lightrail-Tracker/sitemap.xml');
+
+    const sitemap = readFileSync(process.cwd() + '/public/sitemap.xml', 'utf-8');
+    expect(sitemap).toContain('https://xuanmn.github.io/Seattle-Lightrail-Tracker/');
+    expect(sitemap).toContain('<changefreq>daily</changefreq>');
+  });
+});
+

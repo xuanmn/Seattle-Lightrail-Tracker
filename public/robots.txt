@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://xuanmn.github.io/Seattle-Lightrail-Tracker/sitemap.xml

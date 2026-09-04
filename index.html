@@ -14,20 +14,53 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Link Tracker" />
 
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <link rel="canonical" href="https://xuanmn.github.io/Seattle-Lightrail-Tracker/" />
+
   <!-- Progressive Web App (PWA) -->
   <link rel="manifest" href="./manifest.json" />
   <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
 
   <!-- Open Graph / Social Media Meta Tags -->
   <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://xuanmn.github.io/Seattle-Lightrail-Tracker/" />
+  <meta property="og:locale" content="en_US" />
   <meta property="og:title" content="Seattle Light Rail Tracker | Live Link 1 &amp; 2 Line Departures" />
   <meta property="og:description"
     content="Real-time Sound Transit Link Light Rail departure countdowns for Seattle, Lynnwood, Bellevue, Redmond, and Federal Way." />
+  <meta property="og:image" content="https://xuanmn.github.io/Seattle-Lightrail-Tracker/icons/icon-512.png" />
   <meta property="og:site_name" content="Seattle Light Rail Tracker" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Seattle Light Rail Tracker | Live Link 1 &amp; 2 Line Departures" />
   <meta name="twitter:description"
     content="Real-time Sound Transit Link Light Rail departure countdowns for Seattle, Lynnwood, Bellevue, Redmond, and Federal Way." />
+  <meta name="twitter:image" content="https://xuanmn.github.io/Seattle-Lightrail-Tracker/icons/icon-512.png" />
+
+  <!-- Structured Data (JSON-LD) for Search Engine Rich Results -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Seattle Light Rail Tracker",
+    "alternateName": "Sound Transit Link Real-Time Departure Tracker",
+    "url": "https://xuanmn.github.io/Seattle-Lightrail-Tracker/",
+    "description": "Live real-time Sound Transit Link Light Rail departure countdowns, live vehicle tracking, station guides, and schematic maps for Line 1 and Line 2.",
+    "applicationCategory": "TravelApplication",
+    "operatingSystem": "All",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "featureList": [
+      "Real-time countdown departures for Sound Transit Link 1 Line & 2 Line",
+      "Live OneBusAway GPS vehicle tracking status",
+      "Interactive SVG Sound Transit schematic route map",
+      "Station pinning and favorite station customization",
+      "Fare guide, transfer instructions, and Sound Transit FAQ"
+    ]
+  }
+  </script>
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -41,6 +74,20 @@
 </head>
 
 <body>
+  <!-- Search engine crawler fallback for JavaScript-disabled or indexing environments -->
+  <noscript>
+    <div style="padding: 2rem; max-width: 800px; margin: 0 auto; font-family: sans-serif; color: #f8fafc; background: #0b0f17;">
+      <h1>Seattle Light Rail Tracker — Live Sound Transit Departures</h1>
+      <p>Real-time countdown departures and station directory for Sound Transit Link 1 Line (Lynnwood City Center to Federal Way Downtown) and Link 2 Line (Lynnwood City Center to Downtown Redmond).</p>
+      <h2>Sound Transit Light Rail Lines</h2>
+      <ul>
+        <li><strong>1 Line:</strong> Lynnwood City Center ⇄ Federal Way Downtown (via Northgate, UW, Downtown Seattle, SeaTac Airport, Angle Lake)</li>
+        <li><strong>2 Line:</strong> Lynnwood City Center ⇄ Downtown Redmond (via Downtown Seattle, Judkins Park, Mercer Island, Bellevue Downtown, Redmond Technology)</li>
+      </ul>
+      <h2>Fares &amp; Rider Guide</h2>
+      <p>Flat adult fare is $3.00 across the entire Link Light Rail system. Youth aged 18 and under ride free. Tap your ORCA card once at the station before boarding; no tap-off is required upon exit.</p>
+    </div>
+  </noscript>
   <div id="app"></div>
   <script type="module" src="/src/main.ts"></script>
 </body>
