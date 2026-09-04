@@ -827,32 +827,33 @@ body.modal-open {
 
   .header-inner {
     height: auto;
-    padding: 0.6rem 0 0.5rem;
+    padding: 0.35rem 0 0.35rem;
     flex-wrap: wrap;
-    gap: 0.55rem;
+    gap: 0.35rem;
   }
 
   .brand-logo {
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
     border-radius: 8px;
   }
 
   .brand-logo svg {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
   }
 
   .brand-title {
-    font-size: 1.05rem;
+    font-size: 1.02rem;
   }
 
   .brand-subtitle {
-    font-size: 0.72rem;
+    font-size: 0.7rem;
+    line-height: 1.15;
   }
 
   .header-actions {
-    gap: 0.5rem;
+    gap: 0.4rem;
   }
 
   .header-btn-label-desktop {
@@ -865,14 +866,16 @@ body.modal-open {
 
   .header-text-btn {
     font-size: 0.78rem;
-    padding: 0.35rem 0.75rem;
-    min-height: 44px;
+    padding: 0.25rem 0.65rem;
+    height: 36px;
+    min-height: 36px;
     gap: 0.3rem;
   }
 
   .icon-btn {
-    width: 44px;
-    min-height: 44px;
+    width: 36px;
+    height: 36px;
+    min-height: 36px;
   }
 
   .line-switcher {
@@ -880,32 +883,32 @@ body.modal-open {
     width: 100%;
     display: flex;
     justify-content: stretch;
-    margin-top: 0.1rem;
-    padding: 3px;
+    margin-top: 0;
+    padding: 2px;
   }
 
   .line-switcher .line-btn,
   .toolbar-controls .view-mode-btn {
     flex: 1;
     justify-content: center;
-    padding: 0.45rem 0.5rem;
-    font-size: 0.84rem;
-    height: 38px;
+    padding: 0.35rem 0.5rem;
+    font-size: 0.82rem;
+    height: 34px;
   }
 
   .main-content {
-    padding: 1.15rem 0 3rem;
+    padding: 0.85rem 0 2.5rem;
   }
 
   .dashboard-toolbar {
     flex-direction: column;
     align-items: stretch;
-    gap: 0.75rem;
-    margin-bottom: 1.15rem;
+    gap: 0.55rem;
+    margin-bottom: 0.95rem;
   }
 
   .section-title {
-    font-size: 1.25rem;
+    font-size: 1.2rem;
   }
 
   .toolbar-controls {
