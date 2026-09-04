@@ -161,3 +161,34 @@ describe('SEO Configuration & Discoverability', () => {
   });
 });
 
+describe('PWA Offline Shell & Service Worker', () => {
+  it('provides public/sw.js with app shell precaching and offline navigation support', () => {
+    const sw = readFileSync(process.cwd() + '/public/sw.js', 'utf-8');
+
+    // Precache configuration
+    expect(sw).toContain('CACHE_NAME');
+    expect(sw).toContain('PRECACHE_ASSETS');
+    expect(sw).toContain('./index.html');
+    expect(sw).toContain('./manifest.json');
+
+    // Event listeners
+    expect(sw).toContain("addEventListener('install'");
+    expect(sw).toContain("addEventListener('activate'");
+    expect(sw).toContain("addEventListener('fetch'");
+
+    // Smart caching rules: skip caching dynamic OneBusAway API responses to prevent stale timers
+    expect(sw).toContain('onebusaway.org');
+
+    // Offline navigation fallback
+    expect(sw).toContain("request.mode === 'navigate'");
+  });
+
+  it('includes service worker registration in src/main.ts', () => {
+    const mainTs = readFileSync(process.cwd() + '/src/main.ts', 'utf-8');
+    expect(mainTs).toContain("'serviceWorker' in navigator");
+    expect(mainTs).toContain("navigator.serviceWorker.register");
+    expect(mainTs).toContain('./sw.js');
+  });
+});
+
+

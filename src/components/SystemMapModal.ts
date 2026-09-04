@@ -551,7 +551,7 @@ export class SystemMapModal {
         const factor = e.deltaY < 0 ? 1.14 : 0.88;
         const newScale = Math.min(
           this.maxScale,
-          Math.max(this.fitScale * 0.9, this.currentScale * factor)
+          Math.max(this.minScale, this.currentScale * factor)
         );
         const nextX = px - (px - this.currentX) * (newScale / this.currentScale);
         const nextY = py - (py - this.currentY) * (newScale / this.currentScale);

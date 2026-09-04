@@ -133,3 +133,65 @@ describe('OneBusAway API Transformer', () => {
     expect(arrivals[0].destination).toBe('Downtown Redmond');
   });
 });
+
+describe('OneBusAway Stop Arrival Caching & In-Memory TTL', () => {
+  const testStation = {
+    id: 'westlake',
+    name: 'Westlake',
+    lines: ['line-1' as const, 'line-2' as const],
+    platforms: {
+      northbound: {
+        stopId: '40_1121',
+        directionName: 'Northbound',
+        cardinalDirection: 'Northbound' as const,
+        terminalDestination: 'Lynnwood City Center',
+      },
+      southbound: {
+        stopId: '40_1108',
+        directionName: 'Southbound',
+        cardinalDirection: 'Southbound' as const,
+        terminalDestination: 'Federal Way Downtown',
+      },
+    },
+  };
+
+  it('populates and reuses in-memory cache for consecutive station arrival requests', async () => {
+    const { clearArrivalsCache, getArrivalsCacheSize, fetchArrivalsForStation } = await import(
+      '../src/services/oba-api'
+    );
+    clearArrivalsCache();
+    expect(getArrivalsCacheSize()).toBe(0);
+
+    const first = await fetchArrivalsForStation(testStation);
+    expect(getArrivalsCacheSize()).toBe(2); // 2 platforms cached
+
+    const second = await fetchArrivalsForStation(testStation);
+    expect(second.direction1.arrivals.length).toBe(first.direction1.arrivals.length);
+    expect(second.direction2.arrivals.length).toBe(first.direction2.arrivals.length);
+
+    // Trip IDs should match cached results
+    expect(second.direction1.arrivals[0].tripId).toBe(first.direction1.arrivals[0].tripId);
+  });
+
+  it('bypasses cache when bypassCache parameter is true', async () => {
+    const { clearArrivalsCache, fetchArrivalsForStation } = await import('../src/services/oba-api');
+    clearArrivalsCache();
+
+    const first = await fetchArrivalsForStation(testStation);
+    const forced = await fetchArrivalsForStation(testStation, undefined, true);
+    expect(forced.direction1.arrivals.length).toBeGreaterThan(0);
+    expect(first.direction1.arrivals.length).toBeGreaterThan(0);
+  });
+
+  it('clears cache entries when clearArrivalsCache is invoked', async () => {
+    const { clearArrivalsCache, getArrivalsCacheSize, fetchArrivalsForStation } = await import(
+      '../src/services/oba-api'
+    );
+    await fetchArrivalsForStation(testStation);
+    expect(getArrivalsCacheSize()).toBeGreaterThan(0);
+
+    clearArrivalsCache();
+    expect(getArrivalsCacheSize()).toBe(0);
+  });
+});
+

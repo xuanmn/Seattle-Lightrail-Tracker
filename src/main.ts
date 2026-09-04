@@ -402,7 +402,7 @@ class TransitTrackerApp {
         await Promise.all(
           chunk.map(async (station) => {
             try {
-              const result = await fetchArrivalsForStation(station);
+              const result = await fetchArrivalsForStation(station, undefined, isManual);
               // If a newer fetch was initiated while this one was running, discard old response
               if (this.activeFetchId !== currentFetchId) return;
 
@@ -484,3 +484,22 @@ if (document.readyState === 'loading') {
 } else {
   new TransitTrackerApp();
 }
+
+/**
+ * Register Service Worker for offline PWA support in underground stations
+ */
+if (
+  typeof window !== 'undefined' &&
+  'serviceWorker' in navigator &&
+  (window.location.protocol === 'https:' ||
+    window.location.hostname === 'localhost' ||
+    window.location.hostname === '127.0.0.1')
+) {
+  window.addEventListener('load', () => {
+    const swUrl = new URL('./sw.js', window.location.href).href;
+    navigator.serviceWorker.register(swUrl).catch((err) => {
+      console.warn('PWA Service Worker registration failed:', err);
+    });
+  });
+}
+

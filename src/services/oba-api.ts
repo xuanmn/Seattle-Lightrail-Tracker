@@ -153,13 +153,57 @@ function generateFallbackArrivals(
 }
 
 /**
- * Fetch live departures for a single stop ID with timeout and fallback
+ * In-Memory Stop Arrival Cache
+ * Caches arrival predictions per stopId with a short TTL (25s) to eliminate redundant
+ * network requests across shared 1 Line & 2 Line platforms and fast view toggles.
+ */
+interface CacheEntry {
+  timestamp: number;
+  arrivals: TransitArrival[];
+}
+
+const stopArrivalsCache = new Map<string, CacheEntry>();
+export const DEFAULT_CACHE_TTL_MS = 25 * 1000; // 25 seconds TTL
+
+/**
+ * Clear the in-memory arrivals cache (useful on manual refresh or test resets)
+ */
+export function clearArrivalsCache(): void {
+  stopArrivalsCache.clear();
+}
+
+/**
+ * Get current count of cached stops (for inspection & testing)
+ */
+export function getArrivalsCacheSize(): number {
+  return stopArrivalsCache.size;
+}
+
+/**
+ * Fetch live departures for a single stop ID with TTL caching, timeout and fallback
  */
 async function fetchArrivalsForStop(
   platform: StationPlatform,
   apiKey: string = DEFAULT_KEY,
-  timeoutMs: number = 6000
+  timeoutMs: number = 6000,
+  bypassCache: boolean = false
 ): Promise<TransitArrival[]> {
+  const now = Date.now();
+
+  // Return fresh copy from cache if within TTL
+  if (!bypassCache) {
+    const cached = stopArrivalsCache.get(platform.stopId);
+    if (cached && now - cached.timestamp < DEFAULT_CACHE_TTL_MS) {
+      return cached.arrivals.map((arr) => {
+        const targetDeparture = arr.predictedDepartureTime || arr.scheduledDepartureTime;
+        return {
+          ...arr,
+          minutesUntilArrival: calculateMinutesRemaining(targetDeparture, now),
+        };
+      });
+    }
+  }
+
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
 
@@ -175,28 +219,28 @@ async function fetchArrivalsForStop(
     }
 
     const data: RawObaResponse = await response.json();
-    const arrivals = transformObaArrivals(data, platform);
+    const arrivals = transformObaArrivals(data, platform, now);
 
-    // If API returned 0 results (e.g. night schedule), fallback to generated schedule
-    if (arrivals.length === 0) {
-      return generateFallbackArrivals(platform);
-    }
-
-    return arrivals;
+    const finalArrivals = arrivals.length === 0 ? generateFallbackArrivals(platform, now) : arrivals;
+    stopArrivalsCache.set(platform.stopId, { timestamp: now, arrivals: finalArrivals });
+    return finalArrivals;
   } catch {
     // Graceful fallback to realistic schedule so dashboard stays alive even during network blips
-    return generateFallbackArrivals(platform);
+    const fallback = generateFallbackArrivals(platform, now);
+    stopArrivalsCache.set(platform.stopId, { timestamp: now, arrivals: fallback });
+    return fallback;
   } finally {
     clearTimeout(timer);
   }
 }
 
 /**
- * Fetch live departures for both directions of a Station
+ * Fetch live departures for both directions of a Station with caching support
  */
 export async function fetchArrivalsForStation(
   station: Station,
-  apiKey: string = DEFAULT_KEY
+  apiKey: string = DEFAULT_KEY,
+  bypassCache: boolean = false
 ): Promise<{
   direction1: { platform: StationPlatform; arrivals: TransitArrival[] };
   direction2: { platform: StationPlatform; arrivals: TransitArrival[] };
@@ -209,8 +253,8 @@ export async function fetchArrivalsForStation(
   }
 
   const [arr1, arr2] = await Promise.all([
-    fetchArrivalsForStop(p1, apiKey),
-    fetchArrivalsForStop(p2, apiKey),
+    fetchArrivalsForStop(p1, apiKey, 6000, bypassCache),
+    fetchArrivalsForStop(p2, apiKey, 6000, bypassCache),
   ]);
 
   return {
