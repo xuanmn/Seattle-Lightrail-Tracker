@@ -32,6 +32,7 @@ export class StationPickerModal {
   }
 
   public open(initialLine?: TransitLineId) {
+    if (this.overlay.classList.contains('open')) return;
     if (initialLine) {
       this.setFilter(initialLine);
     } else {
@@ -44,7 +45,6 @@ export class StationPickerModal {
     if (this.listContainer) {
       this.listContainer.scrollTop = 0;
     }
-    this.renderStationsList();
     this.overlay.classList.add('open');
     lockBodyScroll();
     window.addEventListener('keydown', this.handleKeyDown);
@@ -133,6 +133,7 @@ export class StationPickerModal {
       'button',
       `picker-add-btn ${isPinned ? 'pinned' : ''}`
     ) as HTMLButtonElement;
+    actionBtn.type = 'button';
 
     if (isPinned) {
       actionBtn.innerHTML = `<span class="btn-text-default">✓ Added</span><span class="btn-text-hover">✕ Remove</span>`;
@@ -140,15 +141,7 @@ export class StationPickerModal {
       actionBtn.textContent = '+ Add Station';
     }
 
-    const toggle = (e: Event) => {
-      e.stopPropagation();
-      this.callbacks.onTogglePin(station.id);
-      this.refreshPinnedState();
-    };
-
-    row.onclick = toggle;
-    actionBtn.onclick = toggle;
-
+    row.dataset.stationId = station.id;
     row.appendChild(info);
     row.appendChild(actionBtn);
     return row;
@@ -213,8 +206,16 @@ export class StationPickerModal {
     filtersWrap.appendChild(this.tab1Btn);
     filtersWrap.appendChild(this.tab2Btn);
 
-    // List
+    // List with single delegated click handler (avoids per-row closure allocations)
     this.listContainer = createElement('div', 'departures-list');
+    this.listContainer.onclick = (e) => {
+      const target = (e.target as HTMLElement).closest('[data-station-id]') as HTMLElement | null;
+      if (!target) return;
+      const stationId = target.dataset.stationId;
+      if (!stationId) return;
+      this.callbacks.onTogglePin(stationId);
+      this.refreshPinnedState();
+    };
 
     body.appendChild(searchWrap);
     body.appendChild(filtersWrap);

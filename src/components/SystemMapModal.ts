@@ -24,6 +24,7 @@ export class SystemMapModal {
   private bodyRectTop: number = 0;
   private momentumRaf: number | null = null;
   private tweenRaf: number | null = null;
+  private openRaf: number | null = null;
   private openTimer?: number;
 
   private isMouseDown = false;
@@ -71,6 +72,7 @@ export class SystemMapModal {
   }
 
   public open() {
+    if (this.overlay.classList.contains('open')) return;
     this.overlay.classList.add('open');
     lockBodyScroll();
     window.addEventListener('keydown', this.handleKeyDown);
@@ -79,9 +81,15 @@ export class SystemMapModal {
     window.addEventListener('resize', this.handleResize);
 
     // Ensure viewport is measured accurately on next frame and after transition
-    requestAnimationFrame(() => {
+    if (this.openRaf !== null) {
+      cancelAnimationFrame(this.openRaf);
+      this.openRaf = null;
+    }
+    this.openRaf = requestAnimationFrame(() => {
       this.fitToScreen();
+      this.openRaf = null;
     });
+
     if (this.openTimer !== undefined) clearTimeout(this.openTimer);
     this.openTimer = window.setTimeout(() => {
       this.fitToScreen();
@@ -93,9 +101,17 @@ export class SystemMapModal {
     if (!this.overlay.classList.contains('open')) return;
     this.stopMomentum();
     this.stopTween();
+    if (this.openRaf !== null) {
+      cancelAnimationFrame(this.openRaf);
+      this.openRaf = null;
+    }
     if (this.openTimer !== undefined) {
       clearTimeout(this.openTimer);
       this.openTimer = undefined;
+    }
+    if (this.isMouseDown) {
+      this.isMouseDown = false;
+      if (this.bodyEl) this.bodyEl.classList.remove('is-panning');
     }
     this.overlay.classList.remove('open');
     unlockBodyScroll();

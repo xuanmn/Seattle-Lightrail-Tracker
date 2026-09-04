@@ -16,6 +16,7 @@ export class FaqModal {
   }
 
   public open() {
+    if (this.overlay.classList.contains('open')) return;
     this.overlay.classList.add('open');
     lockBodyScroll();
     window.addEventListener('keydown', this.handleKeyDown);

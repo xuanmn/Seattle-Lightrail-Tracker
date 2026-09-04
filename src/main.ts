@@ -51,6 +51,7 @@ class TransitTrackerApp {
   private countdownTickTimer?: number;
   private toastTimeout?: number;
   private isFetching: boolean = false;
+  private hasPendingFetch: boolean = false;
   private activeFetchId: number = 0;
 
   constructor() {
@@ -378,7 +379,10 @@ class TransitTrackerApp {
   }
 
   private async fetchVisibleArrivals(isManual: boolean = false) {
-    if (this.isFetching) return;
+    if (this.isFetching) {
+      this.hasPendingFetch = true;
+      return;
+    }
     this.isFetching = true;
     const currentFetchId = ++this.activeFetchId;
 
@@ -438,8 +442,10 @@ class TransitTrackerApp {
           'Network connection interrupted. Showing estimated transit schedules while reconnecting...';
       }
     } finally {
-      if (this.activeFetchId === currentFetchId) {
-        this.isFetching = false;
+      this.isFetching = false;
+      if (this.hasPendingFetch) {
+        this.hasPendingFetch = false;
+        this.fetchVisibleArrivals();
       }
     }
   }

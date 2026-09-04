@@ -26,6 +26,7 @@ export class SettingsModal {
   }
 
   public open() {
+    if (this.overlay.classList.contains('open')) return;
     const current = getSettings();
     this.timeFormatCheckbox.checked = current.timeFormat24Hour;
     this.overlay.classList.add('open');
