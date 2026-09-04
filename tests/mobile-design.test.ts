@@ -124,8 +124,6 @@ describe('Mobile Frontend Design & UX Specifications', () => {
       id: 'westlake',
       name: 'Westlake',
       lines: ['line-1'],
-      lat: 47.61,
-      lon: -122.33,
       platforms: {
         northbound: { stopId: '1', directionName: 'Northbound', cardinalDirection: 'Northbound', terminalDestination: 'Lynnwood' },
         southbound: { stopId: '2', directionName: 'Southbound', cardinalDirection: 'Southbound', terminalDestination: 'Federal Way' },

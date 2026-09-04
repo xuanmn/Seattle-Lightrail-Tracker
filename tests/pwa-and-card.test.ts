@@ -9,8 +9,6 @@ describe('StationCard Live Approach Track', () => {
     name: 'Westlake',
     shortName: 'Pine St / 4th Ave',
     lines: ['line-1', 'line-2'],
-    lat: 47.6115,
-    lon: -122.3374,
     platforms: {
       northbound: {
         stopId: '40_1121',

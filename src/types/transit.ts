@@ -12,8 +12,6 @@ export interface Station {
   name: string;           // "Capitol Hill"
   shortName?: string;     // Optional abbreviated name
   lines: TransitLineId[]; // ['line-1']
-  lat: number;
-  lon: number;
   platforms: {
     northbound?: StationPlatform;
     southbound?: StationPlatform;

@@ -4,7 +4,7 @@ import { calculateMinutesRemaining, formatDelayStatus } from '../utils/time';
 const DEFAULT_OBA_BASE = 'https://api.pugetsound.onebusaway.org/api/where';
 const DEFAULT_KEY = '5654bb33-edab-4322-8688-94b9d262abe4'; // Sound Transit official public client key
 
-export interface RawObaArrival {
+interface RawObaArrival {
   tripId: string;
   routeId: string;
   routeShortName?: string;
@@ -16,7 +16,7 @@ export interface RawObaArrival {
   status?: string;
 }
 
-export interface RawObaResponse {
+interface RawObaResponse {
   code: number;
   text?: string;
   data?: {
@@ -95,7 +95,7 @@ export function transformObaArrivals(
 /**
  * Generate simulated arrival data for demonstration / offline fallback
  */
-export function generateFallbackArrivals(
+function generateFallbackArrivals(
   platform: StationPlatform,
   nowEpochMs: number = Date.now()
 ): TransitArrival[] {
@@ -155,7 +155,7 @@ export function generateFallbackArrivals(
 /**
  * Fetch live departures for a single stop ID with timeout and fallback
  */
-export async function fetchArrivalsForStop(
+async function fetchArrivalsForStop(
   platform: StationPlatform,
   apiKey: string = DEFAULT_KEY,
   timeoutMs: number = 6000
