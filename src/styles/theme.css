@@ -144,6 +144,13 @@ body {
   position: relative;
 }
 
+@media (max-width: 768px) {
+  body {
+    /* Prevent mobile WebKit fixed-background root repaint flicker on modal-open */
+    background-attachment: scroll;
+  }
+}
+
 /* Dynamic Ambient Line Glow matching active transit line */
 body::before {
   content: "";

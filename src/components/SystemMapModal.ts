@@ -94,7 +94,7 @@ export class SystemMapModal {
     this.openTimer = window.setTimeout(() => {
       this.fitToScreen();
       this.openTimer = undefined;
-    }, 60);
+    }, 260);
   }
 
   public close() {
@@ -132,12 +132,26 @@ export class SystemMapModal {
     }
   }
 
-  public fitToScreen() {
+  public fitToScreen(force: boolean = false) {
     if (!this.bodyEl) return;
     this.stopMomentum();
+    const prevW = this.viewportW;
+    const prevH = this.viewportH;
     this.updateCachedDimensions();
     const w = this.viewportW;
     const h = this.viewportH;
+
+    // Avoid redundant transform recalculations if viewport geometry is unchanged
+    if (
+      !force &&
+      prevW === w &&
+      prevH === h &&
+      this.fitScale > 0 &&
+      Math.abs(this.currentScale - this.fitScale) < 0.001
+    ) {
+      return;
+    }
+
     const padding = 16;
 
     const scaleX = (w - padding * 2) / 830;

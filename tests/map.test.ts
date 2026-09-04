@@ -1,4 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
+// @ts-ignore
+import { readFileSync } from 'node:fs';
+declare const process: any;
 import { SystemMapModal } from '../src/components/SystemMapModal';
 
 describe('SystemMapModal Component', () => {
@@ -371,4 +374,23 @@ describe('SystemMapModal Component', () => {
     // Transform should have updated
     expect(canvas.style.transform).not.toBe(initialTransform);
   });
+
+  it('prevents mobile background flicker by omitting backdrop-filter transitions and disabling mobile overlay blur', () => {
+    const mapCss = readFileSync(process.cwd() + '/src/styles/map.css', 'utf-8');
+
+    // Overlay transition must NOT animate backdrop-filter (known WebKit GPU repaint flicker bug)
+    expect(mapCss).not.toMatch(/transition:[^;]*backdrop-filter/);
+
+    // Mobile media query must disable backdrop-filter to prevent blur pass flicker over full-screen sheet
+    expect(mapCss).toMatch(/@media\s*\([^)]*max-width:\s*768px[^)]*\)[\s\S]*?\.system-map-modal-overlay[\s\S]*?backdrop-filter:\s*none/);
+  });
+
+  it('prevents fixed background repaint flicker on mobile body scroll lock', () => {
+    const themeCss = readFileSync(process.cwd() + '/src/styles/theme.css', 'utf-8');
+
+    // Mobile body must use background-attachment: scroll to prevent iOS Safari root layer repaint on modal-open
+    expect(themeCss).toMatch(/@media\s*\([^)]*max-width:\s*768px[^)]*\)[\s\S]*?background-attachment:\s*scroll/);
+  });
 });
+
+
